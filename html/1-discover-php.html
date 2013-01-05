@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+<h1 id="discover-php">Discover PHP</h1>
+<h2 id="interactive-command-line">Interactive command line</h2>
+<p>All this section will take place in the virtual machine. Access it through ssh :</p>
+<pre><code>$ vagrant ssh
+vagrant@vm-licpro:~$ php -a</code></pre>
+<h3 id="hello-world">1. Hello world</h3>
+<pre class="sourceCode php"><code class="sourceCode php">php &gt; echo &quot;Hello world&quot;;
+hello world
+
+php &gt; print &quot;Hello world&quot;;
+hello world
+
+php &gt; echo sprintf(&quot;Hello %s&quot;, &quot;Votre prénom&quot;);
+Hello Votre prénom</code></pre>
+<h3 id="variables">2. Variables</h3>
+<pre class="sourceCode php"><code class="sourceCode php">php &gt; $a = 1;
+php &gt; var_dump($a);
+int(1)
+
+php &gt; $b = 3;
+php &gt; echo sprintf(&quot;%d + %d = %d&quot;, $a, $b, $a + $b);
+1 + 3 = 4
+
+php &gt; $b = &quot;foo&quot;;
+php &gt; var_dump($b);
+string(3) &quot;foo&quot;
+
+php &gt; print_r($b);
+foo
+
+php &gt; echo var_export($b);
+&#39;foo&#39;</code></pre>
+<h3 id="include">3. Include</h3>
+<p>In host machine, create <code>DOCROOT/tp1/shell.php</code> and insert :</p>
+<pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
+<span class="kw">$foo</span> = <span class="dv">1</span><span class="ot">;</span></code></pre>
+<p>Then, from interactive shell in virtual machine :</p>
+<pre class="sourceCode php"><code class="sourceCode php">php &gt; var_dump($foo);   // foo is not defined
+PHP Notice:  Undefined variable: foo in php shell code on line 1
+NULL
+
+php &gt; include &quot;/vat/www/tp1/shell.php&quot;;
+php &gt; var_dump($foo);   // all code in file is executed
+int(1)</code></pre>
+<h2 id="apache-environment">Apache environment</h2>
+<p>Configure an alias as described in tutorial :</p>
+<pre><code>$ vagrant ssh
+vagrant@vm-licpro:~$ php -a
+vagrant@vm-licpro:~$ echo &quot;Alias /tp1 /var/www/tp1/public&quot; | sudo \
+                            tee -a /etc/apache2/sites-available/tp1
+vagrant@vm-licpro:~$ sudo a2ensite tp1
+vagrant@vm-licpro:~$ sudo apache2ctl restart</code></pre>
+<h3 id="check-it-works">1. Check it works</h3>
+<p>Create <code>DOCROOT/tp1/public/index.php</code> and insert :</p>
+<pre class="sourceCode php"><code class="sourceCode php">&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        &lt;title&gt;Bienvenue&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;Félicitatations <span class="kw">&lt;?php</span> <span class="fu">echo</span> <span class="st">&quot;Votre prénom&quot;</span> <span class="kw">?&gt;</span>&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Open your browser at <code>http://localhost:8080/tp1/index.html</code></p>
+<p>You should see a congratulation message.</p>
+<h3 id="client-and-server">Client and server</h3>
+<h3 id="mvc-architecture">MVC architecture</h3>
+<p>let's create a few dirs and files :</p>
+<pre><code>$ mkdir -p DOCROOT/tp1/{public,model,view}
+$ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/view/cities.php</code></pre>
+<pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
+<span class="co">// DOCROOT/tp1/public/cities.php</span>
+
+<span class="co">// include model</span>
+<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;/../model/cities.php&#39;</span><span class="ot">;</span>
+
+<span class="co">// include view</span>
+<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;/../view/cities.php&#39;</span><span class="ot">;</span></code></pre>
+<pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
+<span class="co">// DOCROOT/tp1/model/cities.php</span>
+<span class="kw">$cities</span> = <span class="fu">array</span><span class="ot">(</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;San Francisco&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;USA&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Paris&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;France&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;New york&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;USA&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Berlin&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;Germany&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Bamako&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;Malia&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Buenos Aires&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;Argentina&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Santiago&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;Chile&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Bombay&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;India&quot;</span><span class="ot">),</span>
+    <span class="fu">array</span><span class="ot">(</span><span class="st">&quot;name&quot;</span> =&gt; <span class="st">&quot;Vancouver&quot;</span><span class="ot">,</span> <span class="st">&quot;country&quot;</span> =&gt; <span class="st">&quot;Canada&quot;</span><span class="ot">),</span>
+<span class="ot">);</span></code></pre>
+<pre class="sourceCode php"><code class="sourceCode php">&lt;!-- DOCROOT/tp1/view/cities.php --&gt;
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        &lt;title&gt;All cities&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;All cities&lt;/h1&gt;
+        &lt;table&gt;
+        <span class="kw">&lt;?php</span> <span class="kw">foreach</span><span class="ot">(</span><span class="kw">$cities</span> <span class="kw">as</span> <span class="kw">$city_id</span> =&gt; <span class="kw">$city</span><span class="ot">)</span>: <span class="kw">?&gt;</span>
+            &lt;tr&gt;
+<span class="er">                &lt;td&gt;&lt;a href=&quot;/tp1/city.php?id=&lt;?php echo $city_id; ?&gt;&quot;&gt;&lt;?php echo $city[&quot;name&quot;]; ?&gt;&lt;/a&gt;&lt;/td&gt;</span>
+<span class="er">                &lt;td&gt;&lt;?php echo $city[&quot;country&quot;]; ?&gt;&lt;/td&gt;</span>
+            &lt;/tr&gt;
+<span class="er">        &lt;?php endforeach; ?&gt;</span>
+        &lt;/table&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>open <code>http://localhost:8080/tp1/cities.php</code></p>
+<h3 id="add-a-dynamic-controller">Add a dynamic controller</h3>
+<p>Let's define a page to present a city :</p>
+<pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
+<span class="co">// DOCROOT/tp1/public/city.php</span>
+<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;/../model/cities.php&#39;</span><span class="ot">;</span>
+
+<span class="co">/**</span>
+ * <span class="co">render</span> <span class="co">a</span> <span class="dv">404</span> <span class="co">page</span>
+ <span class="co">*/</span>
+<span class="kw">function</span> page_not_found<span class="ot">()</span>
+{
+    <span class="fu">header</span><span class="ot">(</span><span class="st">&quot;HTTP/1.0 404 Not Found&quot;</span><span class="ot">);</span>
+    <span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;/../view/404.html&#39;</span><span class="ot">;</span>
+    <span class="fu">die</span><span class="ot">();</span>
+}
+
+<span class="co">// retrieve id from url parameter</span>
+<span class="kw">$city_id</span> = <span class="kw">$_GET</span><span class="ot">[</span><span class="st">&quot;id&quot;</span><span class="ot">];</span>
+<span class="kw">if</span> <span class="ot">(</span><span class="fu">empty</span><span class="ot">(</span><span class="kw">$city_id</span><span class="ot">)</span> || !<span class="fu">is_numeric</span><span class="ot">(</span><span class="kw">$city_id</span><span class="ot">)</span> || !<span class="fu">isset</span><span class="ot">(</span><span class="kw">$cities</span><span class="ot">[</span><span class="kw">$city_id</span><span class="ot">]))</span> {
+    <span class="co">// No id given or invalid id</span>
+    page_not_found<span class="ot">();</span>
+}
+
+<span class="co">// retrieve city from dataset</span>
+<span class="kw">$city</span> = <span class="kw">$cities</span><span class="ot">[</span><span class="kw">$city_id</span><span class="ot">];</span>
+<span class="co">// define some more variables</span>
+<span class="kw">$title</span> = <span class="fu">sprintf</span><span class="ot">(</span><span class="st">&quot;City %s&quot;</span><span class="ot">,</span> <span class="kw">$city</span><span class="ot">[</span><span class="st">&quot;name&quot;</span><span class="ot">]);</span>
+
+<span class="co">// include view</span>
+<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;/../view/city.php&#39;</span><span class="ot">;</span></code></pre>
+<pre class="sourceCode php"><code class="sourceCode php">&lt;!-- DOCROOT/tp1/view/city.php --&gt;
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        &lt;title&gt;<span class="kw">&lt;?php</span> <span class="fu">echo</span> <span class="kw">$title</span> <span class="kw">?&gt;</span>&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+<span class="er">        &lt;h1&gt;&lt;?php echo $city[&quot;name&quot;] ?&gt;&lt;/h1&gt;</span>
+        &lt;footer&gt;
+            &lt;a href=&quot;/tp1/cities.php&quot;&gt;Back to list&lt;/a&gt;
+        &lt;/footer&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="co">&lt;!-- DOCROOT/tp1/view/404.html --&gt;</span>
+<span class="dt">&lt;!DOCTYPE </span>HTML<span class="dt">&gt;</span>
+<span class="kw">&lt;html&gt;</span>
+    <span class="kw">&lt;head&gt;</span>
+        <span class="kw">&lt;meta</span><span class="ot"> http-equiv=</span><span class="st">&quot;content-type&quot;</span><span class="ot"> content=</span><span class="st">&quot;text/html; charset=utf-8&quot;</span> <span class="kw">/&gt;</span>
+        <span class="kw">&lt;title&gt;</span>Not found<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;/head&gt;</span>
+    <span class="kw">&lt;body&gt;</span>
+        <span class="kw">&lt;h1&gt;</span>404 not found<span class="kw">&lt;/h1&gt;</span>
+        <span class="kw">&lt;footer&gt;</span>
+            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;/tp1/cities.php&quot;</span><span class="kw">&gt;</span>Back to list<span class="kw">&lt;/a&gt;</span>
+        <span class="kw">&lt;/footer&gt;</span>
+    <span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+<h2 id="cli-environment">Cli environment</h2>
+<h2 id="exercises">Exercises</h2>
+<h3 id="filter-cities-by-country">Filter cities by country</h3>
+<p>Add a link to country list and create page for a country, listing all its cities.</p>
+<h3 id="data-store">Data store</h3>
+<p>Read cities from a csv file :</p>
+<pre class="csv"><code>San Francisco;USA
+Paris;France
+New york;USA
+Berlin;Germany
+Bamako;Malia
+Buenos Aires;Argentina
+Santiago;Chile
+Bombay;India
+Vancouver;Canada,</code></pre>
+<p>and create a command line program to add one at the end.</p>
+<p>You might need <a href="http://php.net/manual/en/ref.filesystem.php">filesytem related functions</a> and <a href="http://fr2.php.net/manual/en/function.explode.php">explode</a>.</p>
+</div>
+</body>
+</html>
