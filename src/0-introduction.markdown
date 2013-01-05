@@ -3,7 +3,7 @@ TP0 : faire connaissance avec l'environnement
 
 Vous allez développer dans une **machine virtuelle** préconfigurée via
 [puppet](http://puppetlabs.com/).
-Cette machine inclue tout le necessaire pour faire fonctionner vos TP et
+Cette machine inclut tout le necessaire pour faire fonctionner vos TP et
 comporte les programmes suivants :
 
 * apache
@@ -16,7 +16,7 @@ La machine virtuelle
 Tout les TP se dérouleront dans une machine virtuelle headless, c'est à dire
 sans interface graphique.
 Cette machine est pilotée par [vagrant](http://www.vagrantup.com), un programme
-en ruby qui abstrait la configuration et la manupulation de la machine.
+en ruby qui abstrait la configuration et la manipulation de la machine.
 
 Tout se passe comme si la machine virtuelle était un serveur accessible
 uniquement en réseau, via un tunel `ssh`.
@@ -189,7 +189,7 @@ Voici quelques commandes de bases :
 * `p` : coller
 
 Un [guide plus complet](http://www.worldtimzone.com/res/vi.html) est disponible
-mais le mieux reste de faire le tutoriel, pour celà tapez `vimtutor` dans un
+mais le mieux reste de faire le tutoriel, pour cela tapez `vimtutor` dans un
 terminal.
 
 Php
