@@ -32,7 +32,7 @@ php > var_dump($a);
 int(1)
 
 php > $b = 3;
-php > echo sprintf("%d + %d = %d", $a, $b, $a + $b);
+php > printf("%d + %d = %d", $a, $b, $a + $b);
 1 + 3 = 4
 
 php > $b = "foo";
@@ -233,6 +233,69 @@ include __DIR__ . '/../view/city.php';
 Cli environment
 ---------------
 
+All cli programs are run into the virtual machine.
+
+It is possible to invoke `php` directly form command line and give file as
+first argument :
+
+    $ php my/file.php
+
+or you can use the `#!/usr/bin/env php` header and make file executable :
+
+    $ echo "#!/usr/bin/env php" > /your/php/file.php
+    $ chmod a+x /your/php/file.php
+
+then simply invoke the script by runing :
+
+    $ /your/php/file.php
+
+### Our first cli programm
+
+Let's write "Hello world !" in the console :
+
+Create file `DOCROOT/projects/tp1/cli/hello.php` with following content :
+
+``` php
+#!/usr/bin/env php
+<?php
+
+echo "Hello world\n";
+```
+
+### User interractions
+
+Create file `DOCROOT/projects/tp1/cli/hello-you.php` with following content :
+
+``` php
+#!/usr/bin/env php
+<?php
+
+echo "Enter your name: ";
+$name = trim(fgets(STDIN));
+
+printf("Hello %s\n", $name);
+```
+
+### Command line arguments
+
+Let's create a command adding an alias to apache.
+In the file `DOCROOT/projects/tp1/cli/a2AddAlias`
+
+``` php
+#!/usr/bin/env php
+<?php
+
+function usage($exitCode)
+{
+    echo <<<EOF
+a2AddAlias /tp1 /var/www/tp1/public
+EOF;
+    exit $exitCode;
+}
+
+// retrieve arguments and validate
+
+```
 
 Exercises
 ---------
