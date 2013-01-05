@@ -1,10 +1,10 @@
 TP0 : faire connaissance avec l'environnement
 =============================================
 
-Vous allez développer dans une **machine virtuelle** préconfigurée par via
+Vous allez développer dans une **machine virtuelle** préconfigurée via
 [puppet](http://puppetlabs.com/).
-Cette machine inclue tout le necessaire pour faire fonctionner vos TP et la
-configuration est écrasée à chaque démarrage pour les programmes suivants :
+Cette machine inclue tout le necessaire pour faire fonctionner vos TP et
+comporte les programmes suivants :
 
 * apache
 * php
