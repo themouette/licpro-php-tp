@@ -33,58 +33,88 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div class="container">
 <h1 id="discover-php">Discover PHP</h1>
 <h2 id="interactive-command-line">Interactive command line</h2>
-<p>All this section will take place in the virtual machine. Access it through ssh :</p>
-<pre><code>$ vagrant ssh
-vagrant@vm-licpro:~$ php -a</code></pre>
+<p>All this section will take place in the virtual machine. Access it through SSH:</p>
+<pre><code>$ vagrant ssh</code></pre>
 <h3 id="hello-world">1. Hello world</h3>
-<pre class="sourceCode php"><code class="sourceCode php">php &gt; echo &quot;Hello world&quot;;
-hello world
-
-php &gt; print &quot;Hello world&quot;;
-hello world
-
-php &gt; echo sprintf(&quot;Hello %s&quot;, &quot;Votre prénom&quot;);
-Hello Votre prénom</code></pre>
+<pre><code>$ php -a
+&lt;?php
+echo &quot;hello world\n&quot;;</code></pre>
+<p>Now, hit <code>Ctrl + d</code> to run the code, you should see:</p>
+<pre><code>hello world</code></pre>
+<p>Alternatively, you can use <code>php -r</code>:</p>
+<pre><code>$ php -r &#39;print &quot;hello world\n&quot;;&#39;
+hello world</code></pre>
+<p>In most cases, <code>php -a</code> gives you a prompt, so that you can type your code and run it directly. Unfortunately, it doesn't work in Ubuntu, for licensing issue. That's why you have to type your code, and then hit <code>Ctrl + d</code>.</p>
+<p>Now, try:</p>
+<pre><code>$ php -a
+&lt;?php
+echo sprintf(&quot;Hello %s\n&quot;, &quot;Votre prénom&quot;);</code></pre>
+<p>Hit <code>Ctrl + d</code>:</p>
+<pre><code>Hello Votre prénom</code></pre>
 <h3 id="variables">2. Variables</h3>
-<pre class="sourceCode php"><code class="sourceCode php">php &gt; $a = 1;
-php &gt; var_dump($a);
-int(1)
-
-php &gt; $b = 3;
-php &gt; echo sprintf(&quot;%d + %d = %d&quot;, $a, $b, $a + $b);
-1 + 3 = 4
-
-php &gt; $b = &quot;foo&quot;;
-php &gt; var_dump($b);
-string(3) &quot;foo&quot;
-
-php &gt; print_r($b);
-foo
-
-php &gt; echo var_export($b);
-&#39;foo&#39;</code></pre>
+<p>Declare your very first variable:</p>
+<pre><code>$ php -a
+&lt;?php
+$a = 1;
+var_dump($a);</code></pre>
+<p>The result should be:</p>
+<pre><code>int(1)</code></pre>
+<p>Now, declare two variables:</p>
+<pre><code>&lt;?php
+$a = 1;
+$b = 3;
+printf(&quot;%d + %d = %d&quot;, $a, $b, $a + $b);</code></pre>
+<p>The result should be:</p>
+<pre><code>1 + 3 = 4</code></pre>
+<p>Working with strings is easy:</p>
+<pre><code>$ php -a
+&lt;?php
+$b = &quot;foo&quot;;
+var_dump($b);</code></pre>
+<p>The result should be:</p>
+<pre><code>string(3) &quot;foo&quot;</code></pre>
+<p><code>print_r()</code> is another function to print variables:</p>
+<pre><code>$ php -a
+&lt;?php
+$b = &quot;foo&quot;;
+print_r($b);</code></pre>
+<p>The result should be:</p>
+<pre><code>foo</code></pre>
+<p><code>var_export()</code> is a function that formats a variable:</p>
+<pre><code>$ php -a
+&lt;?php
+$b = &quot;foo&quot;;
+echo var_export($b);</code></pre>
+<p>The result should be:</p>
+<pre><code>&#39;foo&#39;</code></pre>
 <h3 id="include">3. Include</h3>
-<p>In host machine, create <code>DOCROOT/tp1/shell.php</code> and insert :</p>
+<p>In host machine, create <code>DOCROOT/tp1/shell.php</code> and insert:</p>
 <pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
 <span class="kw">$foo</span> = <span class="dv">1</span><span class="ot">;</span></code></pre>
-<p>Then, from interactive shell in virtual machine :</p>
-<pre class="sourceCode php"><code class="sourceCode php">php &gt; var_dump($foo);   // foo is not defined
-PHP Notice:  Undefined variable: foo in php shell code on line 1
-NULL
-
-php &gt; include &quot;/vat/www/tp1/shell.php&quot;;
-php &gt; var_dump($foo);   // all code in file is executed
-int(1)</code></pre>
+<p>Then, from interactive shell in virtual machine:</p>
+<pre><code>$ php -a
+&lt;?php
+var_dump($foo);   // foo is not defined</code></pre>
+<p>You should get the following error message:</p>
+<pre><code>PHP Notice:  Undefined variable: foo in php shell code on line 1
+NULL</code></pre>
+<p>Now, include your file:</p>
+<pre><code>$ php -a
+&lt;?php
+include &quot;/var/www/tp1/shell.php&quot;;
+var_dump($foo);   // all code in file is executed</code></pre>
+<p>The result should be:</p>
+<pre><code>int(1)</code></pre>
+<p>That's all for the cli :)</p>
+<p>Remember, use it when you quickly need to validate some code.</p>
 <h2 id="apache-environment">Apache environment</h2>
-<p>Configure an alias as described in tutorial :</p>
+<p>Configure an alias as described in tutorial:</p>
 <pre><code>$ vagrant ssh
-vagrant@vm-licpro:~$ php -a
-vagrant@vm-licpro:~$ echo &quot;Alias /tp1 /var/www/tp1/public&quot; | sudo \
-                            tee -a /etc/apache2/sites-available/tp1
+vagrant@vm-licpro:~$ echo &quot;Alias /tp1 /var/www/tp1/public&quot; | sudo tee /etc/apache2/sites-available/tp1
 vagrant@vm-licpro:~$ sudo a2ensite tp1
 vagrant@vm-licpro:~$ sudo apache2ctl restart</code></pre>
 <h3 id="check-it-works">1. Check it works</h3>
-<p>Create <code>DOCROOT/tp1/public/index.php</code> and insert :</p>
+<p>Create <code>DOCROOT/tp1/public/index.php</code> and insert:</p>
 <pre class="sourceCode php"><code class="sourceCode php">&lt;!DOCTYPE HTML&gt;
 &lt;html&gt;
     &lt;head&gt;
@@ -92,14 +122,14 @@ vagrant@vm-licpro:~$ sudo apache2ctl restart</code></pre>
         &lt;title&gt;Bienvenue&lt;/title&gt;
     &lt;/head&gt;
     &lt;body&gt;
-        &lt;p&gt;Félicitatations <span class="kw">&lt;?php</span> <span class="fu">echo</span> <span class="st">&quot;Votre prénom&quot;</span> <span class="kw">?&gt;</span>&lt;/p&gt;
+        &lt;p&gt;Félicitation <span class="kw">&lt;?php</span> <span class="fu">echo</span> <span class="st">&quot;Votre prénom&quot;</span> <span class="kw">?&gt;</span>&lt;/p&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>Open your browser at <code>http://localhost:8080/tp1/index.html</code></p>
+<p>Open your browser at <code>http://localhost:8080/tp1/index.php</code>.</p>
 <p>You should see a congratulation message.</p>
 <h3 id="client-and-server">Client and server</h3>
 <h3 id="mvc-architecture">MVC architecture</h3>
-<p>let's create a few dirs and files :</p>
+<p>Let's create a few dirs and files:</p>
 <pre><code>$ mkdir -p DOCROOT/tp1/{public,model,view}
 $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/view/cities.php</code></pre>
 <pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
@@ -142,9 +172,9 @@ $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/v
         &lt;/table&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>open <code>http://localhost:8080/tp1/cities.php</code></p>
+<p>Open <code>http://localhost:8080/tp1/cities.php</code>.</p>
 <h3 id="add-a-dynamic-controller">Add a dynamic controller</h3>
-<p>Let's define a page to present a city :</p>
+<p>Let's define a page to present a city:</p>
 <pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
 <span class="co">// DOCROOT/tp1/public/city.php</span>
 <span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;/../model/cities.php&#39;</span><span class="ot">;</span>
@@ -201,12 +231,89 @@ $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/v
         <span class="kw">&lt;/footer&gt;</span>
     <span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span></code></pre>
+<p>Open <code>http://localhost:8080/tp1/cities.php</code>, and click on some cities. Open <code>http://localhost:8080/tp1/city.php?id=-1</code> and see the result.</p>
 <h2 id="cli-environment">Cli environment</h2>
+<p>All cli programs are run into the virtual machine.</p>
+<p>It is possible to invoke <code>php</code> directly form command line and give file as first argument:</p>
+<pre><code>$ php my/file.php</code></pre>
+<p>or you can use the <code>#!/usr/bin/env php</code> header and make file executable:</p>
+<pre><code>$ echo &quot;#!/usr/bin/env php&quot; &gt; /your/php/file.php
+$ chmod a+x /your/php/file.php</code></pre>
+<p>then simply invoke the script by runing:</p>
+<pre><code>$ /your/php/file.php</code></pre>
+<h3 id="our-first-cli-program">Our first cli program</h3>
+<p>Let's write &quot;Hello world !&quot; in the console:</p>
+<p>Create file <code>DOCROOT/projects/tp1/cli/hello.php</code> with the following content:</p>
+<pre class="sourceCode php"><code class="sourceCode php">#!/usr/bin/env php
+<span class="kw">&lt;?php</span>
+
+<span class="fu">echo</span> <span class="st">&quot;Hello world</span><span class="kw">\n</span><span class="st">&quot;</span><span class="ot">;</span></code></pre>
+<h3 id="user-interactions">User interactions</h3>
+<p>Create file <code>DOCROOT/projects/tp1/cli/hello-you.php</code> with the following content:</p>
+<pre class="sourceCode php"><code class="sourceCode php">#!/usr/bin/env php
+<span class="kw">&lt;?php</span>
+
+<span class="fu">echo</span> <span class="st">&quot;Enter your name: &quot;</span><span class="ot">;</span>
+<span class="kw">$name</span> = <span class="fu">trim</span><span class="ot">(</span><span class="fu">fgets</span><span class="ot">(</span><span class="kw">STDIN</span><span class="ot">));</span>
+
+<span class="fu">printf</span><span class="ot">(</span><span class="st">&quot;Hello %s</span><span class="kw">\n</span><span class="st">&quot;</span><span class="ot">,</span> <span class="kw">$name</span><span class="ot">);</span></code></pre>
+<h3 id="command-line-arguments">Command line arguments</h3>
+<p>Let's create a command adding an alias to apache. In the file <code>DOCROOT/projects/tp1/cli/a2AddAlias</code></p>
+<pre class="sourceCode php"><code class="sourceCode php">#!/usr/bin/env php
+<span class="kw">&lt;?php</span>
+
+<span class="kw">function</span> usage<span class="ot">(</span><span class="kw">$exitCode</span> = <span class="dv">1</span><span class="ot">)</span>
+{
+    <span class="fu">echo</span> <span class="kw">&lt;&lt;&lt;EOF</span>
+<span class="st">Usage:</span>
+
+<span class="st">sudo a2AddAlias tp1 /var/www/tp1/public</span>
+
+<span class="kw">EOF;</span>
+    <span class="fu">exit</span><span class="ot">(</span><span class="kw">$exitCode</span><span class="ot">);</span>
+}
+
+<span class="co">// retrieve arguments and validate</span>
+<span class="kw">if</span> <span class="ot">(</span><span class="kw">$argc</span> !== <span class="dv">3</span><span class="ot">)</span> {
+    usage<span class="ot">();</span>
+}
+
+<span class="kw">$alias</span> = <span class="kw">$argv</span><span class="ot">[</span><span class="dv">1</span><span class="ot">];</span>
+<span class="kw">$dir</span> = <span class="kw">$argv</span><span class="ot">[</span><span class="dv">2</span><span class="ot">];</span>
+
+<span class="co">// check file exists</span>
+<span class="kw">if</span> <span class="ot">(</span>!<span class="fu">file_exists</span><span class="ot">(</span><span class="kw">$dir</span><span class="ot">))</span> {
+    <span class="fu">printf</span><span class="ot">(</span><span class="st">&quot;Directory %s does not exist&quot;</span><span class="ot">,</span> <span class="kw">$dir</span><span class="ot">);</span>
+    usage<span class="ot">(</span><span class="dv">0</span><span class="ot">);</span>
+}
+
+<span class="co">// only characters are allowed in alias name</span>
+<span class="kw">if</span> <span class="ot">(</span>!<span class="fu">preg_match</span><span class="ot">(</span><span class="st">&#39;#^\w+$#&#39;</span><span class="ot">,</span> <span class="kw">$alias</span><span class="ot">))</span> {
+    <span class="fu">printf</span><span class="ot">(</span><span class="st">&quot;Alias %s contains illegal characters&quot;</span><span class="ot">,</span> <span class="kw">$alias</span><span class="ot">);</span>
+    usage<span class="ot">();</span>
+}
+
+<span class="co">// generate alias template</span>
+<span class="kw">$template</span> = <span class="kw">&lt;&lt;&lt;EOF</span>
+<span class="st"># Generated on %date%</span>
+<span class="st">Alias /%alias% %dir%</span>
+<span class="kw">EOF;</span>
+
+<span class="kw">$content</span> = <span class="fu">strtr</span><span class="ot">(</span><span class="kw">$template</span><span class="ot">,</span> <span class="fu">array</span><span class="ot">(</span>
+    <span class="st">&#39;%date%&#39;</span>    =&gt; <span class="fu">date</span><span class="ot">(</span><span class="st">&#39;l jS \of F Y h:i:s A&#39;</span><span class="ot">),</span>
+    <span class="st">&#39;%dir%&#39;</span>     =&gt; <span class="kw">$dir</span><span class="ot">,</span>
+    <span class="st">&#39;%alias%&#39;</span>   =&gt; <span class="kw">$alias</span>
+<span class="ot">));</span>
+
+<span class="kw">$filename</span> = <span class="fu">sprintf</span><span class="ot">(</span><span class="st">&#39;/etc/apache2/sites-available/%s&#39;</span><span class="ot">,</span> <span class="kw">$alias</span><span class="ot">);</span>
+<span class="fu">file_put_contents</span><span class="ot">(</span><span class="kw">$content</span><span class="ot">,</span> <span class="kw">$filename</span><span class="ot">);</span>
+<span class="fu">system</span><span class="ot">(</span><span class="fu">sprintf</span><span class="ot">(</span><span class="st">&#39;a2ensite %s&#39;</span><span class="ot">,</span> <span class="kw">$alias</span><span class="ot">));</span>
+<span class="fu">system</span><span class="ot">(</span><span class="st">&#39;apache2ctl restart&#39;</span><span class="ot">);</span></code></pre>
 <h2 id="exercises">Exercises</h2>
 <h3 id="filter-cities-by-country">Filter cities by country</h3>
-<p>Add a link to country list and create page for a country, listing all its cities.</p>
+<p>Add a link to the country list and create a page for a country, listing all its cities.</p>
 <h3 id="data-store">Data store</h3>
-<p>Read cities from a csv file :</p>
+<p>Read cities from a CSV file:</p>
 <pre class="csv"><code>San Francisco;USA
 Paris;France
 New york;USA
@@ -216,7 +323,7 @@ Buenos Aires;Argentina
 Santiago;Chile
 Bombay;India
 Vancouver;Canada,</code></pre>
-<p>and create a command line program to add one at the end.</p>
+<p>And create a command line program to add new cities.</p>
 <p>You might need <a href="http://php.net/manual/en/ref.filesystem.php">filesytem related functions</a> and <a href="http://fr2.php.net/manual/en/function.explode.php">explode</a>.</p>
 </div>
 </body>
