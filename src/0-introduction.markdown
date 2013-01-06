@@ -1,7 +1,7 @@
 TP0 : Faire connaissance avec l'environnement
 =============================================
 
-Vous allez utiliser une **machine virtuelle** préconfigurée via
+Vous allez utiliser une **machine virtuelle** préconfigurée avec
 [Puppet](http://puppetlabs.com/).
 Cette machine inclut tout le necessaire pour faire fonctionner vos TPs et
 comporte les programmes suivants :
@@ -23,15 +23,16 @@ Tout se passe comme si la machine virtuelle était un serveur accessible
 uniquement en réseau, via un tunnel `ssh`.
 
 Votre machine redirige toutes les connexions entrantes sur le port `8080` vers
-la machine virtuelle.
+le port `80` de la machine virtuelle.
 
 ![schema réseau de l'installation](../image/vm-network.png)
 
 
 ### Installer la machine virtuelle
 
-Vous installerez la configuration de Vagrant dans le répertoire
+Vous allez installer la configuration de Vagrant dans le répertoire
 `/usr/local/licphp/workspace/vm-$USER`.
+
 Dans la suite du document, nous utiliserons `DOCROOT` pour parler de ce chemin.
 
 Pour faciliter la suite, vous êtes invité à définir une variable d'environnement :
@@ -71,9 +72,11 @@ d'installation du serveur est située dans le dossier `puppet/manifests/`.
 
     DOCROOT $ vagrant halt
 
+_Note :_ Merci de bien éteindre la machine virtuelle à la fin de la séance.
+
 ### Vérifier que tout fonctionne
 
-Ouvrez un navigateur, et rendez vous à l'adresse `http://localhost:8080`.
+Ouvrez un navigateur, et rendez vous à l'adresse `http://localhost:8080/`.
 Vous devriez voir apparaître un message de bienvenue.
 
 ### Dossier partagé
@@ -83,27 +86,28 @@ Tous les fichiers que vous éditez dans ce répertoire seront également modifi�
 dans la machine virtuelle.
 
     Votre machine        ~>    Machine virtuelle
-    DOCROOT/projects     ~>    /var/www/
+    DOCROOT              ~>    /vagrant
+    DOCROOT/projects     ~>    /var/www
 
 _Info :_ ce partage est configuré dans le fichier `Vagrantfile`.
 
 Pour vérifier que tout fonctionne, ajoutez votre nom dans le fichier
-`DOCROOT/projects/index.html` pour vous féliciter personnellement. Enregistrez
-puis rafraichissez le navigateur. Si vos modifications apparaissent, tout
-fonctionne normalement.
+`DOCROOT/projects/index.php` pour vous féliciter personnellement.
+Enregistrez puis rafraichissez le navigateur. Si vos modifications apparaissent,
+tout fonctionne normalement.
 
-### Accès ssh
+### Accès SSH
 
     $ vagrant ssh
 
-Une fois dans la machine virtuelle, vous pouvez prendre les droits root via
+Une fois dans la machine virtuelle, vous pouvez prendre les droits `root` via
 `sudo`.
 
 Installer à la maison
 ---------------------
 
 Vous aurez besoin de [`git`](http://git-scm.com/), de `ruby` et de
-[`vagrant`](http://docs.vagrantup.com). Pour les systèmes basés sur debian :
+[`Vagrant`](http://docs.vagrantup.com). Pour les systèmes basés sur debian :
 
     $ aptitude install ruby vagrant git
 
@@ -111,6 +115,9 @@ Pour les système OSX, reportez vous à la [documentation](http://docs.vagrantup
 
 Pour les autres, une installation Windows existe, mais il vous faudra du
 courage.
+
+_Note :_ Vous pouvez demander de l'aide par email pour l'installation, ou hors
+TPs, mais nous ne ferons pas d'installation sur vos machines pendant vos TPs.
 
 ### Installer la [configuration](https://github.com/willdurand/licpro-php-vm) :
 
@@ -134,30 +141,41 @@ ou alors installer la clé :
     ~/vagrant/licpro $ vagrant up
 
 
-Git
----
+Guide de survie avec Git
+------------------------
 
 `git` est un gestionnaire de version distribué massivement utilisé dans le
-monde opensource grâce notament à github.
+monde Open Source grâce à [GitHub](http://github.com), mais également chez
+Google, Facebook, Yahoo, Amazon, etc.
 
-La [Documentation](http://git-scm.com/book) est bien
+La [documentation](http://git-scm.com/book) est bien
 faite et très progressive. Il est possible de la télécharger en pdf :
-[pro git pdf](https://github.s3.amazonaws.com/media/progit.en.pdf).
-Il existe aussi un [tutoriel interactif](http://try.github.com/levels/1/challenges/1)
-de 15 minutes.
+[Pro Git PDF](https://github.s3.amazonaws.com/media/progit.en.pdf). Une version
+en français existe, cherchez-là ;-)
 
-Les commande principales pour débuter sont :
+Il existe également un [tutoriel
+interactif](http://try.github.com/levels/1/challenges/1) de 15 minutes pour
+vous familiariser avec `git`.
 
-    $ git init       # initialize un nouveau dépôt dans le répertoire courant
+Les commandes principales pour débuter sont :
+
+    $ git init       # initialise un nouveau dépôt dans le répertoire courant
     $ git status     # affiche l'état du répertoire de travail
-    $ git add file   # ajoute file à la staging area
+    $ git add file   # ajoute `file` à la staging area
     $ git commit     # empile la staging area dans le dépôt
                      # vous entrez votre message de commit dans vi
+    $ git push       # vous poussez vos changements sur un serveur central,
+                     # utile pour travailler en équipe
 
-Vous êtes invité à utiliser git pour maintenir la cohérence entre votre
-environnement personnel et celui du laboratoire.
+En image:
+
+![](../image/git.png)
+
+Vous êtes invité à utiliser `git` pour maintenir la cohérence entre votre
+environnement personnel et celui de l'IUT.
 Vous pouvez héberger vos dépôts publiquement sur [github.com](http://github.com)
 ou de manière privée sur [bitbucket.org](http://bitbucket.org).
+
 
 Guide de survie avec VI
 -----------------------
@@ -184,6 +202,7 @@ Voici quelques commandes de bases :
 Un [guide plus complet](http://www.worldtimzone.com/res/vi.html) est disponible
 mais le mieux reste de faire le tutoriel, pour cela tapez `vimtutor` dans un
 terminal.
+
 
 PHP
 ---
@@ -225,10 +244,10 @@ vous avez fait.
 La configuration se trouve dans le répertoire `/etc/apache2/` et est organisée
 comme suit :
 
-* `/etc/apache2/sites-available` contient les sites configurés
+* `/etc/apache2/sites-available` contient les sites configurés ;
 * `/etc/apache2/sites-enabled` contient des liens symboliques vers les sites
-    disponibles. Ce sont les sites actifs
-* `/etc/apache2/conf.d` contient la configuration de base et des modules
+    disponibles. Ce sont les sites actifs ;
+* `/etc/apache2/conf.d` contient la configuration de base et des modules.
 
 ### Commandes de base
 
@@ -262,9 +281,9 @@ En vous aidant du guide de survie, configurer l'alias comme suit :
 
 Enregistrer, quitter puis activer le nouveau site :
 
-    $ sudo a2ensite tp1
+    $ sudo a2ensite tp1projects
 
-puis redémarrer apache.
+Puis redémarrer apache.
 
-Vous accédez désormais au contenu de `/var/www/tp1` via l'url
-`http://localhost:8080/tp1`
+Vous accédez désormais au contenu de `/var/www/tp1` via l'URL
+`http://localhost:8080/tp1`.

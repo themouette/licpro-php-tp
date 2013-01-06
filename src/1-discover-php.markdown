@@ -5,46 +5,92 @@ Interactive command line
 ------------------------
 
 All this section will take place in the virtual machine.
-Access it through ssh:
+Access it through SSH:
 
     $ vagrant ssh
-    vagrant@vm-licpro:~$ php -a
 
 ### 1. Hello world
 
-``` php
-php > echo "Hello world";
-hello world
+    $ php -a
+    <?php
+    echo "hello world\n";
 
-php > print "Hello world";
-hello world
+Now, hit `Ctrl + d` to run the code, you should see:
 
-php > echo sprintf("Hello %s", "Votre prénom");
-Hello Votre prénom
-```
+    hello world
+
+Alternatively, you can use `php -r`:
+
+    $ php -r 'print "hello world\n";'
+    hello world
+
+Now, try:
+
+    $ php -a
+    <?php
+    echo sprintf("Hello %s\n", "Votre prénom");
+
+Hit `Ctrl + d`:
+
+    Hello Votre prénom
 
 
 ### 2. Variables
 
-``` php
-php > $a = 1;
-php > var_dump($a);
-int(1)
+Declare your very first variable:
 
-php > $b = 3;
-php > printf("%d + %d = %d", $a, $b, $a + $b);
-1 + 3 = 4
+    $ php -a
+    <?php
+    $a = 1;
+    var_dump($a);
 
-php > $b = "foo";
-php > var_dump($b);
-string(3) "foo"
+The result should be:
 
-php > print_r($b);
-foo
+    int(1)
 
-php > echo var_export($b);
-'foo'
-```
+Now, declare two variables:
+
+    <?php
+    $a = 1;
+    $b = 3;
+    printf("%d + %d = %d", $a, $b, $a + $b);
+
+The result should be:
+
+    1 + 3 = 4
+
+Working with strings is easy:
+
+    $ php -a
+    <?php
+    $b = "foo";
+    var_dump($b);
+
+The result should be:
+
+    string(3) "foo"
+
+`print_r()` is another function to print variables:
+
+    $ php -a
+    <?php
+    $b = "foo";
+    print_r($b);
+
+The result should be:
+
+    foo
+
+`var_export()` is a function that formats a variable:
+
+    $ php -a
+    <?php
+    $b = "foo";
+    echo var_export($b);
+
+The result should be:
+
+    'foo'
 
 ### 3. Include
 
@@ -57,15 +103,30 @@ $foo = 1;
 
 Then, from interactive shell in virtual machine:
 
-``` php
-php > var_dump($foo);   // foo is not defined
-PHP Notice:  Undefined variable: foo in php shell code on line 1
-NULL
+    $ php -a
+    <?php
+    var_dump($foo);   // foo is not defined
 
-php > include "/vat/www/tp1/shell.php";
-php > var_dump($foo);   // all code in file is executed
-int(1)
-```
+You should get the following error message:
+
+    PHP Notice:  Undefined variable: foo in php shell code on line 1
+    NULL
+
+Now, include your file:
+
+    $ php -a
+    <?php
+    include "/var/www/tp1/shell.php";
+    var_dump($foo);   // all code in file is executed
+
+The result should be:
+
+    int(1)
+
+That's all for the cli :)
+
+Remember, use it when you quickly need to validate some code.
+
 
 Apache environment
 ------------------
@@ -73,8 +134,7 @@ Apache environment
 Configure an alias as described in tutorial:
 
     $ vagrant ssh
-    vagrant@vm-licpro:~$ php -a
-    vagrant@vm-licpro:~$ echo "Alias /tp1 /var/www/tp1/public" | sudo tee -a /etc/apache2/sites-available/tp1
+    vagrant@vm-licpro:~$ echo "Alias /tp1 /var/www/tp1/public" | sudo tee /etc/apache2/sites-available/tp1
     vagrant@vm-licpro:~$ sudo a2ensite tp1
     vagrant@vm-licpro:~$ sudo apache2ctl restart
 
@@ -228,6 +288,10 @@ include __DIR__ . '/../view/city.php';
     </body>
 </html>
 ```
+
+Open `http://localhost:8080/tp1/cities.php`, and click on some cities.
+Open `http://localhost:8080/tp1/city.php?id=-1` and see the result.
+
 
 Cli environment
 ---------------
