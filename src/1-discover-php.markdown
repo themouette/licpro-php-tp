@@ -24,6 +24,10 @@ Alternatively, you can use `php -r`:
     $ php -r 'print "hello world\n";'
     hello world
 
+In most cases, `php -a` gives you a prompt, so that you can type your code and
+run it directly. Unfortunately, it doesn't work in Ubuntu, for licensing issue.
+That's why you have to type your code, and then hit `Ctrl + d`.
+
 Now, try:
 
     $ php -a
@@ -150,7 +154,7 @@ Create `DOCROOT/tp1/public/index.php` and insert:
         <title>Bienvenue</title>
     </head>
     <body>
-        <p>Félicitatations <?php echo "Votre prénom" ?></p>
+        <p>Félicitation <?php echo "Votre prénom" ?></p>
     </body>
 </html>
 ```
@@ -316,7 +320,7 @@ then simply invoke the script by runing:
 
 Let's write "Hello world !" in the console:
 
-Create file `DOCROOT/projects/tp1/cli/hello.php` with following content:
+Create file `DOCROOT/projects/tp1/cli/hello.php` with the following content:
 
 ``` php
 #!/usr/bin/env php
@@ -327,7 +331,7 @@ echo "Hello world\n";
 
 ### User interactions
 
-Create file `DOCROOT/projects/tp1/cli/hello-you.php` with following content:
+Create file `DOCROOT/projects/tp1/cli/hello-you.php` with the following content:
 
 ``` php
 #!/usr/bin/env php
