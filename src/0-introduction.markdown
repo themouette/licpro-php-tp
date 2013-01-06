@@ -1,52 +1,53 @@
-TP0 : faire connaissance avec l'environnement
+TP0 : Faire connaissance avec l'environnement
 =============================================
 
-Vous allez développer dans une **machine virtuelle** préconfigurée via
-[puppet](http://puppetlabs.com/).
-Cette machine inclut tout le necessaire pour faire fonctionner vos TP et
+Vous allez utiliser une **machine virtuelle** préconfigurée via
+[Puppet](http://puppetlabs.com/).
+Cette machine inclut tout le necessaire pour faire fonctionner vos TPs et
 comporte les programmes suivants :
 
-* apache
-* php
-* mysql
+* Apache2
+* PHP
+* MySQL
+
 
 La machine virtuelle
 --------------------
 
-Tout les TP se dérouleront dans une machine virtuelle headless, c'est à dire
+Tous les TPs se dérouleront dans une machine virtuelle _headless_, c'est à dire
 sans interface graphique.
-Cette machine est pilotée par [vagrant](http://www.vagrantup.com), un programme
+Cette machine est pilotée par [Vagrant](http://www.vagrantup.com), un programme
 en ruby qui abstrait la configuration et la manipulation de la machine.
 
 Tout se passe comme si la machine virtuelle était un serveur accessible
-uniquement en réseau, via un tunel `ssh`.
+uniquement en réseau, via un tunnel `ssh`.
 
 Votre machine redirige toutes les connexions entrantes sur le port `8080` vers
 la machine virtuelle.
-En activant dans la configuration `vagrant` l'interface réseau `:bridge`, vous
-autorisez un accès direct de la machine virtuelle sur Internet.
 
 ![schema réseau de l'installation](../image/vm-network.png)
 
+
 ### Installer la machine virtuelle
 
-Vous installerez la configuration de vagrant dans le répertoire
-`/usr/local/licphp/vm-$USER`.
-Dans la suite du document nous utilisons `DOCROOT` pour parler de ce chemin.
+Vous installerez la configuration de Vagrant dans le répertoire
+`/usr/local/licphp/workspace/vm-$USER`.
+Dans la suite du document, nous utiliserons `DOCROOT` pour parler de ce chemin.
 
-Pour faciliter la suite, vous êtes invité à définir une variable :
+Pour faciliter la suite, vous êtes invité à définir une variable d'environnement :
 
-    $ DOCROOT="/usr/local/licphp/vm-$USER"
-    $ export DOCROOT
+    $ export DOCROOT="/usr/local/licphp/workspace/vm-$USER"
 
-Clonnons la configuration :
+Vous pouvez ajouter cette ligne à votre fichier `.bashrc`.
+
+Maintenant, récupérez la configuration de la machine virtuelle :
 
     $ git clone https://github.com/willdurand/licpro-php-vm --recursive DOCROOT
     $ cd DOCROOT
 
 En listant le répertoire, vous devez avoir une sortie similaire :
 
-    $ ls -alh
+    DOCROOT $ ls -alh
 
     drwxr-xr-x 4 julien julien 4.0K Jan  4 00:26 .
     drwxrwxr-x 7 julien julien 4.0K Jan  3 00:07 ..
@@ -60,7 +61,7 @@ En listant le répertoire, vous devez avoir une sortie similaire :
     -rw-rw-r-- 1 julien julien 4.6K Jan  4 00:34 Vagrantfile
 
 La configuration est située dans le fichier `Vagrantfile` et la recette
-d'installation du serveur est située dans le dossier `puppet`.
+d'installation du serveur est située dans le dossier `puppet/manifests/`.
 
 ### Démarrer la machine virtuelle
 
@@ -72,22 +73,22 @@ d'installation du serveur est située dans le dossier `puppet`.
 
 ### Vérifier que tout fonctionne
 
-rendez-vous dans un navigateur à l'adresse `http://localhost:8080`.
+Ouvrez un navigateur, et rendez vous à l'adresse `http://localhost:8080`.
 Vous devriez voir apparaître un message de bienvenue.
 
 ### Dossier partagé
 
-Un dossier est partagé en `nfs` entre votre machine et la machine virtuelle.
+Un dossier est partagé en _NFS_ entre votre machine et la machine virtuelle.
 Tous les fichiers que vous éditez dans ce répertoire seront également modifiés
 dans la machine virtuelle.
 
     Votre machine        ~>    Machine virtuelle
     DOCROOT/projects     ~>    /var/www/
 
-_info_ : ce partage est configuré dans le fichier `Vagrantfile`.
+_Info :_ ce partage est configuré dans le fichier `Vagrantfile`.
 
 Pour vérifier que tout fonctionne, ajoutez votre nom dans le fichier
-`DOCROOT/projects/index.html` pour vous féliciter personnellement, enregistrez
+`DOCROOT/projects/index.html` pour vous féliciter personnellement. Enregistrez
 puis rafraichissez le navigateur. Si vos modifications apparaissent, tout
 fonctionne normalement.
 
@@ -101,44 +102,37 @@ Une fois dans la machine virtuelle, vous pouvez prendre les droits root via
 Installer à la maison
 ---------------------
 
-Vous aurez besoin de [`git`](http://git-scm.com/), de `ruby` et de [`vagrant`](http://docs.vagrantup.com).
-Pour les systèmes basés sur debian :
+Vous aurez besoin de [`git`](http://git-scm.com/), de `ruby` et de
+[`vagrant`](http://docs.vagrantup.com). Pour les systèmes basés sur debian :
 
     $ aptitude install ruby vagrant git
 
 Pour les système OSX, reportez vous à la [documentation](http://docs.vagrantup.com).
 
-Les autres, une installation windows existe, mais vous êtes encouragés à
-installer un dual boot.
-
-### Télécharger l'image de base :
-
-    $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+Pour les autres, une installation Windows existe, mais il vous faudra du
+courage.
 
 ### Installer la [configuration](https://github.com/willdurand/licpro-php-vm) :
 
     $ mkdir ~/vagrant ; cd ~/vagrant
-    ~/vagrant $ git clone https://github.com/willdurand/licpro-php-vm.git --recursive
+    ~/vagrant $ git clone git://github.com/willdurand/licpro-php-vm.git --recursive
 
-### Installer la clé ssh :
+### Installer la clé SSH :
 
 Vous pouvez commenter la ligne #16 dans le Vagrantfile :
 
     config.ssh.private_key_path = "~/.ssh/insecure_private_key"
 
-ou alors installer la clé
+ou alors installer la clé :
 
     $ wget https://raw.github.com/mitchellh/vagrant/master/keys/vagrant -O ~/.ssh/insecure_private_key
     $ chmod 400 ~/.ssh/insecure_private_key
-
-### Ajouter l'accès à internet (nécessaire pour l'installation)
-
-Il vous suffit de décommeter la ligne #33 `config.vm.network :bridged`
 
 ### Premier démarrage :
 
     $ cd ~/vagrant/licpro
     ~/vagrant/licpro $ vagrant up
+
 
 Git
 ---
@@ -148,10 +142,7 @@ monde opensource grâce notament à github.
 
 La [Documentation](http://git-scm.com/book) est bien
 faite et très progressive. Il est possible de la télécharger en pdf :
-[pro git pdf](https://github.s3.amazonaws.com/media/progit.en.pdf)
-
-En bonus track, voici mon [`.gitconfig`](https://github.com/themouette/puppet-me/blob/master/me/templates/dotfiles/gitconfig.erb)
-à placer dans votre home en remplacant les lignes #2 et #3.
+[pro git pdf](https://github.s3.amazonaws.com/media/progit.en.pdf).
 
 Les commande principales pour débuter sont :
 
@@ -163,14 +154,14 @@ Les commande principales pour débuter sont :
 
 Vous êtes invité à utiliser git pour maintenir la cohérence entre votre
 environnement personnel et celui du laboratoire.
-Vous pouvez héberger vos dépôts publiquement sur github.com ou de manière
-privée sur bitbucket.org.
+Vous pouvez héberger vos dépôts publiquement sur [github.com](http://github.com)
+ou de manière privée sur [bitbucket.org](http://bitbucket.org).
 
-Guide de survie avec Vi
+Guide de survie avec VI
 -----------------------
 
 Sur un serveur, il n'est pas rare de devoir éditer des fichiers. Sans interface
-graphique, le nombre d'éditeurs est limité, mais il y aura toujours vi.
+graphique, le nombre d'éditeurs est limité, mais il y aura toujours `vi`.
 
 Voici quelques commandes de bases :
 
@@ -192,7 +183,7 @@ Un [guide plus complet](http://www.worldtimzone.com/res/vi.html) est disponible
 mais le mieux reste de faire le tutoriel, pour cela tapez `vimtutor` dans un
 terminal.
 
-Php
+PHP
 ---
 
 ### L'interpréteur interactif
@@ -216,12 +207,12 @@ ou `<Ctrl>+C`.
 ### Configuration
 
 La configuration de php se trouve dans `/etc/php5`.
-Il y a la configuration pour le mode cli et la configuration pour apache.
+Il y a la configuration pour le mode cli et la configuration pour Apache2.
 
-Apache
-------
+Apache2
+-------
 
-Apache est un serveur web permettant de servir des fichiers soit directement,
+Apache2 est un serveur web permettant de servir des fichiers soit directement,
 soit en exécutant des programmes externes.
 
 Le serveur écoute sur le port 80 et répond en fonction de la configuration que

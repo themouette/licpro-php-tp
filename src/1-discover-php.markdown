@@ -5,7 +5,7 @@ Interactive command line
 ------------------------
 
 All this section will take place in the virtual machine.
-Access it through ssh :
+Access it through ssh:
 
     $ vagrant ssh
     vagrant@vm-licpro:~$ php -a
@@ -48,14 +48,14 @@ php > echo var_export($b);
 
 ### 3. Include
 
-In host machine, create `DOCROOT/tp1/shell.php` and insert :
+In host machine, create `DOCROOT/tp1/shell.php` and insert:
 
 ``` php
 <?php
 $foo = 1;
 ```
 
-Then, from interactive shell in virtual machine :
+Then, from interactive shell in virtual machine:
 
 ``` php
 php > var_dump($foo);   // foo is not defined
@@ -70,18 +70,17 @@ int(1)
 Apache environment
 ------------------
 
-Configure an alias as described in tutorial :
+Configure an alias as described in tutorial:
 
     $ vagrant ssh
     vagrant@vm-licpro:~$ php -a
-    vagrant@vm-licpro:~$ echo "Alias /tp1 /var/www/tp1/public" | sudo \
-                                tee -a /etc/apache2/sites-available/tp1
+    vagrant@vm-licpro:~$ echo "Alias /tp1 /var/www/tp1/public" | sudo tee -a /etc/apache2/sites-available/tp1
     vagrant@vm-licpro:~$ sudo a2ensite tp1
     vagrant@vm-licpro:~$ sudo apache2ctl restart
 
 ### 1. Check it works
 
-Create `DOCROOT/tp1/public/index.php` and insert :
+Create `DOCROOT/tp1/public/index.php` and insert:
 
 ``` php
 <!DOCTYPE HTML>
@@ -96,7 +95,7 @@ Create `DOCROOT/tp1/public/index.php` and insert :
 </html>
 ```
 
-Open your browser at `http://localhost:8080/tp1/index.html`
+Open your browser at `http://localhost:8080/tp1/index.php`.
 
 You should see a congratulation message.
 
@@ -105,7 +104,7 @@ You should see a congratulation message.
 
 ### MVC architecture
 
-let's create a few dirs and files :
+Let's create a few dirs and files:
 
     $ mkdir -p DOCROOT/tp1/{public,model,view}
     $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/view/cities.php
@@ -159,11 +158,11 @@ $cities = array(
 </html>
 ```
 
-open `http://localhost:8080/tp1/cities.php`
+Open `http://localhost:8080/tp1/cities.php`.
 
 ### Add a dynamic controller
 
-Let's define a page to present a city :
+Let's define a page to present a city:
 
 ``` php
 <?php
@@ -236,24 +235,24 @@ Cli environment
 All cli programs are run into the virtual machine.
 
 It is possible to invoke `php` directly form command line and give file as
-first argument :
+first argument:
 
     $ php my/file.php
 
-or you can use the `#!/usr/bin/env php` header and make file executable :
+or you can use the `#!/usr/bin/env php` header and make file executable:
 
     $ echo "#!/usr/bin/env php" > /your/php/file.php
     $ chmod a+x /your/php/file.php
 
-then simply invoke the script by runing :
+then simply invoke the script by runing:
 
     $ /your/php/file.php
 
-### Our first cli programm
+### Our first cli program
 
-Let's write "Hello world !" in the console :
+Let's write "Hello world !" in the console:
 
-Create file `DOCROOT/projects/tp1/cli/hello.php` with following content :
+Create file `DOCROOT/projects/tp1/cli/hello.php` with following content:
 
 ``` php
 #!/usr/bin/env php
@@ -262,9 +261,9 @@ Create file `DOCROOT/projects/tp1/cli/hello.php` with following content :
 echo "Hello world\n";
 ```
 
-### User interractions
+### User interactions
 
-Create file `DOCROOT/projects/tp1/cli/hello-you.php` with following content :
+Create file `DOCROOT/projects/tp1/cli/hello-you.php` with following content:
 
 ``` php
 #!/usr/bin/env php
@@ -310,7 +309,7 @@ if (!file_exists($dir)) {
     usage(0);
 }
 
-// only  characters are allowed in alias name
+// only characters are allowed in alias name
 if (!preg_match('#^\w+$#', $alias)) {
     printf("Alias %s contains illegal characters", $alias);
     usage();
@@ -339,12 +338,12 @@ Exercises
 
 ### Filter cities by country
 
-Add a link to country list and create page for a country, listing all its
+Add a link to the country list and create a page for a country, listing all its
 cities.
 
 ### Data store
 
-Read cities from a csv file :
+Read cities from a CSV file:
 
 ``` csv
 San Francisco;USA
@@ -358,7 +357,7 @@ Bombay;India
 Vancouver;Canada,
 ```
 
-and create a command line program to add one at the end.
+And create a command line program to add new cities.
 
 You might need [filesytem related functions](http://php.net/manual/en/ref.filesystem.php)
 and [explode](http://fr2.php.net/manual/en/function.explode.php).
