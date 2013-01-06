@@ -143,6 +143,8 @@ monde opensource grâce notament à github.
 La [Documentation](http://git-scm.com/book) est bien
 faite et très progressive. Il est possible de la télécharger en pdf :
 [pro git pdf](https://github.s3.amazonaws.com/media/progit.en.pdf).
+Il existe aussi un [tutoriel interactif](http://try.github.com/levels/1/challenges/1)
+de 15 minutes.
 
 Les commande principales pour débuter sont :
 
