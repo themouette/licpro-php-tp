@@ -245,7 +245,7 @@ function page_not_found()
 
 // retrieve id from url parameter
 $city_id = $_GET["id"];
-if (empty($city_id) || !is_numeric($city_id) || !isset($cities[$city_id])) {
+if (!isset($city_id) || !is_numeric($city_id) || !isset($cities[$city_id])) {
     // No id given or invalid id
     page_not_found();
 }
@@ -309,7 +309,7 @@ first argument:
 
 or you can use the `#!/usr/bin/env php` header and make file executable:
 
-    $ echo "#!/usr/bin/env php" > /your/php/file.php
+    $ echo '#!/usr/bin/env php' > /your/php/file.php
     $ chmod a+x /your/php/file.php
 
 then simply invoke the script by runing:
