@@ -43,8 +43,8 @@ Vous pouvez ajouter cette ligne à votre fichier `.bashrc`.
 
 Maintenant, récupérez la configuration de la machine virtuelle :
 
-    $ git clone https://github.com/willdurand/licpro-php-vm --recursive DOCROOT
-    $ cd DOCROOT
+    $ git clone https://github.com/willdurand/licpro-php-vm --recursive $DOCROOT
+    $ cd $DOCROOT
 
 En listant le répertoire, vous devez avoir une sortie similaire :
 
@@ -281,9 +281,9 @@ En vous aidant du guide de survie, configurer l'alias comme suit :
 
 Enregistrer, quitter puis activer le nouveau site :
 
-    $ sudo a2ensite tp1projects
+    $ sudo a2ensite tp1
 
-Puis redémarrer apache.
+Puis redémarrer Apache.
 
 Vous accédez désormais au contenu de `/var/www/tp1` via l'URL
 `http://localhost:8080/tp1`.

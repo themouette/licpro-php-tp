@@ -11,11 +11,22 @@ Access it through SSH:
 
 ### 1. Hello world
 
-    $ php -a
-    <?php
-    echo "hello world\n";
+In most cases, `php -a` gives you a prompt, so that you can type your code and
+run it directly. Unfortunately, it doesn't work in Ubuntu, for licensing issue.
+That's why you will use [`phpsh`](http://www.phpsh.org/), an interactive shell
+for PHP, written in Python by Facebook.
 
-Now, hit `Ctrl + d` to run the code, you should see:
+    $ phpsh
+    Starting php
+    type 'h' or 'help' to see instructions & features
+    php>
+
+Type:
+
+    php> echo "hello world";
+
+Now, hit `enter` to execute your first line of PHP. You should get the following
+result:
 
     hello world
 
@@ -24,17 +35,11 @@ Alternatively, you can use `php -r`:
     $ php -r 'print "hello world\n";'
     hello world
 
-In most cases, `php -a` gives you a prompt, so that you can type your code and
-run it directly. Unfortunately, it doesn't work in Ubuntu, for licensing issue.
-That's why you have to type your code, and then hit `Ctrl + d`.
+But, it's easier to use `phpsh`, so please use it :)
 
-Now, try:
+    php> echo sprintf("Hello %s\n", "Votre prénom");
 
-    $ php -a
-    <?php
-    echo sprintf("Hello %s\n", "Votre prénom");
-
-Hit `Ctrl + d`:
+Hit `enter`:
 
     Hello Votre prénom
 
@@ -43,10 +48,8 @@ Hit `Ctrl + d`:
 
 Declare your very first variable:
 
-    $ php -a
-    <?php
-    $a = 1;
-    var_dump($a);
+    php> $a = 1;
+    php> var_dump($a);
 
 The result should be:
 
@@ -54,10 +57,9 @@ The result should be:
 
 Now, declare two variables:
 
-    <?php
-    $a = 1;
-    $b = 3;
-    printf("%d + %d = %d", $a, $b, $a + $b);
+    php> $a = 1;
+    php> $b = 3;
+    php> printf("%d + %d = %d", $a, $b, $a + $b);
 
 The result should be:
 
@@ -65,10 +67,8 @@ The result should be:
 
 Working with strings is easy:
 
-    $ php -a
-    <?php
-    $b = "foo";
-    var_dump($b);
+    php> $b = "foo";
+    php> var_dump($b);
 
 The result should be:
 
@@ -76,10 +76,8 @@ The result should be:
 
 `print_r()` is another function to print variables:
 
-    $ php -a
-    <?php
-    $b = "foo";
-    print_r($b);
+    php> $b = "foo";
+    php> print_r($b);
 
 The result should be:
 
@@ -87,10 +85,8 @@ The result should be:
 
 `var_export()` is a function that formats a variable:
 
-    $ php -a
-    <?php
-    $b = "foo";
-    echo var_export($b);
+    php> $b = "foo";
+    php> echo var_export($b);
 
 The result should be:
 
@@ -98,7 +94,7 @@ The result should be:
 
 ### 3. Include
 
-In host machine, create `DOCROOT/tp1/shell.php` and insert:
+In host machine, create `DOCROOT/projects/tp1/shell.php` and insert:
 
 ``` php
 <?php
@@ -107,21 +103,16 @@ $foo = 1;
 
 Then, from interactive shell in virtual machine:
 
-    $ php -a
-    <?php
-    var_dump($foo);   // foo is not defined
+    php> var_dump($foo);   // foo is not defined
 
-You should get the following error message:
+You should get the following result:
 
-    PHP Notice:  Undefined variable: foo in php shell code on line 1
     NULL
 
 Now, include your file:
 
-    $ php -a
-    <?php
-    include "/var/www/tp1/shell.php";
-    var_dump($foo);   // all code in file is executed
+    php> include "/var/www/tp1/shell.php";
+    php> var_dump($foo);   // all code in file is executed
 
 The result should be:
 
@@ -144,7 +135,7 @@ Configure an alias as described in tutorial:
 
 ### 1. Check it works
 
-Create `DOCROOT/tp1/public/index.php` and insert:
+Create `DOCROOT/projects/tp1/public/index.php` and insert:
 
 ``` php
 <!DOCTYPE HTML>
@@ -170,12 +161,12 @@ You should see a congratulation message.
 
 Let's create a few dirs and files:
 
-    $ mkdir -p DOCROOT/tp1/{public,model,view}
-    $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/view/cities.php
+    $ mkdir -p $DOCROOT/projects/tp1/{public,model,view}
+    $ touch $DOCROOT/projects/tp1/public/cities.php $DOCROOT/projects/tp1/model/cities.php $DOCROOT/projects/tp1/view/cities.php
 
 ``` php
 <?php
-// DOCROOT/tp1/public/cities.php
+// DOCROOT/projects/tp1/public/cities.php
 
 // include model
 include __DIR__ . '/../model/cities.php';
@@ -186,7 +177,7 @@ include __DIR__ . '/../view/cities.php';
 
 ``` php
 <?php
-// DOCROOT/tp1/model/cities.php
+// DOCROOT/projects/tp1/model/cities.php
 $cities = array(
     array("name" => "San Francisco", "country" => "USA"),
     array("name" => "Paris", "country" => "France"),
@@ -201,7 +192,7 @@ $cities = array(
 ```
 
 ``` php
-<!-- DOCROOT/tp1/view/cities.php -->
+<!-- DOCROOT/projects/tp1/view/cities.php -->
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -230,7 +221,7 @@ Let's define a page to present a city:
 
 ``` php
 <?php
-// DOCROOT/tp1/public/city.php
+// DOCROOT/projects/tp1/public/city.php
 include __DIR__ . '/../model/cities.php';
 
 /**
@@ -260,7 +251,7 @@ include __DIR__ . '/../view/city.php';
 ```
 
 ``` php
-<!-- DOCROOT/tp1/view/city.php -->
+<!-- DOCROOT/projects/tp1/view/city.php -->
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -277,7 +268,7 @@ include __DIR__ . '/../view/city.php';
 ```
 
 ``` html
-<!-- DOCROOT/tp1/view/404.html -->
+<!-- DOCROOT/projects/tp1/view/404.html -->
 <!DOCTYPE HTML>
 <html>
     <head>
