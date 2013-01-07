@@ -191,7 +191,7 @@ $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/v
 
 <span class="co">// retrieve id from url parameter</span>
 <span class="kw">$city_id</span> = <span class="kw">$_GET</span><span class="ot">[</span><span class="st">&quot;id&quot;</span><span class="ot">];</span>
-<span class="kw">if</span> <span class="ot">(</span><span class="fu">empty</span><span class="ot">(</span><span class="kw">$city_id</span><span class="ot">)</span> || !<span class="fu">is_numeric</span><span class="ot">(</span><span class="kw">$city_id</span><span class="ot">)</span> || !<span class="fu">isset</span><span class="ot">(</span><span class="kw">$cities</span><span class="ot">[</span><span class="kw">$city_id</span><span class="ot">]))</span> {
+<span class="kw">if</span> <span class="ot">(</span>!<span class="fu">isset</span><span class="ot">(</span><span class="kw">$city_id</span><span class="ot">)</span> || !<span class="fu">is_numeric</span><span class="ot">(</span><span class="kw">$city_id</span><span class="ot">)</span> || !<span class="fu">isset</span><span class="ot">(</span><span class="kw">$cities</span><span class="ot">[</span><span class="kw">$city_id</span><span class="ot">]))</span> {
     <span class="co">// No id given or invalid id</span>
     page_not_found<span class="ot">();</span>
 }
@@ -237,7 +237,7 @@ $ touch DOCROOT/tp1/public/cities.php DOCROOT/tp1/model/cities.php DOCROOT/tp1/v
 <p>It is possible to invoke <code>php</code> directly form command line and give file as first argument:</p>
 <pre><code>$ php my/file.php</code></pre>
 <p>or you can use the <code>#!/usr/bin/env php</code> header and make file executable:</p>
-<pre><code>$ echo &quot;#!/usr/bin/env php&quot; &gt; /your/php/file.php
+<pre><code>$ echo &#39;#!/usr/bin/env php&#39; &gt; /your/php/file.php
 $ chmod a+x /your/php/file.php</code></pre>
 <p>then simply invoke the script by runing:</p>
 <pre><code>$ /your/php/file.php</code></pre>
