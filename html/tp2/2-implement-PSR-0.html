@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+  </style>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+<h1 id="psr-0-autloading">PSR-0 autloading</h1>
+<p>In this practical you will create a <code>PSR-0</code> compliant autoloader.</p>
+<h2 id="definition">Definition</h2>
+<p>The following describes the mandatory requirements that must be adhered to for autoloader interoperability.</p>
+<h3 id="mandatory">Mandatory</h3>
+<ul>
+<li>A fully-qualified namespace and class must have the following structure <code>\&lt;Vendor Name&gt;\(&lt;Namespace&gt;\)*&lt;Class Name&gt;</code></li>
+<li>Each namespace must have a top-level namespace (&quot;Vendor Name&quot;).</li>
+<li>Each namespace can have as many sub-namespaces as it wishes.</li>
+<li>Each namespace separator is converted to a <code>DIRECTORY_SEPARATOR</code> when loading from the file system.</li>
+<li>Each <code>_</code> character in the CLASS NAME is converted to a <code>DIRECTORY_SEPARATOR</code>. The <code>_</code> character has no special meaning in the namespace.</li>
+<li>The fully-qualified namespace and class is suffixed with <code>.php</code> when loading from the file system.</li>
+<li>Alphabetic characters in vendor names, namespaces, and class names may be of any combination of lower case and upper case.</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<ul>
+<li><code>\Doctrine\Common\IsolatedClassLoader</code> =&gt; <code>/path/to/project/lib/vendor/Doctrine/Common/IsolatedClassLoader.php</code></li>
+<li><code>\Symfony\Core\Request</code> =&gt; <code>/path/to/project/lib/vendor/Symfony/Core/Request.php</code></li>
+<li><code>\Zend\Acl</code> =&gt; <code>/path/to/project/lib/vendor/Zend/Acl.php</code></li>
+<li><code>\Zend\Mail\Message</code> =&gt; <code>/path/to/project/lib/vendor/Zend/Mail/Message.php</code></li>
+</ul>
+<h2 id="overview">Overview</h2>
+<p>We'll achieve the PSR-0 autoloader with caching in 4 steps:</p>
+<ul>
+<li>implement autoloading from cache</li>
+<li>implement autloading from namespace</li>
+<li>implement autoloading for underscore notation</li>
+<li>register discovered classes in cache and dump it</li>
+</ul>
+<p>To start, create <code>projects/practical2/psr0</code> directory and extract <a href="archive.tgz">this archive</a></p>
+<pre><code>$ wget archive.tgz
+$ tar xvfz archive.tgz
+$ rm archive.tgz</code></pre>
+<p>running the <code>tree</code> command should display the following:</p>
+<pre><code>├ test.php
+├ test_cache.php
+├ test_namespace.php
+└ vendor/
+    ├ autoload.php
+    ├ autoload_cache.php
+    ├ autoload_namespace.php
+    ├ Coffe/
+    │   ├ Bali.php
+    │   ├ BlueMontain.php
+    │   └ Sumatra.php
+    ├ Soda/
+    │   ├ Lemonade.php
+    │   └ Juice.php
+    │       └ Orange.php
+    └ Wine/
+        ├ Bordeaux.php
+        └ Chinon.php</code></pre>
+<p>Every class under <code>vendor/</code> directory print it's name in the constructor:</p>
+<pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
+
+<span class="kw">class</span> Foo
+{
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fu">__construct</span><span class="ot">(</span><span class="kw">$log</span> = <span class="kw">true</span><span class="ot">)</span>
+    {
+        <span class="kw">if</span> <span class="ot">(</span><span class="kw">$log</span><span class="ot">)</span> {
+            <span class="fu">printf</span><span class="ot">(</span><span class="st">&quot;%s</span><span class="kw">\n</span><span class="st">&quot;</span><span class="ot">,</span> <span class="fu">get_class</span><span class="ot">(</span><span class="kw">$this</span><span class="ot">));</span>
+        }
+    }
+}</code></pre>
+<h2 id="step-1-register-a-new-autoloader">Step 1: Register a new autoloader</h2>
+<p><code>SPL</code> allow us to register a custom autoloaders through <code>spl_autoload_register()</code> and <code>spl_autoload_unregister()</code> methods.</p>
+<p>This part will be tested thanks to <code>test_cache.php</code> script with following content:</p>
+<pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
+
+<span class="co">/**</span>
+ * <span class="co">testing</span> <span class="co">spl</span> <span class="co">functions</span> <span class="co">to</span> <span class="co">register</span> <span class="co">an</span> <span class="co">autoloader</span>
+ <span class="co">*/</span>
+
+<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&quot;vendor/autoload_cache.php&quot;</span><span class="ot">;</span>
+
+<span class="kw">new</span> Coffe\Bali<span class="ot">();</span>
+<span class="kw">new</span> Coffe\BlueMontain<span class="ot">();</span>
+<span class="kw">new</span> Coffe\Sumatra<span class="ot">();</span>
+<span class="kw">new</span> Soda\Lemonade<span class="ot">();</span>
+<span class="kw">new</span> Soda\Juice\Orange<span class="ot">();</span>
+<span class="kw">new</span> Wine\Bordeaux<span class="ot">();</span>
+<span class="kw">new</span> Wine\Chinon<span class="ot">();</span></code></pre>
+<p>Register a closure as an autoloader in <code>vendor/autoload_cache.php</code>.</p>
+<p>The closure <em>must</em> use the following associative array:</p>
+<pre class="sourceCode php"><code class="sourceCode php">$autoload_map = array(
+    &#39;Coffe\Bali&#39;        =&gt; &#39;Coffe/Bali.php&#39;,
+    &#39;Coffe\BlueMontain&#39; =&gt; &#39;Coffe/BlueMontain.php&#39;,
+    &#39;Coffe\Sumatra&#39;     =&gt; &#39;Coffe/Sumatra.php&#39;,
+    &#39;Soda\Lemonade&#39;     =&gt; &#39;Soda/Lemonade.php&#39;,
+    &#39;Soda\Juice\Orange&#39; =&gt; &#39;Soda/Juice/Orange.php&#39;,
+    &#39;Wine\Bordeaux&#39;     =&gt; &#39;Wine/Bordeaux.php&#39;,
+    &#39;Wine\Chinon&#39;       =&gt; &#39;Wine/Chinon.php&#39;,
+);</code></pre>
+<p>To check if everything is fine, just run:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_cache.php</code></pre>
+<p>You should see:</p>
+<pre><code>Coffe\Bali
+Coffe\BlueMontain
+Coffe\Sumatra
+Soda\Lemonade
+Soda\Juice\Orange
+Wine\Bordeaux
+Wine\Chinon</code></pre>
+<h2 id="step-2-guess-path-from-namespace">Step 2: Guess path from namespace</h2>
+<p>Complete <code>vendor/autoload_namespace.php</code> to load classes based on namespace.</p>
+<p>To check if everything is fine, just run:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_namespace.php</code></pre>
+<p>You should see:</p>
+<pre><code>Coffe\Bali
+Coffe\BlueMontain
+Coffe\Sumatra
+Soda\Lemonade
+Soda\Juice\Orange
+Wine\Bordeaux
+Wine\Chinon</code></pre>
+<h2 id="step-3-load-underscorized-classnames">Step 3: load underscorized classnames</h2>
+<p>Complete <code>vendor/autoload_underscore.php' to successfuly execute</code>test_underscore.php`</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_underscore.php</code></pre>
+<p>You should see:</p>
+<pre><code>Soda\Juice\Pinapple</code></pre>
+<h2 id="step-4-combineit-all">Step 4: combineit all</h2>
+<p>Complete <code>vendor/autoload.php</code> in order to fully comply to PSR0.</p>
+<p>Following steps should be executed:</p>
+<ul>
+<li>Load cache file;</li>
+<li>check if class is already in cache and load it if available;</li>
+<li>find class in definition map and add it to cache;</li>
+<li>save cache array in <code>vendor/cache.php</code> using <code>var_export</code> method.</li>
+</ul>
+</div>
+</body>
+</html>

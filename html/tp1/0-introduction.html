@@ -33,8 +33,8 @@
 <pre><code>$ export DOCROOT=&quot;/usr/local/licphp/workspace/vm-$USER&quot;</code></pre>
 <p>Vous pouvez ajouter cette ligne à votre fichier <code>.bashrc</code>.</p>
 <p>Maintenant, récupérez la configuration de la machine virtuelle :</p>
-<pre><code>$ git clone https://github.com/willdurand/licpro-php-vm --recursive DOCROOT
-$ cd DOCROOT</code></pre>
+<pre><code>$ git clone https://github.com/willdurand/licpro-php-vm --recursive $DOCROOT
+$ cd $DOCROOT</code></pre>
 <p>En listant le répertoire, vous devez avoir une sortie similaire :</p>
 <pre><code>DOCROOT $ ls -alh
 
@@ -158,8 +158,8 @@ $ sudo apache2ctl restart</code></pre>
 <p>En vous aidant du guide de survie, configurer l'alias comme suit :</p>
 <pre><code>Alias /tp1 /var/www/tp1</code></pre>
 <p>Enregistrer, quitter puis activer le nouveau site :</p>
-<pre><code>$ sudo a2ensite tp1projects</code></pre>
-<p>Puis redémarrer apache.</p>
+<pre><code>$ sudo a2ensite tp1</code></pre>
+<p>Puis redémarrer Apache.</p>
 <p>Vous accédez désormais au contenu de <code>/var/www/tp1</code> via l'URL <code>http://localhost:8080/tp1</code>.</p>
 </div>
 </body>
