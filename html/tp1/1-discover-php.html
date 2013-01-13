@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
   <title></title>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -27,11 +25,8 @@ code > span.al { color: #ffcfaf; }
 code > span.fu { color: #efef8f; }
 code > span.er { color: #c3bf9f; }
   </style>
-<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
 <h1 id="discover-php">Discover PHP</h1>
 <h2 id="interactive-command-line">Interactive command line</h2>
 <p>All this section will take place in the virtual machine. Access it through SSH:</p>
@@ -151,7 +146,7 @@ $ touch $DOCROOT/projects/tp1/public/cities.php $DOCROOT/projects/tp1/model/citi
     &lt;body&gt;
         &lt;h1&gt;All cities&lt;/h1&gt;
         &lt;table&gt;
-        <span class="kw">&lt;?php</span> <span class="kw">foreach</span><span class="ot">(</span><span class="kw">$cities</span> <span class="kw">as</span> <span class="kw">$city_id</span> =&gt; <span class="kw">$city</span><span class="ot">)</span>: <span class="kw">?&gt;</span>
+        <span class="kw">&lt;?php</span> <span class="kw">foreach</span> <span class="ot">(</span><span class="kw">$cities</span> <span class="kw">as</span> <span class="kw">$city_id</span> =&gt; <span class="kw">$city</span><span class="ot">)</span> : <span class="kw">?&gt;</span>
             &lt;tr&gt;
 <span class="er">                &lt;td&gt;&lt;a href=&quot;/tp1/city.php?id=&lt;?php echo $city_id; ?&gt;&quot;&gt;&lt;?php echo $city[&quot;name&quot;]; ?&gt;&lt;/a&gt;&lt;/td&gt;</span>
 <span class="er">                &lt;td&gt;&lt;?php echo $city[&quot;country&quot;]; ?&gt;&lt;/td&gt;</span>
@@ -294,7 +289,7 @@ $ chmod a+x /your/php/file.php</code></pre>
 <span class="ot">));</span>
 
 <span class="kw">$filename</span> = <span class="fu">sprintf</span><span class="ot">(</span><span class="st">&#39;/etc/apache2/sites-available/%s&#39;</span><span class="ot">,</span> <span class="kw">$alias</span><span class="ot">);</span>
-<span class="fu">file_put_contents</span><span class="ot">(</span><span class="kw">$content</span><span class="ot">,</span> <span class="kw">$filename</span><span class="ot">);</span>
+<span class="fu">file_put_contents</span><span class="ot">(</span><span class="kw">$filename</span><span class="ot">,</span> <span class="kw">$content</span><span class="ot">);</span>
 <span class="fu">system</span><span class="ot">(</span><span class="fu">sprintf</span><span class="ot">(</span><span class="st">&#39;a2ensite %s&#39;</span><span class="ot">,</span> <span class="kw">$alias</span><span class="ot">));</span>
 <span class="fu">system</span><span class="ot">(</span><span class="st">&#39;apache2ctl restart&#39;</span><span class="ot">);</span></code></pre>
 <h2 id="exercises">Exercises</h2>
@@ -313,6 +308,5 @@ Bombay;India
 Vancouver;Canada,</code></pre>
 <p>And create a command line program to add new cities.</p>
 <p>You might need <a href="http://php.net/manual/en/ref.filesystem.php">filesytem related functions</a> and <a href="http://fr2.php.net/manual/en/function.explode.php">explode</a>.</p>
-</div>
 </body>
 </html>
