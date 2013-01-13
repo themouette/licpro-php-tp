@@ -25,7 +25,7 @@ uniquement en réseau, via un tunnel `ssh`.
 Votre machine redirige toutes les connexions entrantes sur le port `8080` vers
 le port `80` de la machine virtuelle.
 
-![schema réseau de l'installation](../image/vm-network.png)
+![schema réseau de l'installation](../images/vm-network.png)
 
 
 ### Installer la machine virtuelle
@@ -58,7 +58,6 @@ En listant le répertoire, vous devez avoir une sortie similaire :
     drwxrwxr-x 4 julien julien 4.0K Jan  3 00:08 puppet
     drwxrwxr-x 4 julien julien 4.0K Jan  3 00:08 projects
     -rw-rw-r-- 1 julien julien  905 Jan  3 00:08 README.md
-    -rw-rw-r-- 1 julien julien   61 Jan  4 00:26 .vagrant
     -rw-rw-r-- 1 julien julien 4.6K Jan  4 00:34 Vagrantfile
 
 La configuration est située dans le fichier `Vagrantfile` et la recette
@@ -169,7 +168,7 @@ Les commandes principales pour débuter sont :
 
 En image:
 
-![](../image/git.png)
+![](../images/git.png)
 
 Vous êtes invité à utiliser `git` pour maintenir la cohérence entre votre
 environnement personnel et celui de l'IUT.

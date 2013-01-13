@@ -202,7 +202,7 @@ $cities = array(
     <body>
         <h1>All cities</h1>
         <table>
-        <?php foreach($cities as $city_id => $city): ?>
+        <?php foreach ($cities as $city_id => $city) : ?>
             <tr>
                 <td><a href="/tp1/city.php?id=<?php echo $city_id; ?>"><?php echo $city["name"]; ?></a></td>
                 <td><?php echo $city["country"]; ?></td>
@@ -387,7 +387,7 @@ $content = strtr($template, array(
 ));
 
 $filename = sprintf('/etc/apache2/sites-available/%s', $alias);
-file_put_contents($content, $filename);
+file_put_contents($filename, $content);
 system(sprintf('a2ensite %s', $alias));
 system('apache2ctl restart');
 ```

@@ -37,18 +37,19 @@ Overview
 
 We'll achieve the PSR-0 autoloader with caching in 4 steps:
 
-* implement autoloading from cache
-* implement autloading from namespace
-* implement autoloading for underscore notation
-* register discovered classes in cache and dump it
+* implement autoloading from cache;
+* implement autoloading from namespace;
+* implement autoloading for underscore notation;
+* register discovered classes in cache and dump it;
 
-To start, create `projects/practical2/psr0` directory and extract [this archive](archive.tgz)
+To start, create `DOCROOT/projects/practical2/psr0` directory and extract
+[this archive](archive.tgz):
 
     $ wget archive.tgz
     $ tar xvfz archive.tgz
     $ rm archive.tgz
 
-running the `tree` command should display the following:
+Running the `tree` command should display the following:
 
     ├ test.php
     ├ test_cache.php
@@ -57,7 +58,7 @@ running the `tree` command should display the following:
         ├ autoload.php
         ├ autoload_cache.php
         ├ autoload_namespace.php
-        ├ Coffe/
+        ├ Coffee/
         │   ├ Bali.php
         │   ├ BlueMontain.php
         │   └ Sumatra.php
@@ -69,7 +70,7 @@ running the `tree` command should display the following:
             ├ Bordeaux.php
             └ Chinon.php
 
-Every class under `vendor/` directory print it's name in the constructor:
+Every class under `vendor/` directory prints its name in the constructor:
 
 ``` php
 <?php
@@ -88,16 +89,17 @@ class Foo
 Step 1: Register a new autoloader
 ---------------------------------
 
-`SPL` allow us to register a custom autoloaders through `spl_autoload_register()`
+`SPL` allows us to register a custom autoloader through `spl_autoload_register()`
 and `spl_autoload_unregister()` methods.
 
-This part will be tested thanks to `test_cache.php` script with following content:
+This part will be tested thanks to the `test_cache.php` script with following
+content:
 
 ``` php
 <?php
 
 /**
- * testing spl functions to register an autoloader
+ * testing SPL functions to register an autoloader
  */
 
 include __DIR__ . "vendor/autoload_cache.php";
@@ -168,7 +170,7 @@ You should see:
 Step 3: load underscorized classnames
 -------------------------------------
 
-Complete `vendor/autoload_underscore.php' to successfuly execute `test_underscore.php`
+Complete `vendor/autoload_underscore.php' to successfuly execute `test_underscore.php`.
 
 ``` bash
 vagrant@vm-licpro $ php test_underscore.php
@@ -181,11 +183,11 @@ You should see:
 Step 4: combineit all
 ---------------------
 
-Complete `vendor/autoload.php` in order to fully comply to PSR0.
+Complete `vendor/autoload.php` in order to fully comply to PSR-0.
 
-Following steps should be executed:
+The following steps should be executed:
 
 * Load cache file;
-* check if class is already in cache and load it if available;
+* check if the class is already in cache and load it if available;
 * find class in definition map and add it to cache;
 * save cache array in `vendor/cache.php` using `var_export` method.
