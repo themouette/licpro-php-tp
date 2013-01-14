@@ -125,12 +125,12 @@ More on this in the [PHP manual](http://php.net/manual/en/language.types.callabl
 Create Routes and Templates
 ---------------------------
 
-## Create a Model class
+### Create a Model class
 
 Create a Location class in `src/Model`. This class **must** implement
 `Model\FinderInterface`.
 
-## Complete GET Routes
+### Complete GET Routes
 
 Complete the `GET` routes predefined in `app/app.php` file and create the
 corresponding templates.
@@ -143,14 +143,14 @@ You should be able to:
 When loading `http://33.33.33.10:81/` an error should appear.
 Let's fix this by implementing uFramework missing parts.
 
-## Complete uFramework kernel
+### Complete uFramework kernel
 
 The kernel is defined in `src/App.php` and has been altered. Complete the
 `registerRoute()` method.
 
 Complete `put()`, `post()`, and `delete()` methods as well.
 
-## Add a basic Model Persistence
+### Add a basic Model Persistence
 
 Locations will be stored in `data/locations.json`.
 

@@ -85,9 +85,9 @@ $app-&gt;put(&#39;/locations/(\d+)&#39;, $callable);
 $app-&gt;delete(&#39;/locations/(\d+)&#39;, $callable);</code></pre>
 <p><code>$callable</code> can either be a closure, an array or a function name. More on this in the <a href="http://php.net/manual/en/language.types.callable.php">PHP manual</a>.</p>
 <h2 id="create-routes-and-templates">Create Routes and Templates</h2>
-<h2 id="create-a-model-class">Create a Model class</h2>
+<h3 id="create-a-model-class">Create a Model class</h3>
 <p>Create a Location class in <code>src/Model</code>. This class <strong>must</strong> implement <code>Model\FinderInterface</code>.</p>
-<h2 id="complete-get-routes">Complete GET Routes</h2>
+<h3 id="complete-get-routes">Complete GET Routes</h3>
 <p>Complete the <code>GET</code> routes predefined in <code>app/app.php</code> file and create the corresponding templates.</p>
 <p>You should be able to:</p>
 <ul>
@@ -95,10 +95,10 @@ $app-&gt;delete(&#39;/locations/(\d+)&#39;, $callable);</code></pre>
 <li>display a location with <code>id</code> under <code>GET /locations/id</code>;</li>
 </ul>
 <p>When loading <code>http://33.33.33.10:81/</code> an error should appear. Let's fix this by implementing uFramework missing parts.</p>
-<h2 id="complete-uframework-kernel">Complete uFramework kernel</h2>
+<h3 id="complete-uframework-kernel">Complete uFramework kernel</h3>
 <p>The kernel is defined in <code>src/App.php</code> and has been altered. Complete the <code>registerRoute()</code> method.</p>
 <p>Complete <code>put()</code>, <code>post()</code>, and <code>delete()</code> methods as well.</p>
-<h2 id="add-a-basic-model-persistence">Add a basic Model Persistence</h2>
+<h3 id="add-a-basic-model-persistence">Add a basic Model Persistence</h3>
 <p>Locations will be stored in <code>data/locations.json</code>.</p>
 <p>To manipulate JSON, SPL defines both <code>json_encode()</code> and <code>json_decode()</code>. Use the <a href="http://php.net">PHP manual</a> to know how to use these methods in order to create a persistent model layer.</p>
 <blockquote>
