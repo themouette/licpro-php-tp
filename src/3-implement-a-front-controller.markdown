@@ -1,4 +1,4 @@
-Front controller
+Front Controller
 ================
 
 Extra Configuration
@@ -65,6 +65,10 @@ suhosin.executor.include.whitelist="phar"
 Anatomy of uFramework
 ---------------------
 
+uFramework is your micro-framework, the one you will build in the practical. Its
+API has been influenced by existing like [Silex](http://silex.sensiolabs.org) or
+[Slim](http://www.slimframework.com).
+
 The directory layout looks like this:
 
     ├ app/      # the application directory
@@ -94,13 +98,18 @@ vagrant@vm-licpro $ phpunit
 
 ### `web` directory
 
-Contains the public part.
+Contains the public files. Most of the time, we put assets (CSS, JS files)
+and a `index.php` file.
 
 The `index.php` file is the only entry point for this application.
 It is called a `front controller`.
 
 Goal
 ----
+
+So, we wrote some parts of your micro-framework but you have to improve it. This
+is more than a micro-framework actually, because it also embeds the application
+itself.
 
 Today's goal is to create a simple PHP application to **C**reate, **R**etrieve,
 **U**pdate, and **D**elete locations.
@@ -114,21 +123,63 @@ All routes will be declared in `app/app.php` as follow:
 
 ```php
 $app->post('/locations', $callable);
-$app->get('/locations/(\d+)', $callable);
-$app->put('/locations/(\d+)', $callable);
-$app->delete('/locations/(\d+)', $callable);
+$app->get('...', $callable);
+$app->put('...', $callable);
+$app->delete('...', $callable);
 ```
 
 `$callable` can either be a closure, an array or a function name.
 More on this in the [PHP manual](http://php.net/manual/en/language.types.callable.php).
+
+We recommend the use of closures here:
+
+```php
+function ($params) use ($something) {
+    // controller code
+}
+```
+
+Your first job is to take a piece of paper, a pen, and to write your world's
+domination plan. Well, at least write the API methods you need in a REST-style:
+
+```
+GET /something
+POST /...
+...
+```
+
+The important thing here is to determine what you want to achieve **before**
+writing your application. The use of a sheet of paper is **mandatory**!
+
+Last but not the least, you will manage `location` resources, in a CRUD way.
+
+**This plan HAS to be validated by your teacher!**
+
+
+Autoloading
+-----------
+
+In the previous practical, you wrote a PSR-0 compliant autoloader. The
+uFramework has a `autoload.php` file, but it's empty. Reuse what you've done
+before to autoload your classes. You should load classes from `src/` and
+`tests/`.
+
+Check whether it works but running the tests:
+
+```
+vagrant@vm-licpro $ phpunit
+```
+
 
 Create Routes and Templates
 ---------------------------
 
 ### Create a Model class
 
-Create a Location class in `src/Model`. This class **must** implement
-`Model\FinderInterface`.
+Create a `Locations` class in `src/Model`. This class **must** implement
+`Model\FinderInterface`. It's your job ;-)
+
+You can reuse the set of data used in practical #1.
 
 ### Complete GET Routes
 
@@ -140,19 +191,21 @@ You should be able to:
 * list locations under `GET /locations`;
 * display a location with `id` under `GET /locations/id`;
 
-When loading `http://33.33.33.10:81/` an error should appear.
+When loading `http://localhost:8090/` an error should appear.
 Let's fix this by implementing uFramework missing parts.
 
 ### Complete uFramework kernel
 
 The kernel is defined in `src/App.php` and has been altered. Complete the
-`registerRoute()` method.
+`registerRoute()` method. Try to list your locations by refreshing
+`http://localhost:8090/locations`.
 
 Complete `put()`, `post()`, and `delete()` methods as well.
 
 ### Add a basic Model Persistence
 
-Locations will be stored in `data/locations.json`.
+Locations will now be stored in `data/locations.json`. Rework your `Locations`
+class to add a persistence behaviour.
 
 To manipulate JSON, SPL defines both `json_encode()` and `json_decode()`. Use
 the [PHP manual](http://php.net) to know how to use these methods in order to
@@ -162,11 +215,22 @@ create a persistent model layer.
 transform an array into a JSON string. You saw a few methods last week that can
 be used to read/write files.
 
-Add a form on the location list page. This form will POST data to `/locations` in
-order to create a new location.
+### Complete the Application
 
-Add a form on the location details page to enable edition. This form will PUT
+Add a form on the locations list page. This form will `POST` data to `/locations` in
+order to create a new location:
+
+```
+<form action="/locations" method="POST">
+</form>
+```
+
+When you create a new resource, you should return a `201` status code which
+stands for `Created`. Also, you should just return the `id` of your resource.
+
+Add a form on the location details page to enable edition. This form will `PUT`
 changes at `/locations/id` in order to update the resource.
 
-On the location detail page, another form will DELETE the resource located at
-`/locations/id`.
+On the location detail page, another form will `DELETE` the resource located at
+`/locations/id`. When you delete a resource, you should return a `204` status
+code which stands for `No Content`.

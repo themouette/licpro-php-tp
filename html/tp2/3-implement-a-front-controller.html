@@ -32,7 +32,7 @@ code > span.er { font-weight: bold; }
 </head>
 <body>
 <div class="container">
-<h1 id="front-controller">Front controller</h1>
+<h1 id="front-controller">Front Controller</h1>
 <h2 id="extra-configuration">Extra Configuration</h2>
 <p>The virtual machine configuration has been updated with a virtualhost on port <code>81</code>. Update the configuration by running the following commands on the host machine:</p>
 <pre><code>$ git pull origin master
@@ -57,6 +57,7 @@ vagrant@vm-licpro $ <span class="kw">sudo</span> <span class="kw">mv</span> phpu
 <p>The <code>phar</code> execution might require to add <code>/etc/php5/cli/conf.d/suhosin-allow-phar.ini</code> with the following content:</p>
 <pre class="sourceCode ini"><code class="sourceCode ini"><span class="dt">suhosin.executor.include.whitelist</span><span class="ot">=</span><span class="st">&quot;phar&quot;</span></code></pre>
 <h2 id="anatomy-of-uframework">Anatomy of uFramework</h2>
+<p>uFramework is your micro-framework, the one you will build in the practical. Its API has been influenced by existing like <a href="http://silex.sensiolabs.org">Silex</a> or <a href="http://www.slimframework.com">Slim</a>.</p>
 <p>The directory layout looks like this:</p>
 <pre><code>├ app/      # the application directory
 ├ src/      # the framework sources
@@ -72,21 +73,38 @@ vagrant@vm-licpro $ <span class="kw">sudo</span> <span class="kw">mv</span> phpu
 <p>Run it with the following command:</p>
 <pre><code>vagrant@vm-licpro $ phpunit</code></pre>
 <h3 id="web-directory"><code>web</code> directory</h3>
-<p>Contains the public part.</p>
+<p>Contains the public files. Most of the time, we put assets (CSS, JS files) and a <code>index.php</code> file.</p>
 <p>The <code>index.php</code> file is the only entry point for this application. It is called a <code>front controller</code>.</p>
 <h2 id="goal">Goal</h2>
+<p>So, we wrote some parts of your micro-framework but you have to improve it. This is more than a micro-framework actually, because it also embeds the application itself.</p>
 <p>Today's goal is to create a simple PHP application to <strong>C</strong>reate, <strong>R</strong>etrieve, <strong>U</strong>pdate, and <strong>D</strong>elete locations.</p>
 <p>This is called a <strong>CRUD</strong> application.</p>
 <p>This application will respect <strong>REST</strong> conventions, that means the use of HTTP verbs, and consistent URIs.</p>
 <p>All routes will be declared in <code>app/app.php</code> as follow:</p>
 <pre class="sourceCode php"><code class="sourceCode php">$app-&gt;post(&#39;/locations&#39;, $callable);
-$app-&gt;get(&#39;/locations/(\d+)&#39;, $callable);
-$app-&gt;put(&#39;/locations/(\d+)&#39;, $callable);
-$app-&gt;delete(&#39;/locations/(\d+)&#39;, $callable);</code></pre>
+$app-&gt;get(&#39;...&#39;, $callable);
+$app-&gt;put(&#39;...&#39;, $callable);
+$app-&gt;delete(&#39;...&#39;, $callable);</code></pre>
 <p><code>$callable</code> can either be a closure, an array or a function name. More on this in the <a href="http://php.net/manual/en/language.types.callable.php">PHP manual</a>.</p>
+<p>We recommend the use of closures here:</p>
+<pre class="sourceCode php"><code class="sourceCode php">function ($params) use ($something) {
+    // controller code
+}</code></pre>
+<p>Your first job is to take a piece of paper, a pen, and to write your world's domination plan. Well, at least write the API methods you need in a REST-style:</p>
+<pre><code>GET /something
+POST /...
+...</code></pre>
+<p>The important thing here is to determine what you want to achieve <strong>before</strong> writing your application. The use of a sheet of paper is <strong>mandatory</strong>!</p>
+<p>Last but not the least, you will manage <code>location</code> resources, in a CRUD way.</p>
+<p><strong>This plan HAS to be validated by your teacher!</strong></p>
+<h2 id="autoloading">Autoloading</h2>
+<p>In the previous practical, you wrote a PSR-0 compliant autoloader. The uFramework has a <code>autoload.php</code> file, but it's empty. Reuse what you've done before to autoload your classes. You should load classes from <code>src/</code> and <code>tests/</code>.</p>
+<p>Check whether it works but running the tests:</p>
+<pre><code>vagrant@vm-licpro $ phpunit</code></pre>
 <h2 id="create-routes-and-templates">Create Routes and Templates</h2>
 <h3 id="create-a-model-class">Create a Model class</h3>
-<p>Create a Location class in <code>src/Model</code>. This class <strong>must</strong> implement <code>Model\FinderInterface</code>.</p>
+<p>Create a <code>Locations</code> class in <code>src/Model</code>. This class <strong>must</strong> implement <code>Model\FinderInterface</code>. It's your job ;-)</p>
+<p>You can reuse the set of data used in practical #1.</p>
 <h3 id="complete-get-routes">Complete GET Routes</h3>
 <p>Complete the <code>GET</code> routes predefined in <code>app/app.php</code> file and create the corresponding templates.</p>
 <p>You should be able to:</p>
@@ -94,19 +112,23 @@ $app-&gt;delete(&#39;/locations/(\d+)&#39;, $callable);</code></pre>
 <li>list locations under <code>GET /locations</code>;</li>
 <li>display a location with <code>id</code> under <code>GET /locations/id</code>;</li>
 </ul>
-<p>When loading <code>http://33.33.33.10:81/</code> an error should appear. Let's fix this by implementing uFramework missing parts.</p>
+<p>When loading <code>http://localhost:8090/</code> an error should appear. Let's fix this by implementing uFramework missing parts.</p>
 <h3 id="complete-uframework-kernel">Complete uFramework kernel</h3>
-<p>The kernel is defined in <code>src/App.php</code> and has been altered. Complete the <code>registerRoute()</code> method.</p>
+<p>The kernel is defined in <code>src/App.php</code> and has been altered. Complete the <code>registerRoute()</code> method. Try to list your locations by refreshing <code>http://localhost:8090/locations</code>.</p>
 <p>Complete <code>put()</code>, <code>post()</code>, and <code>delete()</code> methods as well.</p>
 <h3 id="add-a-basic-model-persistence">Add a basic Model Persistence</h3>
-<p>Locations will be stored in <code>data/locations.json</code>.</p>
+<p>Locations will now be stored in <code>data/locations.json</code>. Rework your <code>Locations</code> class to add a persistence behaviour.</p>
 <p>To manipulate JSON, SPL defines both <code>json_encode()</code> and <code>json_decode()</code>. Use the <a href="http://php.net">PHP manual</a> to know how to use these methods in order to create a persistent model layer.</p>
 <blockquote>
 <p><em>Hint:</em> one method returns an array from a JSON string, the one is able to transform an array into a JSON string. You saw a few methods last week that can be used to read/write files.</p>
 </blockquote>
-<p>Add a form on the location list page. This form will POST data to <code>/locations</code> in order to create a new location.</p>
-<p>Add a form on the location details page to enable edition. This form will PUT changes at <code>/locations/id</code> in order to update the resource.</p>
-<p>On the location detail page, another form will DELETE the resource located at <code>/locations/id</code>.</p>
+<h3 id="complete-the-application">Complete the Application</h3>
+<p>Add a form on the locations list page. This form will <code>POST</code> data to <code>/locations</code> in order to create a new location:</p>
+<pre><code>&lt;form action=&quot;/locations&quot; method=&quot;POST&quot;&gt;
+&lt;/form&gt;</code></pre>
+<p>When you create a new resource, you should return a <code>201</code> status code which stands for <code>Created</code>. Also, you should just return the <code>id</code> of your resource.</p>
+<p>Add a form on the location details page to enable edition. This form will <code>PUT</code> changes at <code>/locations/id</code> in order to update the resource.</p>
+<p>On the location detail page, another form will <code>DELETE</code> the resource located at <code>/locations/id</code>. When you delete a resource, you should return a <code>204</code> status code which stands for <code>No Content</code>.</p>
 </div>
 </body>
 </html>
