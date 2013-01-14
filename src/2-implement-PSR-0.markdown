@@ -45,7 +45,7 @@ We'll achieve the PSR-0 autoloader with caching in 4 steps:
 To start, create `DOCROOT/projects/practical2/psr0` directory and extract
 [this archive](psr0.tgz):
 
-    $ wget psr0.tgz
+    $ wget http://williamdurand.fr/licpro-php-practicals/tp2/psr0.tgz
     $ tar xvfz psr0.tgz
     $ rm psr0.tgz
 
