@@ -4,8 +4,26 @@ Front Controller
 Extra Configuration
 -------------------
 
-The virtual machine configuration has been updated with a virtualhost on port
-`81`. Update the configuration by running the following commands on the host
+The virtual machine configuration has been updated with a set to virtual hosts.
+The use of aliases is nice, but when you deploy a web application, you often use
+a domain name to access it.
+
+That's what we did. Until now, the files located under `$DOCROOT/projects/` were
+available at `http://localhost:8080/`. With the new configuration, you won't use
+port forwarding anymore, but real domain names thanks to
+[xip.io](http://xip.io). This service is a magic domain name that provides
+wildcard DNS for any IP address. Don't worry if you don't get that, just
+understand that you can use `foobar.127.0.0.1.xip.io` as a domain name, and it
+will redirect you to `127.0.0.1`.
+
+Basically, your files at `$DOCROOT/projects/` should be available at
+`http://www.33.33.33.10.xip.io`.
+
+Another domain name has been configured: `http://uframework.33.33.33.10.xip.io`
+that points to `/var/www/uframework/web/` on the virtual machine (
+`$DOCROOT/projects/uframework/web/` on the host machine).
+
+Update the configuration by running the following commands on the host
 machine:
 
 ```
@@ -14,13 +32,9 @@ $ git submodule update --init
 $ vagrant reload
 ```
 
-You can access the new virtual host at `http://33.33.33.10:81` or
-`http://locahost:8090`.
-It points to the `/var/www/uframework/web/` folder on the virtual machine.
-
-In this folder, extract this [archive](uframework.tgz). As seen in practical #1,
-you can extract this archive on the host machine at
-`DOCROOT/projects/uframework`:
+Get the code of uFramework by downloading this [archive](uframework.tgz). As seen
+in practical #1, you can extract this archive in  `DOCROOT/projects/uframework`
+on the host machine:
 
 ```
 $ mkdir $DOCROOT/projects/uframework
@@ -30,6 +44,14 @@ $ tar xvzf uframework.tgz
 $ rm uframework.tgz
 ```
 
+Then again, you now have two projects:
+
+```
+URL                                     Directory on the VM
+
+http://www.33.33.33.10.xip.io/      ~>  /var/www/projects/
+http://uframework.33.33.10.xip.io/  ~>  /var/www/uframework/web/
+```
 
 PHPUnit
 -------
@@ -191,14 +213,14 @@ You should be able to:
 * list locations under `GET /locations`;
 * display a location with `id` under `GET /locations/id`;
 
-When loading `http://localhost:8090/` an error should appear.
+When loading `http://uframework.33.33.33.10.xip.io/` an error should appear.
 Let's fix this by implementing uFramework missing parts.
 
 ### Complete uFramework kernel
 
 The kernel is defined in `src/App.php` and has been altered. Complete the
 `registerRoute()` method. Try to list your locations by refreshing
-`http://localhost:8090/locations`.
+`http://uframework.33.33.33.10.xip.io/locations`.
 
 Complete `put()`, `post()`, and `delete()` methods as well.
 
