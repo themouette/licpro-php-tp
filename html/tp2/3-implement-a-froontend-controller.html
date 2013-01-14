@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+  </style>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+<h1 id="frontend-controller">Frontend controller</h1>
+<h2 id="extra-configuration">Extra configuration</h2>
+<p>Virtual machine configuration has been updated with a virtualhost on port 81. You can access this virtualhost at <code>http://33.33.33.10:81</code>.</p>
+<p>It point to virtual machine <code>/var/www/uframework/web/</code> folder.</p>
+<p>In this folder, extract this <a href="uframework.tgz">archive</a></p>
+<pre><code>$ mkdir $DOCROOT/projects/uframework
+$ wget uframework.tgz -O $DOCROOT/projects/uframework/uframework.tgz
+$ cd $DOCROOT/projects/uframework
+$ tar xvzf uframework.tgz</code></pre>
+<h2 id="phpunit">phpunit</h2>
+<p>Phpunit is php test framework based on XUnit standard. To install it globally simply run:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ <span class="kw">wget</span> http://pear.phpunit.de/get/phpunit.phar
+vagrant@vm-licpro $ <span class="kw">chmod</span> a+x
+vagrant@vm-licpro $ <span class="kw">sudo</span> <span class="kw">mv</span> phpunit.phar /usr/bin/phpunit</code></pre>
+<p>To launch a test suite, just run:</p>
+<pre><code>vagrant@vm-licpro $ phpunit -c phpunit.xml.dist tests/</code></pre>
+<p><code>phar</code> execution might require to add <code>/etc/php5/cli/conf.d/suhosin-allow-phar.ini</code> with following content:</p>
+<pre class="sourceCode ini"><code class="sourceCode ini"><span class="dt">suhosin.executor.include.whitelist</span><span class="ot">=</span><span class="st">&quot;phar&quot;</span></code></pre>
+<h2 id="anatomy-of-uframework">Anatomy of uFramework</h2>
+<p>The directory layout looks like this:</p>
+<pre><code>├ app/      # the application directory
+├ src/      # the framework source
+├ tests/    # framework tests
+├ web/    # public directory
+└ autoload.php</code></pre>
+<h3 id="app-directory"><code>app</code> directory</h3>
+<p>Your application controllers will be registered as closures in <code>app.php</code>. Templates will be put in <code>tempaltes/</code> directory.</p>
+<h3 id="src-directory"><code>src</code> directory</h3>
+<p>The framework source. You will have to complete missing parts.</p>
+<h3 id="tests-directory"><code>tests</code> directory</h3>
+<p>framework tests, all tests have to pass at the end :)</p>
+<p>To launch a test suite, just run:</p>
+<pre><code>vagrant@vm-licpro $ phpunit -c phpunit.xml.dist tests/</code></pre>
+<h3 id="web-directory"><code>web</code> directory</h3>
+<p>Contains the public part.</p>
+<p>The <code>index.php</code> file is the only entry point for this application. It is called a <code>frontend controller</code>.</p>
+<h2 id="goal">Goal</h2>
+<p>Today goal is to create a simple php application to Create, Retrieve, Update and Delete locations.</p>
+<p>This is called CRUD application.</p>
+<p>This application will respect REST conventions, that means HTTP verbs and consistent URIs.</p>
+<p>All routes are declared in <code>app/app.php</code> as follow:</p>
+<pre class="sourceCode php"><code class="sourceCode php">$app-&gt;get(&#39;/location/:id&#39;, $callable);
+$app-&gt;put(&#39;/location/:id&#39;, $callable);
+$app-&gt;post(&#39;/location&#39;, $callable);
+$app-&gt;delete(&#39;/location/:id&#39;, $callable);</code></pre>
+<p><code>$callbale</code> can either be a closure, an array or a function name. More on this in <a href="http://php.net/manual/en/language.types.callable.php">php manual</a>.</p>
+<h2 id="create-routes-and-templates">Create routes and templates</h2>
+<h2 id="create-a-model-class">Create a Model class</h2>
+<p>Create a Location class in <code>src/Model</code>. This class <strong>must</strong> implement <code>Model\FinderInterface</code>.</p>
+<h2 id="complete-uframework-kernel">Complete uFramework kernel</h2>
+<h2 id="add-persistence">Add persistence</h2>
+<p>In a json file using <code>json_encode()</code> and <code>json_decode()</code></p>
+</div>
+</body>
+</html>
