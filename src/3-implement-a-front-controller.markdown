@@ -11,17 +11,19 @@ a domain name to access it.
 That's what we did. Until now, the files located under `$DOCROOT/projects/` were
 available at `http://localhost:8080/`. With the new configuration, you won't use
 port forwarding anymore, but real domain names thanks to
-[xip.io](http://xip.io). This service is a magic domain name that provides
-wildcard DNS for any IP address. Don't worry if you don't get that, just
-understand that you can use `foobar.127.0.0.1.xip.io` as a domain name, and it
-will redirect you to `127.0.0.1`.
+[xip.io](http://xip.io).
 
-Basically, your files at `$DOCROOT/projects/` should be available at
+This service is a magic domain name that provides wildcard DNS for any IP address.
+**Don't worry if you don't get that, it's not a problem**, just understand that
+you can use `foobar.127.0.0.1.xip.io` as a domain name, and it will redirect you
+to `127.0.0.1`.
+
+Basically, your files under `$DOCROOT/projects/` should be available at:
 `http://www.33.33.33.10.xip.io`.
 
 Another domain name has been configured: `http://uframework.33.33.33.10.xip.io`
-that points to `/var/www/uframework/web/` on the virtual machine (
-`$DOCROOT/projects/uframework/web/` on the host machine).
+that points to `/var/www/uframework/web/` on the virtual machine, also known as
+`$DOCROOT/projects/uframework/web/` on the host machine.
 
 Update the configuration by running the following commands on the host
 machine:

@@ -35,9 +35,10 @@ code > span.er { font-weight: bold; }
 <h1 id="front-controller">Front Controller</h1>
 <h2 id="extra-configuration">Extra Configuration</h2>
 <p>The virtual machine configuration has been updated with a set to virtual hosts. The use of aliases is nice, but when you deploy a web application, you often use a domain name to access it.</p>
-<p>That's what we did. Until now, the files located under <code>$DOCROOT/projects/</code> were available at <code>http://localhost:8080/</code>. With the new configuration, you won't use port forwarding anymore, but real domain names thanks to <a href="http://xip.io">xip.io</a>. This service is a magic domain name that provides wildcard DNS for any IP address. Don't worry if you don't get that, just understand that you can use <code>foobar.127.0.0.1.xip.io</code> as a domain name, and it will redirect you to <code>127.0.0.1</code>.</p>
-<p>Basically, your files at <code>$DOCROOT/projects/</code> should be available at <code>http://www.33.33.33.10.xip.io</code>.</p>
-<p>Another domain name has been configured: <code>http://uframework.33.33.33.10.xip.io</code> that points to <code>/var/www/uframework/web/</code> on the virtual machine ( <code>$DOCROOT/projects/uframework/web/</code> on the host machine).</p>
+<p>That's what we did. Until now, the files located under <code>$DOCROOT/projects/</code> were available at <code>http://localhost:8080/</code>. With the new configuration, you won't use port forwarding anymore, but real domain names thanks to <a href="http://xip.io">xip.io</a>.</p>
+<p>This service is a magic domain name that provides wildcard DNS for any IP address. <strong>Don't worry if you don't get that, it's not a problem</strong>, just understand that you can use <code>foobar.127.0.0.1.xip.io</code> as a domain name, and it will redirect you to <code>127.0.0.1</code>.</p>
+<p>Basically, your files under <code>$DOCROOT/projects/</code> should be available at: <code>http://www.33.33.33.10.xip.io</code>.</p>
+<p>Another domain name has been configured: <code>http://uframework.33.33.33.10.xip.io</code> that points to <code>/var/www/uframework/web/</code> on the virtual machine, also known as <code>$DOCROOT/projects/uframework/web/</code> on the host machine.</p>
 <p>Update the configuration by running the following commands on the host machine:</p>
 <pre><code>$ git pull origin master
 $ git submodule update --init

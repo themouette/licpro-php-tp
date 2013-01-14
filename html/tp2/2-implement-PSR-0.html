@@ -66,25 +66,31 @@ code > span.er { font-weight: bold; }
 $ tar xvfz psr0.tgz
 $ rm psr0.tgz</code></pre>
 <p>Running the <code>tree</code> command should display the following:</p>
-<pre><code>├ test.php
-├ test_cache.php
-├ test_namespace.php
-└ vendor/
-    ├ autoload.php
-    ├ autoload_cache.php
-    ├ autoload_namespace.php
-    ├ Coffee/
-    │   ├ Bali.php
-    │   ├ BlueMontain.php
-    │   └ Sumatra.php
-    ├ Soda/
-    │   ├ Lemonade.php
-    │   └ Juice.php
-    │       └ Orange.php
-    └ Wine/
-        ├ Bordeaux.php
-        └ Chinon.php</code></pre>
-<p>Every class under <code>vendor/</code> directory prints its name in the constructor:</p>
+<pre><code>.
+├── generate.php
+├── test.php
+├── test_cache.php
+├── test_namespace.php
+├── test_underscore.php
+└── vendor
+    ├── Coffee
+    │   ├── Bali.php
+    │   ├── BlueMontain.php
+    │   └── Sumatra.php
+    ├── Soda
+    │   ├── Juice
+    │   │   ├── Orange.php
+    │   │   └── Pineapple.php
+    │   └── Lemonade.php
+    ├── Wine
+    │   ├── Bordeaux.php
+    │   └── Chinon.php
+    ├── autoload.php
+    ├── autoload_cache.php
+    ├── autoload_namespace.php
+    └── autoload_underscore.php
+
+Every class under `vendor/` directory prints its name in the constructor:</code></pre>
 <pre class="sourceCode php"><code class="sourceCode php"><span class="kw">&lt;?php</span>
 
 <span class="kw">class</span> Foo
@@ -115,15 +121,15 @@ $ rm psr0.tgz</code></pre>
 <span class="kw">new</span> Wine\Bordeaux<span class="ot">();</span>
 <span class="kw">new</span> Wine\Chinon<span class="ot">();</span></code></pre>
 <p>Register a closure as an autoloader in <code>vendor/autoload_cache.php</code>.</p>
-<p>The closure <em>must</em> use the following associative array:</p>
+<p>The closure <em>MUST</em> use the following associative array:</p>
 <pre class="sourceCode php"><code class="sourceCode php">$autoload_map = array(
-    &#39;Coffee\Bali&#39;       =&gt; &#39;Coffee/Bali.php&#39;,
+    &#39;Coffee\Bali&#39;           =&gt; &#39;Coffee/Bali.php&#39;,
     &#39;Coffee\BlueMontain&#39;    =&gt; &#39;Coffee/BlueMontain.php&#39;,
     &#39;Coffee\Sumatra&#39;        =&gt; &#39;Coffee/Sumatra.php&#39;,
-    &#39;Soda\Lemonade&#39;     =&gt; &#39;Soda/Lemonade.php&#39;,
-    &#39;Soda\Juice\Orange&#39; =&gt; &#39;Soda/Juice/Orange.php&#39;,
-    &#39;Wine\Bordeaux&#39;     =&gt; &#39;Wine/Bordeaux.php&#39;,
-    &#39;Wine\Chinon&#39;       =&gt; &#39;Wine/Chinon.php&#39;,
+    &#39;Soda\Lemonade&#39;         =&gt; &#39;Soda/Lemonade.php&#39;,
+    &#39;Soda\Juice\Orange&#39;     =&gt; &#39;Soda/Juice/Orange.php&#39;,
+    &#39;Wine\Bordeaux&#39;         =&gt; &#39;Wine/Bordeaux.php&#39;,
+    &#39;Wine\Chinon&#39;           =&gt; &#39;Wine/Chinon.php&#39;,
 );</code></pre>
 <p>To check if everything is fine, just run:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_cache.php</code></pre>
@@ -148,12 +154,12 @@ Soda\Juice\Orange
 Wine\Bordeaux
 Wine\Chinon</code></pre>
 <h2 id="step-3-load-underscorized-classnames">Step 3: load underscorized classnames</h2>
-<p>Complete <code>vendor/autoload_underscore.php' to successfuly execute</code>test_underscore.php`.</p>
+<p>Complete <code>vendor/autoload_underscore.php' to successfully execute</code>test_underscore.php`. Reuse the work you did before.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_underscore.php</code></pre>
 <p>You should see:</p>
-<pre><code>Soda\Juice\Pinapple</code></pre>
+<pre><code>Soda\Juice\Pineapple</code></pre>
 <h2 id="step-4-combine-it-all">Step 4: combine it all</h2>
-<p>Complete <code>vendor/autoload.php</code> in order to fully comply to PSR-0.</p>
+<p>Complete <code>vendor/autoload.php</code> in order to fully comply to PSR-0. Reuse the work you did before.</p>
 <p>The following steps should be executed:</p>
 <ul>
 <li>Load cache file;</li>

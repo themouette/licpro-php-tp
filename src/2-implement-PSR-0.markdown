@@ -51,26 +51,31 @@ To start, create `DOCROOT/projects/practical2/psr0` directory and extract
 
 Running the `tree` command should display the following:
 
-    ├ test.php
-    ├ test_cache.php
-    ├ test_namespace.php
-    └ vendor/
-        ├ autoload.php
-        ├ autoload_cache.php
-        ├ autoload_namespace.php
-        ├ Coffee/
-        │   ├ Bali.php
-        │   ├ BlueMontain.php
-        │   └ Sumatra.php
-        ├ Soda/
-        │   ├ Lemonade.php
-        │   └ Juice.php
-        │       └ Orange.php
-        └ Wine/
-            ├ Bordeaux.php
-            └ Chinon.php
+    .
+    ├── generate.php
+    ├── test.php
+    ├── test_cache.php
+    ├── test_namespace.php
+    ├── test_underscore.php
+    └── vendor
+        ├── Coffee
+        │   ├── Bali.php
+        │   ├── BlueMontain.php
+        │   └── Sumatra.php
+        ├── Soda
+        │   ├── Juice
+        │   │   ├── Orange.php
+        │   │   └── Pineapple.php
+        │   └── Lemonade.php
+        ├── Wine
+        │   ├── Bordeaux.php
+        │   └── Chinon.php
+        ├── autoload.php
+        ├── autoload_cache.php
+        ├── autoload_namespace.php
+        └── autoload_underscore.php
 
-Every class under `vendor/` directory prints its name in the constructor:
+    Every class under `vendor/` directory prints its name in the constructor:
 
 ``` php
 <?php
@@ -115,17 +120,17 @@ new Wine\Chinon();
 
 Register a closure as an autoloader in `vendor/autoload_cache.php`.
 
-The closure _must_ use the following associative array:
+The closure _MUST_ use the following associative array:
 
 ``` php
 $autoload_map = array(
-    'Coffee\Bali'		=> 'Coffee/Bali.php',
+    'Coffee\Bali'		    => 'Coffee/Bali.php',
     'Coffee\BlueMontain'	=> 'Coffee/BlueMontain.php',
     'Coffee\Sumatra'		=> 'Coffee/Sumatra.php',
-    'Soda\Lemonade'		=> 'Soda/Lemonade.php',
-    'Soda\Juice\Orange' => 'Soda/Juice/Orange.php',
-    'Wine\Bordeaux'		=> 'Wine/Bordeaux.php',
-    'Wine\Chinon'		=> 'Wine/Chinon.php',
+    'Soda\Lemonade'		    => 'Soda/Lemonade.php',
+    'Soda\Juice\Orange'     => 'Soda/Juice/Orange.php',
+    'Wine\Bordeaux'		    => 'Wine/Bordeaux.php',
+    'Wine\Chinon'		    => 'Wine/Chinon.php',
 );
 ```
 
@@ -170,7 +175,8 @@ You should see:
 Step 3: load underscorized classnames
 -------------------------------------
 
-Complete `vendor/autoload_underscore.php' to successfuly execute `test_underscore.php`.
+Complete `vendor/autoload_underscore.php' to successfully execute `test_underscore.php`.
+Reuse the work you did before.
 
 ``` bash
 vagrant@vm-licpro $ php test_underscore.php
@@ -178,12 +184,13 @@ vagrant@vm-licpro $ php test_underscore.php
 
 You should see:
 
-    Soda\Juice\Pinapple
+    Soda\Juice\Pineapple
 
 Step 4: combine it all
 ----------------------
 
-Complete `vendor/autoload.php` in order to fully comply to PSR-0.
+Complete `vendor/autoload.php` in order to fully comply to PSR-0. Reuse the work
+you did before.
 
 The following steps should be executed:
 
