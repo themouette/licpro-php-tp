@@ -50,13 +50,12 @@ $ tar xvzf uframework.tgz
 $ rm uframework.tgz</code></pre>
 <p>Then again, you now have two projects:</p>
 <pre><code>URL                                     Directory on the VM
-
 http://www.33.33.33.10.xip.io/      ~&gt;  /var/www/projects/
 http://uframework.33.33.10.xip.io/  ~&gt;  /var/www/uframework/web/</code></pre>
 <h2 id="phpunit">PHPUnit</h2>
 <p><a href="http://phpunit.de"><code>phpunit</code></a> is a PHP testing framework part of the <em>xUnit</em> family. To install it globally in the virtual machine, run:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ <span class="kw">wget</span> http://pear.phpunit.de/get/phpunit.phar
-vagrant@vm-licpro $ <span class="kw">chmod</span> a+x
+vagrant@vm-licpro $ <span class="kw">chmod</span> a+x phpunit.phar
 vagrant@vm-licpro $ <span class="kw">sudo</span> <span class="kw">mv</span> phpunit.phar /usr/bin/phpunit</code></pre>
 <p>Did it work? Try to print the PHPUnit version:</p>
 <pre><code>vagrant@vm-licpro $ phpunit --version</code></pre>
@@ -78,8 +77,6 @@ vagrant@vm-licpro $ <span class="kw">sudo</span> <span class="kw">mv</span> phpu
 <p>The framework sources. You will have to complete the missing parts.</p>
 <h3 id="tests-directory"><code>tests</code> directory</h3>
 <p>The test suite, all tests have to pass at the end :)</p>
-<p>Run it with the following command:</p>
-<pre><code>vagrant@vm-licpro $ phpunit</code></pre>
 <h3 id="web-directory"><code>web</code> directory</h3>
 <p>Contains the public files. Most of the time, we put assets (CSS, JS files) and a <code>index.php</code> file.</p>
 <p>The <code>index.php</code> file is the only entry point for this application. It is called a <code>front controller</code>.</p>

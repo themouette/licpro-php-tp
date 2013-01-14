@@ -48,7 +48,6 @@ Then again, you now have two projects:
 
 ```
 URL                                     Directory on the VM
-
 http://www.33.33.33.10.xip.io/      ~>  /var/www/projects/
 http://uframework.33.33.10.xip.io/  ~>  /var/www/uframework/web/
 ```
@@ -61,7 +60,7 @@ family. To install it globally in the virtual machine, run:
 
 ``` bash
 vagrant@vm-licpro $ wget http://pear.phpunit.de/get/phpunit.phar
-vagrant@vm-licpro $ chmod a+x
+vagrant@vm-licpro $ chmod a+x phpunit.phar
 vagrant@vm-licpro $ sudo mv phpunit.phar /usr/bin/phpunit
 ```
 
@@ -111,12 +110,6 @@ The framework sources. You will have to complete the missing parts.
 ### `tests` directory
 
 The test suite, all tests have to pass at the end :)
-
-Run it with the following command:
-
-```
-vagrant@vm-licpro $ phpunit
-```
 
 ### `web` directory
 
