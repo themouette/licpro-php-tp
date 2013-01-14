@@ -75,7 +75,7 @@ Running the `tree` command should display the following:
         ├── autoload_namespace.php
         └── autoload_underscore.php
 
-    Every class under `vendor/` directory prints its name in the constructor:
+Every class under `vendor/` directory prints its name in the constructor:
 
 ``` php
 <?php
