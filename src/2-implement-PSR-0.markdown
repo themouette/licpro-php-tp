@@ -1,5 +1,5 @@
-PSR-0 autloading
-================
+PSR-0 autoloading
+=================
 
 In this practical you will create a `PSR-0` compliant autoloader.
 
@@ -102,11 +102,11 @@ content:
  * testing SPL functions to register an autoloader
  */
 
-include __DIR__ . "vendor/autoload_cache.php";
+include __DIR__ . 'vendor/autoload_cache.php';
 
-new Coffe\Bali();
-new Coffe\BlueMontain();
-new Coffe\Sumatra();
+new Coffee\Bali();
+new Coffee\BlueMontain();
+new Coffee\Sumatra();
 new Soda\Lemonade();
 new Soda\Juice\Orange();
 new Wine\Bordeaux();
@@ -119,9 +119,9 @@ The closure _must_ use the following associative array:
 
 ``` php
 $autoload_map = array(
-    'Coffe\Bali'		=> 'Coffe/Bali.php',
-    'Coffe\BlueMontain'	=> 'Coffe/BlueMontain.php',
-    'Coffe\Sumatra'		=> 'Coffe/Sumatra.php',
+    'Coffee\Bali'		=> 'Coffee/Bali.php',
+    'Coffee\BlueMontain'	=> 'Coffee/BlueMontain.php',
+    'Coffee\Sumatra'		=> 'Coffee/Sumatra.php',
     'Soda\Lemonade'		=> 'Soda/Lemonade.php',
     'Soda\Juice\Orange' => 'Soda/Juice/Orange.php',
     'Wine\Bordeaux'		=> 'Wine/Bordeaux.php',
@@ -137,9 +137,9 @@ vagrant@vm-licpro $ php test_cache.php
 
 You should see:
 
-    Coffe\Bali
-    Coffe\BlueMontain
-    Coffe\Sumatra
+    Coffee\Bali
+    Coffee\BlueMontain
+    Coffee\Sumatra
     Soda\Lemonade
     Soda\Juice\Orange
     Wine\Bordeaux
@@ -159,9 +159,9 @@ vagrant@vm-licpro $ php test_namespace.php
 
 You should see:
 
-    Coffe\Bali
-    Coffe\BlueMontain
-    Coffe\Sumatra
+    Coffee\Bali
+    Coffee\BlueMontain
+    Coffee\Sumatra
     Soda\Lemonade
     Soda\Juice\Orange
     Wine\Bordeaux
@@ -180,8 +180,8 @@ You should see:
 
     Soda\Juice\Pinapple
 
-Step 4: combineit all
----------------------
+Step 4: combine it all
+----------------------
 
 Complete `vendor/autoload.php` in order to fully comply to PSR-0.
 
@@ -190,4 +190,4 @@ The following steps should be executed:
 * Load cache file;
 * check if the class is already in cache and load it if available;
 * find class in definition map and add it to cache;
-* save cache array in `vendor/cache.php` using `var_export` method.
+* save cache array in `vendor/cache.php` using `var_export()` method.

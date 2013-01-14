@@ -32,7 +32,7 @@ code > span.er { font-weight: bold; }
 </head>
 <body>
 <div class="container">
-<h1 id="psr-0-autloading">PSR-0 autloading</h1>
+<h1 id="psr-0-autoloading">PSR-0 autoloading</h1>
 <p>In this practical you will create a <code>PSR-0</code> compliant autoloader.</p>
 <h2 id="definition">Definition</h2>
 <p>The following describes the mandatory requirements that must be adhered to for autoloader interoperability.</p>
@@ -105,11 +105,11 @@ $ rm psr0.tgz</code></pre>
  * <span class="co">testing</span> <span class="co">SPL</span> <span class="co">functions</span> <span class="co">to</span> <span class="co">register</span> <span class="co">an</span> <span class="co">autoloader</span>
  <span class="co">*/</span>
 
-<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&quot;vendor/autoload_cache.php&quot;</span><span class="ot">;</span>
+<span class="kw">include</span> <span class="kw">__DIR__</span> . <span class="st">&#39;vendor/autoload_cache.php&#39;</span><span class="ot">;</span>
 
-<span class="kw">new</span> Coffe\Bali<span class="ot">();</span>
-<span class="kw">new</span> Coffe\BlueMontain<span class="ot">();</span>
-<span class="kw">new</span> Coffe\Sumatra<span class="ot">();</span>
+<span class="kw">new</span> Coffee\Bali<span class="ot">();</span>
+<span class="kw">new</span> Coffee\BlueMontain<span class="ot">();</span>
+<span class="kw">new</span> Coffee\Sumatra<span class="ot">();</span>
 <span class="kw">new</span> Soda\Lemonade<span class="ot">();</span>
 <span class="kw">new</span> Soda\Juice\Orange<span class="ot">();</span>
 <span class="kw">new</span> Wine\Bordeaux<span class="ot">();</span>
@@ -117,9 +117,9 @@ $ rm psr0.tgz</code></pre>
 <p>Register a closure as an autoloader in <code>vendor/autoload_cache.php</code>.</p>
 <p>The closure <em>must</em> use the following associative array:</p>
 <pre class="sourceCode php"><code class="sourceCode php">$autoload_map = array(
-    &#39;Coffe\Bali&#39;        =&gt; &#39;Coffe/Bali.php&#39;,
-    &#39;Coffe\BlueMontain&#39; =&gt; &#39;Coffe/BlueMontain.php&#39;,
-    &#39;Coffe\Sumatra&#39;     =&gt; &#39;Coffe/Sumatra.php&#39;,
+    &#39;Coffee\Bali&#39;       =&gt; &#39;Coffee/Bali.php&#39;,
+    &#39;Coffee\BlueMontain&#39;    =&gt; &#39;Coffee/BlueMontain.php&#39;,
+    &#39;Coffee\Sumatra&#39;        =&gt; &#39;Coffee/Sumatra.php&#39;,
     &#39;Soda\Lemonade&#39;     =&gt; &#39;Soda/Lemonade.php&#39;,
     &#39;Soda\Juice\Orange&#39; =&gt; &#39;Soda/Juice/Orange.php&#39;,
     &#39;Wine\Bordeaux&#39;     =&gt; &#39;Wine/Bordeaux.php&#39;,
@@ -128,9 +128,9 @@ $ rm psr0.tgz</code></pre>
 <p>To check if everything is fine, just run:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_cache.php</code></pre>
 <p>You should see:</p>
-<pre><code>Coffe\Bali
-Coffe\BlueMontain
-Coffe\Sumatra
+<pre><code>Coffee\Bali
+Coffee\BlueMontain
+Coffee\Sumatra
 Soda\Lemonade
 Soda\Juice\Orange
 Wine\Bordeaux
@@ -140,9 +140,9 @@ Wine\Chinon</code></pre>
 <p>To check if everything is fine, just run:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_namespace.php</code></pre>
 <p>You should see:</p>
-<pre><code>Coffe\Bali
-Coffe\BlueMontain
-Coffe\Sumatra
+<pre><code>Coffee\Bali
+Coffee\BlueMontain
+Coffee\Sumatra
 Soda\Lemonade
 Soda\Juice\Orange
 Wine\Bordeaux
@@ -152,14 +152,14 @@ Wine\Chinon</code></pre>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_underscore.php</code></pre>
 <p>You should see:</p>
 <pre><code>Soda\Juice\Pinapple</code></pre>
-<h2 id="step-4-combineit-all">Step 4: combineit all</h2>
+<h2 id="step-4-combine-it-all">Step 4: combine it all</h2>
 <p>Complete <code>vendor/autoload.php</code> in order to fully comply to PSR-0.</p>
 <p>The following steps should be executed:</p>
 <ul>
 <li>Load cache file;</li>
 <li>check if the class is already in cache and load it if available;</li>
 <li>find class in definition map and add it to cache;</li>
-<li>save cache array in <code>vendor/cache.php</code> using <code>var_export</code> method.</li>
+<li>save cache array in <code>vendor/cache.php</code> using <code>var_export()</code> method.</li>
 </ul>
 </div>
 </body>
