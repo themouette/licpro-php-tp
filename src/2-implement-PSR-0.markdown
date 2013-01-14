@@ -43,11 +43,11 @@ We'll achieve the PSR-0 autoloader with caching in 4 steps:
 * register discovered classes in cache and dump it;
 
 To start, create `DOCROOT/projects/practical2/psr0` directory and extract
-[this archive](archive.tgz):
+[this archive](psr0.tgz):
 
-    $ wget archive.tgz
-    $ tar xvfz archive.tgz
-    $ rm archive.tgz
+    $ wget psr0.tgz
+    $ tar xvfz psr0.tgz
+    $ rm psr0.tgz
 
 Running the `tree` command should display the following:
 
