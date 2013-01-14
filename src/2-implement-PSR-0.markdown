@@ -175,7 +175,7 @@ You should see:
 Step 3: load underscorized classnames
 -------------------------------------
 
-Complete `vendor/autoload_underscore.php' to successfully execute `test_underscore.php`.
+Complete `vendor/autoload_underscore.php` to successfully execute `test_underscore.php`.
 Reuse the work you did before.
 
 ``` bash
