@@ -34,8 +34,11 @@ code > span.er { font-weight: bold; }
 <div class="container">
 <h1 id="front-controller">Front controller</h1>
 <h2 id="extra-configuration">Extra Configuration</h2>
-<p>The virtual machine configuration has been updated with a virtualhost on port <code>81</code>. You can access this virtual host at <code>http://33.33.33.10:81</code> or <code>http://locahost:8090</code>.</p>
-<p>It points to the virtual machine <code>/var/www/uframework/web/</code> folder.</p>
+<p>The virtual machine configuration has been updated with a virtualhost on port <code>81</code>. Update the configuration by running the following commands on the host machine:</p>
+<pre><code>$ git pull origin master
+$ git submodule update --init
+$ vagrant reload</code></pre>
+<p>You can access the new virtual host at <code>http://33.33.33.10:81</code> or <code>http://locahost:8090</code>. It points to the <code>/var/www/uframework/web/</code> folder on the virtual machine.</p>
 <p>In this folder, extract this <a href="uframework.tgz">archive</a>. As seen in practical #1, you can extract this archive on the host machine at <code>DOCROOT/projects/uframework</code>:</p>
 <pre><code>$ mkdir $DOCROOT/projects/uframework
 $ wget uframework.tgz -O $DOCROOT/projects/uframework/uframework.tgz
@@ -47,6 +50,8 @@ $ rm uframework.tgz</code></pre>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ <span class="kw">wget</span> http://pear.phpunit.de/get/phpunit.phar
 vagrant@vm-licpro $ <span class="kw">chmod</span> a+x
 vagrant@vm-licpro $ <span class="kw">sudo</span> <span class="kw">mv</span> phpunit.phar /usr/bin/phpunit</code></pre>
+<p>Did it work? Try to print the PHPUnit version:</p>
+<pre><code>vagrant@vm-licpro $ phpunit --version</code></pre>
 <p>Run a test suite with the following command:</p>
 <pre><code>vagrant@vm-licpro $ phpunit</code></pre>
 <p>The <code>phar</code> execution might require to add <code>/etc/php5/cli/conf.d/suhosin-allow-phar.ini</code> with the following content:</p>
@@ -83,19 +88,22 @@ $app-&gt;delete(&#39;/locations/(\d+)&#39;, $callable);</code></pre>
 <h2 id="create-a-model-class">Create a Model class</h2>
 <p>Create a Location class in <code>src/Model</code>. This class <strong>must</strong> implement <code>Model\FinderInterface</code>.</p>
 <h2 id="complete-get-routes">Complete GET Routes</h2>
-<p>Complete get routes predefined in <code>app/app.php</code> file and create associated templates.</p>
+<p>Complete the <code>GET</code> routes predefined in <code>app/app.php</code> file and create the corresponding templates.</p>
 <p>You should be able to:</p>
 <ul>
 <li>list locations under <code>GET /locations</code>;</li>
-<li>display location with <code>id</code> under <code>GET /locations/id</code>;</li>
+<li>display a location with <code>id</code> under <code>GET /locations/id</code>;</li>
 </ul>
 <p>When loading <code>http://33.33.33.10:81/</code> an error should appear. Let's fix this by implementing uFramework missing parts.</p>
 <h2 id="complete-uframework-kernel">Complete uFramework kernel</h2>
-<p>Kernel is defined in <code>src/App.php</code> file and has been altered. Complete the <code>registerRoute()</code> method.</p>
+<p>The kernel is defined in <code>src/App.php</code> and has been altered. Complete the <code>registerRoute()</code> method.</p>
 <p>Complete <code>put()</code>, <code>post()</code>, and <code>delete()</code> methods as well.</p>
 <h2 id="add-a-basic-model-persistence">Add a basic Model Persistence</h2>
 <p>Locations will be stored in <code>data/locations.json</code>.</p>
-<p>To manipulate JSON, SPL defines both <code>json_encode()</code> and <code>json_decode()</code>.</p>
+<p>To manipulate JSON, SPL defines both <code>json_encode()</code> and <code>json_decode()</code>. Use the <a href="http://php.net">PHP manual</a> to know how to use these methods in order to create a persistent model layer.</p>
+<blockquote>
+<p><em>Hint:</em> one method returns an array from a JSON string, the one is able to transform an array into a JSON string. You saw a few methods last week that can be used to read/write files.</p>
+</blockquote>
 <p>Add a form on the location list page. This form will POST data to <code>/locations</code> in order to create a new location.</p>
 <p>Add a form on the location details page to enable edition. This form will PUT changes at <code>/locations/id</code> in order to update the resource.</p>
 <p>On the location detail page, another form will DELETE the resource located at <code>/locations/id</code>.</p>

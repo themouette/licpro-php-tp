@@ -5,10 +5,18 @@ Extra Configuration
 -------------------
 
 The virtual machine configuration has been updated with a virtualhost on port
-`81`. You can access this virtual host at `http://33.33.33.10:81` or
-`http://locahost:8090`.
+`81`. Update the configuration by running the following commands on the host
+machine:
 
-It points to the virtual machine `/var/www/uframework/web/` folder.
+```
+$ git pull origin master
+$ git submodule update --init
+$ vagrant reload
+```
+
+You can access the new virtual host at `http://33.33.33.10:81` or
+`http://locahost:8090`.
+It points to the `/var/www/uframework/web/` folder on the virtual machine.
 
 In this folder, extract this [archive](uframework.tgz). As seen in practical #1,
 you can extract this archive on the host machine at
@@ -33,6 +41,12 @@ family. To install it globally in the virtual machine, run:
 vagrant@vm-licpro $ wget http://pear.phpunit.de/get/phpunit.phar
 vagrant@vm-licpro $ chmod a+x
 vagrant@vm-licpro $ sudo mv phpunit.phar /usr/bin/phpunit
+```
+
+Did it work? Try to print the PHPUnit version:
+
+```
+vagrant@vm-licpro $ phpunit --version
 ```
 
 Run a test suite with the following command:
@@ -118,20 +132,20 @@ Create a Location class in `src/Model`. This class **must** implement
 
 ## Complete GET Routes
 
-Complete get routes predefined in `app/app.php` file and create associated
-templates.
+Complete the `GET` routes predefined in `app/app.php` file and create the
+corresponding templates.
 
 You should be able to:
 
 * list locations under `GET /locations`;
-* display location with `id` under `GET /locations/id`;
+* display a location with `id` under `GET /locations/id`;
 
 When loading `http://33.33.33.10:81/` an error should appear.
 Let's fix this by implementing uFramework missing parts.
 
 ## Complete uFramework kernel
 
-Kernel is defined in `src/App.php` file and has been altered. Complete the
+The kernel is defined in `src/App.php` and has been altered. Complete the
 `registerRoute()` method.
 
 Complete `put()`, `post()`, and `delete()` methods as well.
@@ -140,7 +154,13 @@ Complete `put()`, `post()`, and `delete()` methods as well.
 
 Locations will be stored in `data/locations.json`.
 
-To manipulate JSON, SPL defines both `json_encode()` and `json_decode()`.
+To manipulate JSON, SPL defines both `json_encode()` and `json_decode()`. Use
+the [PHP manual](http://php.net) to know how to use these methods in order to
+create a persistent model layer.
+
+> _Hint:_ one method returns an array from a JSON string, the one is able to
+transform an array into a JSON string. You saw a few methods last week that can
+be used to read/write files.
 
 Add a form on the location list page. This form will POST data to `/locations` in
 order to create a new location.
