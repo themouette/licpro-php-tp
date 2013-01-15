@@ -39,8 +39,8 @@ code > span.er { font-weight: bold; }
 <pre class="sourceCode bash"><code class="sourceCode bash">$ git pull origin master
 $ git submodule update --init
 $ vagrant reload</code></pre>
-<h2 id="extra-configuration">Extra Configuration</h2>
 <p>If something went wrong, <strong>email us</strong> as soon as possible!</p>
+<h2 id="extra-configuration">Extra Configuration</h2>
 <p>So, the virtual machine configuration has been updated with a set to virtual hosts. The use of aliases is nice, but when you deploy a web application, you often use a domain name to access it.</p>
 <p>That's what we did. Until now, the files located under <code>$DOCROOT/projects/</code> were available at <code>http://localhost:8080/</code>. That's called <strong>port forwarding</strong>.</p>
 <p>We decided to use a great tool named <a href="http://xip.io">xip.io</a>. This service is a magic domain name that provides wildcard DNS for any IP address. <strong>Don't worry if you don't get that, it's not a problem</strong>, just understand that you can use <code>foobar.127.0.0.1.xip.io</code> as a domain name, and it will redirect you to <code>127.0.0.1</code>.</p>
@@ -49,16 +49,17 @@ $ vagrant reload</code></pre>
 <p>Another domain name has been configured: <code>http://uframework.33.33.33.10.xip.io:81/</code> that points to <code>/var/www/uframework/web/</code> on the virtual machine, also known as <code>$DOCROOT/projects/uframework/web/</code> on the host machine.</p>
 <p>Then again, it doesn't work as expected, so you can access it using <code>http://locahost:8090/</code>. Double check the port number, it's <code>8090</code> here, not <code>8080</code>.</p>
 <p>To sum up:</p>
-<pre><code>URL to use in your browser (host machine)           Directory on the VM
+<pre><code>URL to use in your browser (host machine)           Directory on the VM         Directory on the Host Machine
 
-http://www.33.33.33.10.xip.io/              ~&gt;      /var/www/projects/
-http://uframework.33.33.10.xip.io:81/       ~&gt;      /var/www/uframework/web/
+http://www.33.33.33.10.xip.io/              ~&gt;      /var/www/projects/          $DOCROOT/projects/
+http://uframework.33.33.10.xip.io:81/       ~&gt;      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/
 
-http://localhost:8080/                      ~&gt;      /var/www/projects/
-http://localhost:8090/                      ~&gt;      /var/www/uframework/web/</code></pre>
+http://localhost:8080/                      ~&gt;      /var/www/projects/          $DOCROOT/projects/
+http://localhost:8090/                      ~&gt;      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/</code></pre>
 <p><strong>Important:</strong> if the <code>*.xip.io</code> URLs don't work, use the <code>localhost:port</code> ones.</p>
 <h2 id="getting-started">Getting Started</h2>
-<p>Get the code of uFramework by downloading this <a href="uframework.tgz">archive</a>. As seen in practical #1, you can extract this archive in <code>DOCROOT/projects/uframework</code> on the host machine:</p>
+<p>Get the code of uFramework by downloading this <a href="uframework.tgz">archive</a>.</p>
+<p>As seen in practical #1, you can extract this archive in <code>DOCROOT/projects/uframework</code> on the host machine:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">mkdir</span> <span class="ot">$DOCROOT</span>/projects/uframework
 $ <span class="kw">wget</span> http://williamdurand.fr/licpro-php-practicals/tp2/uframework.tgz -O <span class="ot">$DOCROOT</span>/projects/uframework/uframework.tgz
 $ <span class="kw">cd</span> <span class="ot">$DOCROOT</span>/projects/uframework

@@ -13,11 +13,11 @@ $ git submodule update --init
 $ vagrant reload
 ```
 
+If something went wrong, **email us** as soon as possible!
+
 
 Extra Configuration
 -------------------
-
-If something went wrong, **email us** as soon as possible!
 
 So, the virtual machine configuration has been updated with a set to virtual
 hosts. The use of aliases is nice, but when you deploy a web application, you
@@ -49,13 +49,13 @@ Then again, it doesn't work as expected, so you can access it using
 To sum up:
 
 ```
-URL to use in your browser (host machine)           Directory on the VM
+URL to use in your browser (host machine)           Directory on the VM         Directory on the Host Machine
 
-http://www.33.33.33.10.xip.io/              ~>      /var/www/projects/
-http://uframework.33.33.10.xip.io:81/       ~>      /var/www/uframework/web/
+http://www.33.33.33.10.xip.io/              ~>      /var/www/projects/          $DOCROOT/projects/
+http://uframework.33.33.10.xip.io:81/       ~>      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/
 
-http://localhost:8080/                      ~>      /var/www/projects/
-http://localhost:8090/                      ~>      /var/www/uframework/web/
+http://localhost:8080/                      ~>      /var/www/projects/          $DOCROOT/projects/
+http://localhost:8090/                      ~>      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/
 ```
 
 **Important:** if the `*.xip.io` URLs don't work, use the `localhost:port` ones.
@@ -64,9 +64,10 @@ http://localhost:8090/                      ~>      /var/www/uframework/web/
 Getting Started
 ---------------
 
-Get the code of uFramework by downloading this [archive](uframework.tgz). As seen
-in practical #1, you can extract this archive in `DOCROOT/projects/uframework`
-on the host machine:
+Get the code of uFramework by downloading this [archive](uframework.tgz).
+
+As seen in practical #1, you can extract this archive in
+`DOCROOT/projects/uframework` on the host machine:
 
 ``` bash
 $ mkdir $DOCROOT/projects/uframework
