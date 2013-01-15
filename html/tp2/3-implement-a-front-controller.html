@@ -46,13 +46,13 @@ $ vagrant reload</code></pre>
 <p>We decided to use a great tool named <a href="http://xip.io">xip.io</a>. This service is a magic domain name that provides wildcard DNS for any IP address. <strong>Don't worry if you don't get that, it's not a problem</strong>, just understand that you can use <code>foobar.127.0.0.1.xip.io</code> as a domain name, and it will redirect you to <code>127.0.0.1</code>.</p>
 <p>Basically, your files under <code>$DOCROOT/projects/</code> should be available at: <code>http://www.33.33.33.10.xip.io/</code>. <strong>Unfortunately</strong>, I doesn't work as expected.</p>
 <p>That's why you can still use <code>http://localhost:8080/</code>.</p>
-<p>Another domain name has been configured: <code>http://uframework.33.33.33.10.xip.io/</code> that points to <code>/var/www/uframework/web/</code> on the virtual machine, also known as <code>$DOCROOT/projects/uframework/web/</code> on the host machine.</p>
+<p>Another domain name has been configured: <code>http://uframework.33.33.33.10.xip.io:81/</code> that points to <code>/var/www/uframework/web/</code> on the virtual machine, also known as <code>$DOCROOT/projects/uframework/web/</code> on the host machine.</p>
 <p>Then again, it doesn't work as expected, so you can access it using <code>http://locahost:8090/</code>. Double check the port number, it's <code>8090</code> here, not <code>8080</code>.</p>
 <p>To sum up:</p>
 <pre><code>URL to use in your browser (host machine)           Directory on the VM
 
 http://www.33.33.33.10.xip.io/              ~&gt;      /var/www/projects/
-http://uframework.33.33.10.xip.io/          ~&gt;      /var/www/uframework/web/
+http://uframework.33.33.10.xip.io:81/       ~&gt;      /var/www/uframework/web/
 
 http://localhost:8080/                      ~&gt;      /var/www/projects/
 http://localhost:8090/                      ~&gt;      /var/www/uframework/web/</code></pre>
@@ -128,9 +128,9 @@ POST /...
 <li>list locations under <code>GET /locations</code>;</li>
 <li>display a location with <code>id</code> under <code>GET /locations/id</code>;</li>
 </ul>
-<p>When loading <code>http://uframework.33.33.33.10.xip.io/</code> an error should appear. Let's fix this by implementing uFramework missing parts.</p>
+<p>When loading <code>http://localhost:8090/</code> an error may appear, or maybe you will get a blank page. Let's fix this by implementing uFramework missing parts.</p>
 <h3 id="complete-uframework-kernel">Complete uFramework kernel</h3>
-<p>The kernel is defined in <code>src/App.php</code> and has been altered. Complete the <code>registerRoute()</code> method. Try to list your locations by refreshing <code>http://uframework.33.33.33.10.xip.io/locations</code>.</p>
+<p>The kernel is defined in <code>src/App.php</code> and has been altered. Complete the <code>registerRoute()</code> method. Try to list your locations by refreshing <code>http://localhost:8090/locations</code>.</p>
 <p>Complete <code>put()</code>, <code>post()</code>, and <code>delete()</code> methods as well.</p>
 <h3 id="add-a-basic-model-persistence">Add a basic Model Persistence</h3>
 <p>Locations will now be stored in <code>data/locations.json</code>. Rework your <code>Locations</code> class to add a persistence behaviour.</p>

@@ -37,9 +37,10 @@ Basically, your files under `$DOCROOT/projects/` should be available at:
 
 That's why you can still use `http://localhost:8080/`.
 
-Another domain name has been configured: `http://uframework.33.33.33.10.xip.io/`
-that points to `/var/www/uframework/web/` on the virtual machine, also known as
-`$DOCROOT/projects/uframework/web/` on the host machine.
+Another domain name has been configured:
+`http://uframework.33.33.33.10.xip.io:81/` that points to `/var/www/uframework/web/`
+on the virtual machine, also known as `$DOCROOT/projects/uframework/web/` on the
+host machine.
 
 Then again, it doesn't work as expected, so you can access it using
 `http://locahost:8090/`. Double check the port number, it's `8090` here, not
@@ -51,7 +52,7 @@ To sum up:
 URL to use in your browser (host machine)           Directory on the VM
 
 http://www.33.33.33.10.xip.io/              ~>      /var/www/projects/
-http://uframework.33.33.10.xip.io/          ~>      /var/www/uframework/web/
+http://uframework.33.33.10.xip.io:81/       ~>      /var/www/uframework/web/
 
 http://localhost:8080/                      ~>      /var/www/projects/
 http://localhost:8090/                      ~>      /var/www/uframework/web/
@@ -227,14 +228,14 @@ You should be able to:
 * list locations under `GET /locations`;
 * display a location with `id` under `GET /locations/id`;
 
-When loading `http://uframework.33.33.33.10.xip.io/` an error should appear.
-Let's fix this by implementing uFramework missing parts.
+When loading `http://localhost:8090/` an error may appear, or maybe you will get
+a blank page. Let's fix this by implementing uFramework missing parts.
 
 ### Complete uFramework kernel
 
 The kernel is defined in `src/App.php` and has been altered. Complete the
 `registerRoute()` method. Try to list your locations by refreshing
-`http://uframework.33.33.33.10.xip.io/locations`.
+`http://localhost:8090/locations`.
 
 Complete `put()`, `post()`, and `delete()` methods as well.
 
