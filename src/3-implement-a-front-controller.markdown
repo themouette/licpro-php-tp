@@ -1,44 +1,73 @@
 Implement A Front Controller
 ============================
 
-Extra Configuration
--------------------
+#### UPDATE: READ THIS CAREFULLY
 
-The virtual machine configuration has been updated with a set to virtual hosts.
-The use of aliases is nice, but when you deploy a web application, you often use
-a domain name to access it.
+All of you, students, have to run the following commands. I said **ALL** of you.
 
-That's what we did. Until now, the files located under `$DOCROOT/projects/` were
-available at `http://localhost:8080/`. With the new configuration, you won't use
-port forwarding anymore, but real domain names thanks to
-[xip.io](http://xip.io).
+Update the configuration by running the following commands on the host machine:
 
-This service is a magic domain name that provides wildcard DNS for any IP address.
-**Don't worry if you don't get that, it's not a problem**, just understand that
-you can use `foobar.127.0.0.1.xip.io` as a domain name, and it will redirect you
-to `127.0.0.1`.
-
-Basically, your files under `$DOCROOT/projects/` should be available at:
-`http://www.33.33.33.10.xip.io`.
-
-Another domain name has been configured: `http://uframework.33.33.33.10.xip.io`
-that points to `/var/www/uframework/web/` on the virtual machine, also known as
-`$DOCROOT/projects/uframework/web/` on the host machine.
-
-Update the configuration by running the following commands on the host
-machine:
-
-```
+``` bash
 $ git pull origin master
 $ git submodule update --init
 $ vagrant reload
 ```
 
-Get the code of uFramework by downloading this [archive](uframework.tgz). As seen
-in practical #1, you can extract this archive in  `DOCROOT/projects/uframework`
-on the host machine:
+
+Extra Configuration
+-------------------
+
+If something went wrong, **email us** as soon as possible!
+
+So, the virtual machine configuration has been updated with a set to virtual
+hosts. The use of aliases is nice, but when you deploy a web application, you
+often use a domain name to access it.
+
+That's what we did. Until now, the files located under `$DOCROOT/projects/` were
+available at `http://localhost:8080/`. That's called **port forwarding**.
+
+We decided to use a great tool named [xip.io](http://xip.io).  This service is a
+magic domain name that provides wildcard DNS for any IP address.
+**Don't worry if you don't get that, it's not a problem**, just understand that
+you can use `foobar.127.0.0.1.xip.io` as a domain name, and it will redirect you
+to `127.0.0.1`.
+
+Basically, your files under `$DOCROOT/projects/` should be available at:
+`http://www.33.33.33.10.xip.io/`. **Unfortunately**, I doesn't work as expected.
+
+That's why you can still use `http://localhost:8080/`.
+
+Another domain name has been configured: `http://uframework.33.33.33.10.xip.io/`
+that points to `/var/www/uframework/web/` on the virtual machine, also known as
+`$DOCROOT/projects/uframework/web/` on the host machine.
+
+Then again, it doesn't work as expected, so you can access it using
+`http://locahost:8090/`. Double check the port number, it's `8090` here, not
+`8080`.
+
+To sum up:
 
 ```
+URL to use in your browser (host machine)           Directory on the VM
+
+http://www.33.33.33.10.xip.io/              ~>      /var/www/projects/
+http://uframework.33.33.10.xip.io/          ~>      /var/www/uframework/web/
+
+http://localhost:8080/                      ~>      /var/www/projects/
+http://localhost:8090/                      ~>      /var/www/uframework/web/
+```
+
+**Important:** if the `*.xip.io` URLs don't work, use the `localhost:port` ones.
+
+
+Getting Started
+---------------
+
+Get the code of uFramework by downloading this [archive](uframework.tgz). As seen
+in practical #1, you can extract this archive in `DOCROOT/projects/uframework`
+on the host machine:
+
+``` bash
 $ mkdir $DOCROOT/projects/uframework
 $ wget http://williamdurand.fr/licpro-php-practicals/tp2/uframework.tgz -O $DOCROOT/projects/uframework/uframework.tgz
 $ cd $DOCROOT/projects/uframework
@@ -46,13 +75,6 @@ $ tar xvzf uframework.tgz
 $ rm uframework.tgz
 ```
 
-Then again, you now have two projects:
-
-```
-URL                                     Directory on the VM
-http://www.33.33.33.10.xip.io/      ~>  /var/www/projects/
-http://uframework.33.33.10.xip.io/  ~>  /var/www/uframework/web/
-```
 
 PHPUnit
 -------
@@ -68,29 +90,23 @@ vagrant@vm-licpro $ sudo mv phpunit.phar /usr/bin/phpunit
 
 Did it work? Try to print the PHPUnit version:
 
-```
+``` bash
 vagrant@vm-licpro $ phpunit --version
 ```
 
 Run a test suite with the following command:
 
-```
+``` bash
 vagrant@vm-licpro $ phpunit
 ```
 
-The `phar` execution might require to add
-`/etc/php5/cli/conf.d/suhosin-allow-phar.ini` with the following content:
-
-``` ini
-suhosin.executor.include.whitelist="phar"
-```
 
 Anatomy of uFramework
 ---------------------
 
-uFramework is your micro-framework, the one you will build in the practical. Its
-API has been influenced by existing like [Silex](http://silex.sensiolabs.org) or
-[Slim](http://www.slimframework.com).
+uFramework is **your** micro-framework, the one you will build in the practical.
+Its API has been influenced by existing like [Silex](http://silex.sensiolabs.org)
+or [Slim](http://www.slimframework.com).
 
 The directory layout looks like this:
 
@@ -120,6 +136,7 @@ and a `index.php` file.
 
 The `index.php` file is the only entry point for this application.
 It is called a `front controller`.
+
 
 Goal
 ----
@@ -156,7 +173,7 @@ function ($params) use ($something) {
 }
 ```
 
-Your first job is to take a piece of paper, a pen, and to write your world's
+**Your first job** is to take a piece of paper, a pen, and to write your world's
 domination plan. Well, at least write the API methods you need in a REST-style:
 
 ```
@@ -171,6 +188,8 @@ writing your application. The use of a sheet of paper is **mandatory**!
 Last but not the least, you will manage `location` resources, in a CRUD way.
 
 **This plan HAS to be validated by your teacher!**
+
+**Email us if we didn't check your plan, ok?**
 
 
 Autoloading

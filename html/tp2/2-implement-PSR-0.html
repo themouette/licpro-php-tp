@@ -61,10 +61,11 @@ code > span.er { font-weight: bold; }
 <li>implement autoloading for underscore notation;</li>
 <li>register discovered classes in cache and dump it;</li>
 </ul>
-<p>To start, create <code>DOCROOT/projects/practical2/psr0</code> directory and extract <a href="psr0.tgz">this archive</a>:</p>
+<p>Start by creating the <code>DOCROOT/projects/practical2</code> directory and extract <a href="psr0.tgz">this archive</a>:</p>
 <pre><code>$ wget http://williamdurand.fr/licpro-php-practicals/tp2/psr0.tgz
 $ tar xvfz psr0.tgz
-$ rm psr0.tgz</code></pre>
+$ rm psr0.tgz
+$ cd psr0</code></pre>
 <p>Running the <code>tree</code> command should display the following:</p>
 <pre><code>.
 ├── generate.php
@@ -130,7 +131,7 @@ $ rm psr0.tgz</code></pre>
     &#39;Wine\Bordeaux&#39;         =&gt; &#39;Wine/Bordeaux.php&#39;,
     &#39;Wine\Chinon&#39;           =&gt; &#39;Wine/Chinon.php&#39;,
 );</code></pre>
-<p>To check if everything is fine, just run:</p>
+<p>To check if everything is fine, run:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_cache.php</code></pre>
 <p>You should see:</p>
 <pre><code>Coffee\Bali
@@ -141,8 +142,8 @@ Soda\Juice\Orange
 Wine\Bordeaux
 Wine\Chinon</code></pre>
 <h2 id="step-2-guess-path-from-namespace">Step 2: Guess path from namespace</h2>
-<p>Complete <code>vendor/autoload_namespace.php</code> to load classes based on namespace.</p>
-<p>To check if everything is fine, just run:</p>
+<p>Complete <code>vendor/autoload_namespace.php</code> to load classes based on the namespaces.</p>
+<p>To check if everything is fine, run:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_namespace.php</code></pre>
 <p>You should see:</p>
 <pre><code>Coffee\Bali
@@ -153,18 +154,24 @@ Soda\Juice\Orange
 Wine\Bordeaux
 Wine\Chinon</code></pre>
 <h2 id="step-3-load-underscorized-classnames">Step 3: load underscorized classnames</h2>
-<p>Complete <code>vendor/autoload_underscore.php</code> to successfully execute <code>test_underscore.php</code>. Reuse the work you did before.</p>
+<p>Complete <code>vendor/autoload_underscore.php</code> to successfully execute <code>test_underscore.php</code>.</p>
+<blockquote>
+<p><em>Hint:</em> reuse the work you did before.</p>
+</blockquote>
 <pre class="sourceCode bash"><code class="sourceCode bash">vagrant@vm-licpro $ php test_underscore.php</code></pre>
 <p>You should see:</p>
 <pre><code>Soda\Juice\Pineapple</code></pre>
 <h2 id="step-4-combine-it-all">Step 4: combine it all</h2>
-<p>Complete <code>vendor/autoload.php</code> in order to fully comply to PSR-0. Reuse the work you did before.</p>
+<p>Complete <code>vendor/autoload.php</code> in order to fully comply to PSR-0.</p>
+<blockquote>
+<p><em>Hint:</em> reuse the work you did before.</p>
+</blockquote>
 <p>The following steps should be executed:</p>
 <ul>
 <li>Load cache file;</li>
 <li>check if the class is already in cache and load it if available;</li>
-<li>find class in definition map and add it to cache;</li>
-<li>save cache array in <code>vendor/cache.php</code> using <code>var_export()</code> method.</li>
+<li>find class in definition map and add it to the cache;</li>
+<li>save cache array in <code>vendor/cache.php</code> using the <code>var_export()</code> method.</li>
 </ul>
 </div>
 </body>
