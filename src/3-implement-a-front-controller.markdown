@@ -40,7 +40,7 @@ on the host machine:
 
 ```
 $ mkdir $DOCROOT/projects/uframework
-$ wget uframework.tgz -O $DOCROOT/projects/uframework/uframework.tgz
+$ wget http://williamdurand.fr/licpro-php-practicals/tp2/uframework.tgz -O $DOCROOT/projects/uframework/uframework.tgz
 $ cd $DOCROOT/projects/uframework
 $ tar xvzf uframework.tgz
 $ rm uframework.tgz
