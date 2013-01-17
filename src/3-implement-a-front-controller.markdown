@@ -1,6 +1,19 @@
 Implement A Front Controller
 ============================
 
+#### Working in room A10 (IUT)
+
+You can easily install the environment you use at IUT - **B19**, either in room
+**A10**, or on your laptop. You have to follow the same steps you followed in
+the first practical:
+
+``` bash
+$ git clone https://github.com/willdurand/licpro-php-vm.git --recursive $DOCROOT
+$ cd $DOCROOT
+$ vagrant up
+```
+
+
 #### UPDATE: READ THIS CAREFULLY
 
 All of you, students, have to run the following commands. I said **ALL** of you.
@@ -33,12 +46,14 @@ you can use `foobar.127.0.0.1.xip.io` as a domain name, and it will redirect you
 to `127.0.0.1`.
 
 Basically, your files under `$DOCROOT/projects/` should be available at:
-`http://www.33.33.33.10.xip.io/`. **Unfortunately**, I doesn't work as expected.
+`http://www.33.33.33.10.xip.io/`. **Unfortunately**, I doesn't always work as
+expected.
 
-That's why you can still use `http://localhost:8080/`.
+You can get bad response times, or even errors. That's why you can still use
+`http://localhost:8080/`.
 
 Another domain name has been configured:
-`http://uframework.33.33.33.10.xip.io:81/` that points to `/var/www/uframework/web/`
+`http://uframework.33.33.33.10.xip.io/` that points to `/var/www/uframework/web/`
 on the virtual machine, also known as `$DOCROOT/projects/uframework/web/` on the
 host machine.
 
@@ -52,7 +67,7 @@ To sum up:
 URL to use in your browser (host machine)           Directory on the VM         Directory on the Host Machine
 
 http://www.33.33.33.10.xip.io/              ~>      /var/www/projects/          $DOCROOT/projects/
-http://uframework.33.33.10.xip.io:81/       ~>      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/
+http://uframework.33.33.10.xip.io/          ~>      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/
 
 http://localhost:8080/                      ~>      /var/www/projects/          $DOCROOT/projects/
 http://localhost:8090/                      ~>      /var/www/uframework/web/    $DOCROOT/projects/uframework/web/

@@ -43,7 +43,7 @@ Vous pouvez ajouter cette ligne à votre fichier `.bashrc`.
 
 Maintenant, récupérez la configuration de la machine virtuelle :
 
-    $ git clone https://github.com/willdurand/licpro-php-vm --recursive $DOCROOT
+    $ git clone https://github.com/willdurand/licpro-php-vm.git --recursive $DOCROOT
     $ cd $DOCROOT
 
 En listant le répertoire, vous devez avoir une sortie similaire :
