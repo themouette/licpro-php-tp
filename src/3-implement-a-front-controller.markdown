@@ -1,6 +1,8 @@
 Implement A Front Controller
 ============================
 
+<br />
+
 #### Working in room A10 (IUT)
 
 You can easily install the environment you use at IUT - **B19**, either in room
@@ -13,6 +15,7 @@ $ cd $DOCROOT
 $ vagrant up
 ```
 
+<br />
 
 #### UPDATE: READ THIS CAREFULLY
 
@@ -28,6 +31,7 @@ $ vagrant reload
 
 If something went wrong, **email us** as soon as possible!
 
+<br />
 
 Extra Configuration
 -------------------

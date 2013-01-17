@@ -33,11 +33,13 @@ code > span.er { font-weight: bold; }
 <body>
 <div class="container">
 <h1 id="implement-a-front-controller">Implement A Front Controller</h1>
+<br />
 <h4 id="working-in-room-a10-iut">Working in room A10 (IUT)</h4>
 <p>You can easily install the environment you use at IUT - <strong>B19</strong>, either in room <strong>A10</strong>, or on your laptop. You have to follow the same steps you followed in the first practical:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ git clone https://github.com/willdurand/licpro-php-vm.git --recursive <span class="ot">$DOCROOT</span>
 $ <span class="kw">cd</span> <span class="ot">$DOCROOT</span>
 $ vagrant up</code></pre>
+<br />
 <h4 id="update-read-this-carefully">UPDATE: READ THIS CAREFULLY</h4>
 <p>All of you, students, have to run the following commands. I said <strong>ALL</strong> of you.</p>
 <p>Update the configuration by running the following commands on the host machine:</p>
@@ -45,6 +47,7 @@ $ vagrant up</code></pre>
 $ git submodule update --init
 $ vagrant reload</code></pre>
 <p>If something went wrong, <strong>email us</strong> as soon as possible!</p>
+<br />
 <h2 id="extra-configuration">Extra Configuration</h2>
 <p>So, the virtual machine configuration has been updated with a set to virtual hosts. The use of aliases is nice, but when you deploy a web application, you often use a domain name to access it.</p>
 <p>That's what we did. Until now, the files located under <code>$DOCROOT/projects/</code> were available at <code>http://localhost:8080/</code>. That's called <strong>port forwarding</strong>.</p>
