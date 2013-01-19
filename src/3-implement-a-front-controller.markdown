@@ -271,23 +271,3 @@ create a persistent model layer.
 > _Hint:_ one method returns an array from a JSON string, the one is able to
 transform an array into a JSON string. You saw a few methods last week that can
 be used to read/write files.
-
-### Complete the Application
-
-Add a form on the locations list page. This form will `POST` data to `/locations` in
-order to create a new location:
-
-```
-<form action="/locations" method="POST">
-</form>
-```
-
-When you create a new resource, you should return a `201` status code which
-stands for `Created`. Also, you should just return the `id` of your resource.
-
-Add a form on the location details page to enable edition. This form will `PUT`
-changes at `/locations/id` in order to update the resource.
-
-On the location detail page, another form will `DELETE` the resource located at
-`/locations/id`. When you delete a resource, you should return a `204` status
-code which stands for `No Content`.
