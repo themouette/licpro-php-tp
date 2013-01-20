@@ -90,8 +90,8 @@ First things first, grab a piece of paper and write an example of
 
 **Guess the best format to return**
 
-It is `Request` object responsbility to resolve best format to serve, so we'll
-need a `guessBestFormat` method.
+It is Request object responsbility to resolve best format to serve, so we'll
+need a guessBestFormat method.
 
 [Negotiation](https://github.com/willdurand/negotiation) will help to get the
 best format from headers by handling content negotiation.
@@ -101,23 +101,23 @@ on the best fit.
 
 **Format the right way**
 
-Your `controllers` will be updated to handle formats.
+Your controllers will be updated to handle formats.
 
 HTML rendering is achieved through your template engine, serialization has to
-be handled by a `Serializer`. This serializer can be as simple as `json_encode`
-or you can use [Serializer component
-](http://symfony.com/doc/current/components/serializer.html).
+be handled by a Serializer. This serializer can be as simple as `json_encode`
+or you can use [Serializer component](
+http://symfony.com/doc/current/components/serializer.html).
 
-**Introduce a `Response` object**
+**Introduce a Response object**
 
 To fit HTTP protocol every response should contain at least:
 
-* a `Content-Type` header to describe the content
-* a `status code` to give feedback on what happened
+* a Content-Type header to describe the content
+* a status code to give feedback on what happened
 * the content or body of the response.
 
-That makes a lot of things to handle, it cannot all fit in the `App` class.
-A `Response` class will be in charge of response configuration ans formatting.
+That makes a lot of things to handle, it cannot all fit in the App class. A
+`Response` class will be in charge of response configuration and formatting.
 
 ### Implementation
 
@@ -165,6 +165,8 @@ that website is functional as before.
 Create the `guessBestFormat` method as specified.
 
 #### Complete `Response` class
+
+Following `Response` class will be used:
 
 ```php
 <?php
@@ -259,6 +261,21 @@ class Response
     }
 }
 ```
+
+Update `App` class `process` method:
+
+```php
+$response = call_user_func_array($route->getCallable(), $route->getArguments());
+if (!$response instanceof Response) {
+    $response = new Response($response);
+}
+$response->send();
+```
+
+From now on, you can return a string as you used to do **OR** directly return
+a `Response` object.
+
+Check everything works as previously.
 
 #### update your controllers
 
