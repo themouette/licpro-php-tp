@@ -4,6 +4,33 @@ Complete The Application
 In this practical, you will continue to write your own framework.
 You have to finish the previous practical to start that one.
 
+## The Model Layer
+
+You implemented a nice model layer in the previous practical. In order to be
+consistent, implement the following `PersistenceInterface` interface:
+
+``` php
+<?php
+
+namespace Model;
+
+interface PersistenceInterface
+{
+    /**
+     * @param string $name Name of the new location
+     *
+     * @return int Id of the new location
+     */
+    public function create($name);
+
+    public function update($id, $name);
+
+    public function delete($id);
+}
+```
+
+It should be a matter of renaming your methods into the `Locations` class.
+
 
 ## The Request Class
 
@@ -204,10 +231,15 @@ $app->post('/locations', function () {
 });
 ```
 
-In a browser, you can call this action by using a `form`:
+In a browser, you can call this action by using a `form`. The following could be
+added to the `app/templates/locations.php` template:
 
 ```
 <form action="/locations" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" name="name" />
+
+    <input type="submit" value="Add New" />
 </form>
 ```
 
@@ -263,12 +295,15 @@ If you get an object, then you will have to update it using the user data.
 
 As we saw in section _Fixing The Browser_, we can't use the `PUT` keyword in
 your form, so we need to use a special parameter, using a hidden field, and the
-`POST` method in the form:
+`POST` method in the form.
+
+The following could be added to the `app/templates/location.php` template:
 
 ```
-<form action="/locations" method="POST">
+<form action="/locations/<?= $id ?>" method="POST">
     <input type="hidden" name="_method" value="PUT" />
-    // ...
+    <input type="text" name="name" value="<?= $location ?>" />
+    <input type="submit" value="Update" />
 </form>
 ```
 
@@ -311,10 +346,12 @@ As we saw in section _Fixing The Browser_, we can't use the `DELETE` keyword in
 your form, so we need to use a special parameter, using a hidden field, and the
 `POST` method in the form:
 
+The following could be added to the `app/templates/location.php` template:
+
 ```
-<form action="/locations" method="POST">
+<form action="/locations/<?= $id ?>" method="POST">
     <input type="hidden" name="_method" value="DELETE" />
-    // ...
+    <input type="submit" value="Delete" />
 </form>
 ```
 
