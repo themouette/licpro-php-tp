@@ -42,7 +42,24 @@ Look at the code of the `run()` method in the `App` class to know how to
 implement these methods. Basically, it's just copy and paste.
 
 **Important:** we will use the term _method_ to describe the HTTP verb (`GET`,
-`POST`, etc.). The URI is what you described in previous practical.
+`POST`, etc.).
+
+The URI is what you described in previous practical. Add the following code to
+the `getUri()` method:
+
+``` php
+if ($pos = strpos($uri, '?')) {
+    $uri = substr($uri, 0, $pos);
+}
+```
+
+It will remove the query string from the `REQUEST_URI` value:
+
+    /locations?foo=bar
+
+What we want here is `/locations`. The query string starts after the `?` sign:
+`foo=bar`.
+
 
 4. Use these methods in the `run()` method of the `App` class:
 
