@@ -241,13 +241,8 @@ class Response
     {
         http_response_code($this->statusCode);
 
-        // add content length
-        if (!isset($this->headers['Content-Length'])) {
-            $this->addHeader('Content-Length', strlen($this->content));
-        }
-
         foreach ($this->headers as $name => $value) {
-            header(sprintf("Content-Length: %s", $name, $value));
+            header(sprintf("%s: %s", $name, $value));
         }
     }
 
@@ -286,13 +281,13 @@ Check everything works as previously.
 In a terminal, run:
 
 ```bash
-$ curl -XGET 'http://localhost:8090/locations' -H Content-Type='application/json'
+$ curl -XGET "http://localhost:8090/locations" -H "Accept: application/json"
 ```
 
 You should see the list of locations just as described in `Functional analysis`.
 
 ```bash
-$ curl -XGET 'http://localhost:8090/location/new-york' -H Content-Type='application/xml'
+$ curl -XGET "http://localhost:8090/location/new-york" -H "Accept: application/json"
 ```
 
 You should se New York location details as described in `Functional analysis`.
@@ -303,6 +298,52 @@ Decode parameters from content type
 When a request has a body, it should provide a `content type`.
 This `content type` header is available in ` $_SERVER["CONTENT_TYPE"]`.
 
+### Decode response content
+
+Add following function to your `Request` class and call it in the
+`createFromGlobals` method when content type is `application/json`.
+
+```php
+static function decodeJSONBody()
+{
+    try
+    {
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+        switch(json_last_error()) {
+            case JSON_ERROR_NONE:
+                return $data;
+            break;
+            case JSON_ERROR_DEPTH:
+                throw new InvalidArgumentException('Maximum stack depth exceeded');
+            break;
+            case JSON_ERROR_STATE_MISMATCH:
+                throw new InvalidArgumentException('Underflow or the modes mismatch');
+            break;
+            case JSON_ERROR_CTRL_CHAR:
+                throw new InvalidArgumentException('Unexpected control character found');
+            break;
+            case JSON_ERROR_SYNTAX:
+                throw new InvalidArgumentException('Syntax error, malformed JSON');
+            break;
+            case JSON_ERROR_UTF8:
+                throw new InvalidArgumentException('Malformed UTF-8 characters, possibly incorrectly encoded');
+            break;
+            default:
+                throw new InvalidArgumentException('Unknown error');
+            break;
+        }
+    } catch (InvalidArgumentException $e) {
+        throw new HttpException(400, $e->getMessage());
+    }
+}
+```
+
+### Testing
+
+```bash
+vagrant@licphp:~ $ curl -XPOST "http://uframework:81/locations" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
+```
 
 Go further
 ----------
