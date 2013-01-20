@@ -258,6 +258,9 @@ Serializer component, but using `json_encode()` is ok.
 
 You can use a lambda function to factorize some code.
 
+When you return a JSON response, set the right status code to the response. It
+has been described in the previous practical.
+
 
 ### Testing
 

@@ -249,13 +249,32 @@ The user data will be accessible through the `Request` object.
 $request->getParameter();
 ```
 
-When you create a new resource, you should return a `201` status code which
-stands for `Created`. The third parameter in the `render()` method allows to
-specify a status code:
+Once you created a new location, redirect the user to the list. It should be
+done for two reasons:
+
+* if the user reloads the page, it won't create a new location again;
+* it's better for the user experience.
+
+Redirecting the user requires a new method in the `App` class:
 
 ``` php
-return $app->render('template.php', $parameters, 201);
+public function redirect($to, $statusCode = 302)
+{
+    http_response_code($statusCode);
+    header(sprintf('Location: %s', $to));
+
+    die;
+}
 ```
+
+Now you can redirect the user to the list view by using:
+
+``` php
+$app->redirect('/locations');
+```
+
+> _Note:_ a REST API should return a `201` status code which stands for
+> `Created`. It will be useful in the next practical.
 
 
 ### Updating An Existing Resource
@@ -313,8 +332,7 @@ The user data will be accessible through the `Request` object.
 $request->getParameter();
 ```
 
-When you update a resource, you should return a `200` status code (the default
-status code actually).
+Redirect the user to the detail view of the updated location.
 
 
 ### Deleting A Resource
@@ -355,11 +373,7 @@ The following could be added to the `app/templates/location.php` template:
 </form>
 ```
 
-When you delete a resource, you should return a `204` status code which stands
-for `No Content`:
+Redirect the user to the list view.
 
-``` php
-return $app->render(null, array(), 204);
-```
-
-You may need to fix the `render()` method to allow `null` as first argument.
+> _Note:_ a REST API should return a `204` status code which stands for
+> `No Content`. You will need this information in the next practical.
