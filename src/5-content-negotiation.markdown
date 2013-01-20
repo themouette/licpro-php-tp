@@ -300,12 +300,20 @@ $request = @json_decode($data, true);
 Use `var_dump()` to print the `$request` variable in your "post" controller,
 and run the following command:
 
-``` bash
-vagrant@vm-licpro:~$ curl -XPOST "http://localhost:8090/locations" -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
+```bash
+vagrant@licphp:~ $ curl -XPOST "http://uframework:81/locations" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
 ```
 
+The same way, you can send `PUT` and `DELETE` requests:
 
-## Going Further
+```bash
+vagrant@licphp:~ $ curl -XPUT "http://uframework:81/locations/paris" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
+
+vagrant@licphp:~ $ curl -XDELETE "http://uframework:81/locations/paris" -H "Accept: application/json"
+```
+
+Going Further
+=============
 
 ### Testing Automation
 
