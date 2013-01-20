@@ -149,6 +149,15 @@ vagrant@vm-licpro:/var/www/uframework$ composer install
 
 It will install two libraries in the `vendor/` folder.
 
+Run the test suite, does it fail?
+
+Edit the `tests/boostrap.php` file, by replacing its content with:
+
+``` php
+$loader = require __DIR__ . '/../vendor/autoload.php';
+$loader->add('', __DIR__);
+```
+
 
 #### Replace Your Autoloader With Composer's One
 
@@ -294,7 +303,7 @@ vagrant@vm-licpro:~$ curl -XPOST "http://localhost:8090/locations" -H "Accept: a
 
 ### Testing Automation
 
-Using [Goute](https://github.com/fabpot/Goutte) or [Buzz
+Using [Goutte](https://github.com/fabpot/Goutte) or [Buzz
 ](https://github.com/kriswallsmith/Buzz) HTTP clients, create a simple script
 executing scenarios to test your API content negotiation feature.
 

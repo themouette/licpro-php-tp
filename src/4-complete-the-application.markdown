@@ -214,7 +214,7 @@ In a browser, you can call this action by using a `form`:
 The user data will be accessible through the `Request` object.
 
 ``` php
-$request->getAttribute();
+$request->getParameter();
 ```
 
 When you create a new resource, you should return a `201` status code which
@@ -275,7 +275,7 @@ your form, so we need to use a special parameter, using a hidden field, and the
 The user data will be accessible through the `Request` object.
 
 ``` php
-$request->getAttribute();
+$request->getParameter();
 ```
 
 When you update a resource, you should return a `200` status code (the default
