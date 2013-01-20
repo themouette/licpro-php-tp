@@ -253,7 +253,10 @@ Check everything works.
 #### Update Your Controllers
 
 Use the new methods created in the `Request` class, and return a `Response` with
-the right content/headers, in each controller's function.
+the right content/headers, in each controller's function. You can rely on the
+Serializer component, but using `json_encode()` is ok.
+
+You can use a lambda function to factorize some code.
 
 
 ### Testing
