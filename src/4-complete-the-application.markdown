@@ -317,7 +317,7 @@ Now you can redirect the user to the list view by using:
 $app->redirect('/locations');
 ```
 
-> _Note:_ a REST API should return a `201` status code which stands for
+> **Note:** a REST API should return a `201` status code which stands for
 > `Created`. It will be useful for the next practical. By now, you can
 > live without that.
 
@@ -423,7 +423,7 @@ The following could be added to the `app/templates/location.php` template:
 
 Redirect the user to the list view.
 
-> _Note:_ a REST API should return a `204` status code which stands for
+> **Note:** a REST API should return a `204` status code which stands for
 > `No Content`. You will need this information in the next practical.
 
 
