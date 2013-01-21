@@ -6,4 +6,4 @@ OPTIONS="--highlight-style=tango --standalone -t html -f markdown"
 `pandoc $OPTIONS -o html/tp2/3-implement-a-front-controller.html src/3-implement-a-front-controller.markdown`
 `pandoc $OPTIONS -o html/tp3/4-complete-the-application.html src/4-complete-the-application.markdown`
 `pandoc $OPTIONS -o html/tp3/5-content-negotiation.html src/5-content-negotiation.markdown`
-`pandoc $OPTIONS -o html/tp3/6-traits-example.html src/6-traits-example.markdown`
+`pandoc $OPTIONS -o html/tp3/6-traits-examples.html src/6-traits-examples.markdown`
