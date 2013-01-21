@@ -1,4 +1,4 @@
-Traits examples
+Traits Examples
 ===============
 
 Some patterns are really common:
@@ -7,13 +7,13 @@ Some patterns are really common:
 * manage options;
 * manage parameters;
 * allow configuration;
-* Singleton;
+* singleton;
 * invoke and store hooks;
 * etc.
 
 In order not to write the same code over and over, traits are useful.
 
-Manage attributes
+Manage Attributes
 -----------------
 
 ```php
@@ -24,6 +24,7 @@ trait Attributes
     public function setAttribute($key, $value)
     {
         $this->attributes[$key] = $value;
+        
         return $this;
     }
 
@@ -45,11 +46,16 @@ Singleton
 ```php
 trait Singleton
 {
-    public static function instance() {
-        static $instance = null;
+    private static $instance = null;
+
+    protected function __construct() {}
+
+    public static function getInstance()
+    {
         if ($instance === null) {
             $instance = new self;
         }
+        
         return $instance;
     }
 }
@@ -61,19 +67,11 @@ Hooks
 ```php
 trait Hooks
 {
-    public function add_action($hook, $callback)
+    public function register($hook, $callback)
     {
     }
 
-    public function do_action($hook, $params = array())
-    {
-    }
-
-    public function add_filter($hook, $callback)
-    {
-    }
-
-    public function apply_filter($hook, $params = array())
+    public function trigger($hook, $params = array())
     {
     }
 }
@@ -85,19 +83,19 @@ Exaple usage:
 $obj = new Hookable();
 
 /* register hooks */
-$obj->add_action('init', function() {/*...*/} );
-$obj->add_action('init', function() {/*...*/} );
-$obj->add_action('parse_request', function() {/*...*/} );
+$obj->register('init', function() {/*...*/} );
+$obj->register('init', function() {/*...*/} );
+$obj->register('parse_request', function() {/*...*/} );
 
 /* call them when needed */
-$obj->do_action('init', $params);
-$obj->do_action('parse_request', $params);
+$obj->trigger('init', $params);
+$obj->trigger('parse_request', $params);
 ```
 
 Using traits
 ------------
 
-```
+``` php
 class DbConnection
 {
     use Attributes;
@@ -105,10 +103,28 @@ class DbConnection
 }
 ```
 
+``` php
+$con = DbConnection::getInstance();
+
+$con->setAttribute('foo', 'bar');
 ```
+
+``` php
 class Application
 {
     use Attributes;
     use Hooks;
 }
+```
+
+``` php
+$app = new Application();
+
+$app->setAttribute('database.con', $con);
+
+$app->register('init', function () use ($app) {
+    $app->getAttribute('database.con')->query('SELECT * FROM table');
+});
+
+$app->trigger('init'); // the SQL query will be executed just now
 ```
