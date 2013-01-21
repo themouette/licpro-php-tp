@@ -1,21 +1,32 @@
 Content Negotiation
 ===================
 
-**WARNING:** Before starting this practical, a working _µFramework_
+**Important:** Before starting this practical, a working _µFramework_
 implementation is required.
 
-Goal of this practical is to implement a simple content negotiation layer in
-your `µFramework`.
+The goal of this practical is to implement a simple content negotiation layer in
+your `µFramework`, and to make your application a **true** RESTful API.
 
 By the end of this session your application will serve resources in:
 
 * `HTML` using a template;
 * `JSON` encoded data.
 
+The HTML part has been done in the previous practical, so you will reuse the work you
+did before.
+
+The JSON part is what you have to do now. This part is the **API** part of your
+application. So you have to follow the REST conventions such as proper status codes,
+and so on.
+
 Your implementation will also accept parameters encoded in:
 
 * `application/form-url-encoded`;
 * `application/json`.
+
+The `application/form-url-encoded` is used when you submit a HTML form.
+
+That's what we call a **REST API**.
 
 
 ## Theory
@@ -28,7 +39,7 @@ content negotiation](http://pretty-rfc.herokuapp.com/RFC2295).
 
 Content negotiation means that a single resource can be presented in different
 ways, depending on the client. To achieve this goal, `HTTP headers` are used by
-a client to present accepted formats. Based on this `Accept` header, server can
+a client to present accepted formats. Based on this `Accept` header, the server can
 guess the best content to deliver.
 
 Here is an example:
@@ -77,12 +88,12 @@ Same request performed by another client:
     {"id":"1","name":"New York"}
 
 
-## Add Content Negotiation For Resource Representation
+## Content Negotiation For Resources Representation
 
-### Functional Analysis (Requirements)
+### Requirements
 
-First, grab a piece of paper and write an example of `GET /locations/1`
-response for every format and call for validation.
+First, grab a piece of paper and write an example of the `GET /locations/1`
+response in JSON and HTML, and call for validation.
 
 ### Conception
 
@@ -92,7 +103,8 @@ It's Request's responsability to resolve the best format to serve, so we need
 a `guessBestFormat()` method in this class.
 
 [Negotiation](https://github.com/willdurand/negotiation) will help you to get the
-best format from headers by handling content negotiation.
+best format from headers by handling content negotiation. The `Accept` header
+**could** be found in `$_SERVER['HTTP_ACCEPT']`.
 
 Thanks to this new method, it is now possible to render different content based
 on the best fit.
@@ -103,10 +115,9 @@ HTML rendering is achieved through your template engine. Rendering your data in
 other formats is called _serialization_. Serialization is the process of
 converting a data structure or object state into a format that can be stored.
 
-The serialization has to be handled by a Serializer. This serializer can be as
+The serialization is handled by a Serializer. This serializer can be as
 simple as the `json_encode()` function or you can use the [Serializer
-Component](
-http://symfony.com/doc/current/components/serializer.html).
+Component](http://symfony.com/doc/current/components/serializer.html).
 
 
 #### Introducing A Response Object
@@ -117,15 +128,16 @@ To fit the HTTP protocol, every response should contain at least:
 * a status code to give feedback on what happened;
 * the content or body of the response.
 
-That makes a lot of things to handle, it cannot all fit in the App class. A
-`Response` class will be in charge of response configuration.
+That makes a lot of things to handle, it cannot all fit in the `App` class.
+A `Response` class will be in charge of the response configuration.
 
 
 ### Implementation
 
-You will use Composer to manage your project, and its libraries.
+You will use [Composer](http://getcomposer.org) to manage your project,
+and its libraries.
 
-#### Create `composer.json` file
+#### Create a `composer.json` file
 
 In your project, create a `composer.json` file with the following content:
 
@@ -158,15 +170,17 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('', __DIR__);
 ```
 
+Can you explain what this snippet does?
+
 
 #### Replace Your Autoloader With Composer's One
 
-When you run `composer install`, it will also generate an autoloader file in
+When you run `composer install`, it also generates an autoloader file in
 `vendor/autoload.php`. That one is optimized and probably better than yours.
 Moreover, it's automatically generated and you don't need to waste your time on
 that.
 
-In `app/app.php`, replace autoloader with `vendor/autoload.php`.
+In `app/app.php`, replace the autoloader with `vendor/autoload.php`.
 
 You can safely delete the `autoload.php` file you wrote in the previous
 practical.
@@ -244,19 +258,20 @@ if (!$response instanceof Response) {
 $response->send();
 ```
 
-Now, you can return a string as you used to do **OR** directly return
-a `Response` object.
+Now, you can return a string as you used to do **OR** directly a `Response`
+object.
 
-Check everything works.
+Does everything work as expected?
 
 
 #### Update Your Controllers
 
 Use the new methods created in the `Request` class, and return a `Response` with
 the right content/headers, in each controller's function. You can rely on the
-Serializer component, but using `json_encode()` is ok.
+Serializer component, but using `json_encode()` is easier.
 
-You can use a lambda function to factorize some code.
+You can use an anonymous function to factorize some code, or extend the `Response`
+class. Just saying...
 
 When you return a JSON response, set the right status code to the response. It
 has been described in the previous practical.
@@ -270,13 +285,14 @@ In a terminal, run:
 $ curl -XGET "http://localhost:8090/locations" -H "Accept: application/json"
 ```
 
-You should see the list of locations as described in _Functional Analysis_.
+You should see the list of locations as described in _Requirements_.
 
 ```bash
 $ curl -XGET "http://localhost:8090/locations/1" -H "Accept: application/json"
 ```
 
-You should see the New York location details as described in _Functional Analysis_.
+You should see the "New-York" location details as described in _Requirements_.
+(In your Model Layer, the "New-York" location should have its id set to `1`).
 
 
 ## Decode Parameters Based On the Content Type
@@ -301,19 +317,18 @@ Use `var_dump()` to print the `$request` variable in your "post" controller,
 and run the following command:
 
 ```bash
-vagrant@licphp:~ $ curl -XPOST "http://uframework:81/locations" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
+vagrant@licphp:~ $ curl -XPOST "http://localhost:8090/locations" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
 ```
 
 The same way, you can send `PUT` and `DELETE` requests:
 
 ```bash
-vagrant@licphp:~ $ curl -XPUT "http://uframework:81/locations/paris" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
+vagrant@licphp:~ $ curl -XPUT "http://localhost:8090/locations/1" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
 
-vagrant@licphp:~ $ curl -XDELETE "http://uframework:81/locations/paris" -H "Accept: application/json"
+vagrant@licphp:~ $ curl -XDELETE "http://localhost:8090/locations/1" -H "Accept: application/json"
 ```
 
-Going Further
-=============
+## Going Further
 
 ### Testing Automation
 
