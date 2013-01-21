@@ -1,12 +1,35 @@
 Complete The Application
 ========================
 
-In this practical, you will continue to write your own framework.
-You have to finish the previous practical to start that one.
+In this practical, you will continue to write your own micro-framework.
+**Important:** You have to finish the previous practical to start that one.
+
+
+## Introduction
+
+Since last week, you are building your own framework and an application that leverages
+this framework. The aim of the last practical was to discover the framework,
+its architecture, to understand what you have to do, and to start playing with it.
+
+In this practical, you have to build a complete web application. You have to provide
+a web application that can **list** a set of locations, **create** new ones, but also
+**delete** and **update** existing locations.
+
+This application has to be designed like a **RESTful API**. However, it won't be a **true**
+API at the moment, because you need to provide a user interface. Basically, you have to
+design the **Controller Layer** like a REST API, but you will render HTML templates.
+
+In the next practical ([#5](5-content-negotiation.html)), you will write a **true** API
+on top of what you have to do today.
+
+At the end, you will get an awesome application that combines a web application **and** a
+REST API. Nowadays, that's the state of the art in web development.
+
+
 
 ## The Model Layer
 
-You implemented a nice model layer in the previous practical. In order to be
+You implemented a nice **Model Layer** in the previous practical. In order to be
 consistent, implement the following `PersistenceInterface` interface:
 
 ``` php
@@ -29,13 +52,15 @@ interface PersistenceInterface
 }
 ```
 
+This interface should be added to your project (`src/Model/PersistenceInterface.php`).
+
 It should be a matter of renaming your methods into the `Locations` class.
 
 
 ## The Request Class
 
-You should know that a web application is about converting a request into a
-response. A client sends a request to a server, and the server returns a
+You should know that a web application is about **converting a request into a
+response**. A client sends a request to a server, and the server returns a
 response.
 
 In uFramework, there is no `Request` object, and it's quite bad. That's why you
@@ -101,7 +126,7 @@ public function run(Request $request = null)
 ```
 
 5. Implement a **static** method in the `Request` class to create a new
-`Request` instance. This method HAS to be named `createFromGlobals()`.
+`Request` instance. This method **HAS** to be named `createFromGlobals()`.
 
 Returning an instance of the current class can be achieved using the following
 code:
@@ -110,11 +135,11 @@ code:
 return new self();
 ```
 
-This method will do more stuff than that, but by now, it should just return a
+This method will contain more logic later, but by now, it should just return a
 new instance.
 
 6. Update the `run()` method to create a `Request` object if the argument is
-null:
+`null`:
 
 ``` php
 if (null === $request) {
@@ -131,9 +156,9 @@ Concerns**. It's Request's responsability to determine the _method_ used by the
 client.
 
 You know that a web application is about converting a _request_ into a
-_response_. In a Model View Controller architecture, this is the Controller's
-responsability. So, it seems like a good idea to inject the `Request` in your
-controllers:
+_response_. In a **Model View Controller** architecture, this is handled by the
+**Controller Layer**. So, it seems like a good idea to inject the `Request` in
+your controllers:
 
 ``` php
 $app->get('/locations', function (Request $request) use ($app) {
@@ -158,8 +183,11 @@ array_unshift($arguments, $request);
 $response = call_user_func_array($route->getCallable(), $arguments);
 ```
 
-Now, it will automatically inject a `Request` instance **as first argument** of
+Now, it will automatically inject a `Request` instance **as first argument**  in
 your closures.
+
+> **Note:** The **Controller Layer** is located in the `app/app.php` file. A
+> specific _controller_ is represented by a _closure_ in this application.
 
 
 ### Abstracting Global Variables
@@ -167,11 +195,21 @@ your closures.
 In PHP, you can access data via `$_GET` and `$_POST`. You could use them, but
 now that you have a `Request` class, you should rely on it.
 
+> **Note:** Avoid the use of global variables in your code, as much as you can.
+> Use classes that can abstract these variables. That's why you have a `Request`
+> class.
+
 Add a constructor method to your `Request` class:
 
 ``` php
 __construct(array $query = array(), array $request = array())
 ```
+
+`$query` is an array of `GET` parameters (`$_GET`). We use the term `query` as
+these parameters are part of the **Query String**.
+
+`$request` is an array of `POST` parameters (`$_POST`). We use the term `request`
+as these parameters are part of the **Request Body**.
 
 Declare a new attribute named `$parameters` in your `Request` class, and
 initialize it in the constructor by merging both `$query` and `$request`.
@@ -184,7 +222,7 @@ public function getParameter($name, $default = null)
 }
 ```
 
-That's it!
+Modify the `createFromGlobals()` method to inject the global variables.
 
 
 ## Completing your application
@@ -195,12 +233,12 @@ Now that you have a working `Request` class, you can write your application.
 ### Fixing The Browser
 
 You know that a RESTful application leverages the HTTP verbs. Unfortunately, web
-browsers only support `GET` and `POST`. To by pass this limitation, we will use
-a _hack_.
+browsers only support `GET` and `POST`. In order to by pass this limitation, we
+will use a _hack_.
 
 The hack consists in using a hidden parameter in the request that defines the
 real HTTP verb the client wants to use. In a form, you will set the `POST`
-method, and use a hidden field `_method` with the real HTTP verb:
+method, and use a hidden field named `_method` with the real HTTP verb:
 
 ``` html
 <form action="..." method="POST">
@@ -221,17 +259,22 @@ if (self::POST === $method) {
 ### Creating New Resources
 
 In a RESTful application, we use the `POST` HTTP verb to create new resources,
-and we "post" data to the collection resource.
+and we "post" data to the collection.
 
 In your application, you will have to "post" data to `/locations`. It will call
 the corresponding action registered in your application:
 
 ``` php
-$app->post('/locations', function () {
+$app->post('/locations', function () use ($app) {
+   // this is the corresponding action
 });
 ```
 
-In a browser, you can call this action by using a `form`. The following could be
+> **Note:** Generally speaking, the term **action** represents a method in a controller.
+> As you don't use a controller class, but a closure, the term **action** represents
+> this closure.
+
+In a browser, you can call this action by using a `form`. The following code could be
 added to the `app/templates/locations.php` template:
 
 ```
@@ -274,7 +317,8 @@ $app->redirect('/locations');
 ```
 
 > _Note:_ a REST API should return a `201` status code which stands for
-> `Created`. It will be useful in the next practical.
+> `Created`. It will be useful for the next practical. By now, you can
+> live without that.
 
 
 ### Updating An Existing Resource
@@ -286,7 +330,7 @@ In your application, you will have to "put" data to `/locations/id`. It will
 call the corresponding action registered in your application:
 
 ``` php
-$app->put('/locations/(\d+)', function (Request $request, $id) {
+$app->put('/locations/(\d+)', function (Request $request, $id) use ($app) {
 });
 ```
 
@@ -297,11 +341,12 @@ for each URI you want to implement.
 `(\d+)` means numbers. Each URI MUST be unique, that's why we use numbers to
 identify a specific resource.
 
-This number will be injected in your controller's function, that's why we
+This number will be injected in your controller's closure, that's why we
 declare the `$id` parameter.
 
 The first thing to do in this function is to retrieve your model object by its
-identifier. You can rely on the `FinderInterface` method `findOneById()`.
+identifier. You can rely on the `findOneById()` method, part of the `FinderInterface`
+interface.
 
 If the object doesn't exist, you will get `null`. In this case, you will have to
 return a `HttpException` with status code `404` which stands for `Not Found`:
@@ -316,7 +361,7 @@ As we saw in section _Fixing The Browser_, we can't use the `PUT` keyword in
 your form, so we need to use a special parameter, using a hidden field, and the
 `POST` method in the form.
 
-The following could be added to the `app/templates/location.php` template:
+The following code could be added to the `app/templates/location.php` template:
 
 ```
 <form action="/locations/<?= $id ?>" method="POST">
@@ -332,7 +377,8 @@ The user data will be accessible through the `Request` object.
 $request->getParameter();
 ```
 
-Redirect the user to the detail view of the updated location.
+Redirect the user to the detail view of the updated location once the
+location is updated.
 
 
 ### Deleting A Resource
@@ -344,12 +390,13 @@ In your application, you will have to "delete" a resource at `/locations/id`. It
 will call the corresponding action registered in your application:
 
 ``` php
-$app->delete('/locations/(\d+)', function (Request $request, $id) {
+$app->delete('/locations/(\d+)', function (Request $request, $id) use ($app) {
 });
 ```
 
 The first thing to do in this function is to retrieve your model object by its
-identifier. You can rely on the `FinderInterface` method `findOneById()`.
+identifier. You can rely on the `findOneById()` method, part of the`FinderInterface`
+interface.
 
 If the object doesn't exist, you will get `null`. In this case, you will have to
 return a `HttpException` with status code `404` which stands for `Not Found`:
@@ -377,3 +424,8 @@ Redirect the user to the list view.
 
 > _Note:_ a REST API should return a `204` status code which stands for
 > `No Content`. You will need this information in the next practical.
+
+
+## The End
+
+You should have a working web application. Jump to [the next practical](5-content-negotiation.html).
