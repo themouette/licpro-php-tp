@@ -85,3 +85,26 @@ Pistes d'amélioration
 ---------------------
 
 
+Outils utiles
+-------------
+
+### design
+
+* [twitter bootstrap](http://twitter.github.com/bootstrap/)
+* [zurb foundation](http://foundation.zurb.com/)
+* [maxmertkit](http://maxmert.com/)
+
+### Géolocalisation
+
+* [geocoder](http://geocoder-php.org/)
+
+### Frameworks
+
+Vous pouvez en prendre un de la liste, un autre, ou aucun, c'est à vous de choisir !
+
+* [code igniter](http://codeigniter.fr/user_guide/index.html)
+* [eden](http://www.eden-php.com/documentation/mvc)
+* [silex](http://silex.sensiolabs.org/)
+* [slim](http://www.slimframework.com/)
+* [symfony2](http://symfony.com/)
+* [zend framework](http://framework.zend.com/)
