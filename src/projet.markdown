@@ -28,8 +28,8 @@ quoi il va ressembler :
     cette application est protégée par mot de passe.
 * Le site, que nous appelleront l'application `frontend`, est accessible à tout
     le monde.
-* Un lieux comporte au minimum un nom, une adresse et un numéro de téléphone.
-    Il est possible qu'un lieu ait un texte de présentation.
+* Un lieux comporte au minimum un nom et une adresse. Il est possible qu'un
+    lieu ait un texte de présentation et un numéro de téléphone.
 * Une annimation comporte au minimum un horaire et peut comporter un message
     personnaliser.
 
