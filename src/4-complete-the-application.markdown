@@ -5,6 +5,8 @@ In this practical, you will continue to write your own micro-framework.
 
 **Important:** You have to finish the previous practical to start that one.
 
+**Email us if you need help:** [william.durand1@gmail.com]() or [julien@muetton.me]().
+
 
 ## Introduction
 

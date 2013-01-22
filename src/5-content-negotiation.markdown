@@ -1,6 +1,24 @@
 Content Negotiation
 ===================
 
+<br />
+
+#### UPDATE: READ THIS CAREFULLY
+
+All of you, students, have to run the following commands. I said **ALL** of you.
+
+Update the configuration by running the following commands on the host machine:
+
+``` bash
+$ git pull origin master
+$ git submodule update --init
+$ vagrant reload
+```
+
+If something went wrong, **email us** as soon as possible!
+
+<br />
+
 **Important:** Before starting this practical, a working _µFramework_
 implementation is required.
 
@@ -95,6 +113,11 @@ Same request performed by another client:
 First, grab a piece of paper and write an example of the `GET /locations/1`
 response in JSON and HTML, and call for validation.
 
+This validation can be done by email, so **email us** if you want. If you don't
+email us, we consider you perfectly understand what you are doing. So, do
+whatever you want, but **we won't be responsible if you don't do your job**.
+
+
 ### Conception
 
 #### Guessing The Best Format To Return
@@ -156,7 +179,7 @@ In your project, create a `composer.json` file with the following content:
 Now, run:
 
 ```bash
-vagrant@vm-licpro:/var/www/uframework$ composer install
+vagrant@vm-licpro:/var/www/uframework $ composer install
 ```
 
 It will install two libraries in the `vendor/` folder.
@@ -282,13 +305,13 @@ has been described in the previous practical.
 In a terminal, run:
 
 ```bash
-$ curl -XGET "http://localhost:8090/locations" -H "Accept: application/json"
+$ curl -XGET http://localhost:8090/locations -H "Accept: application/json"
 ```
 
 You should see the list of locations as described in _Requirements_.
 
 ```bash
-$ curl -XGET "http://localhost:8090/locations/1" -H "Accept: application/json"
+$ curl -XGET http://localhost:8090/locations/1 -H "Accept: application/json"
 ```
 
 You should see the "New-York" location details as described in _Requirements_.
@@ -319,15 +342,20 @@ Use `var_dump()` to print the `$request` variable in your "post" controller,
 and run the following command:
 
 ```bash
-vagrant@licphp:~ $ curl -XPOST "http://localhost:8090/locations" -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
+$ curl -XPOST http://localhost:8090/locations -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
 ```
+
+Check `http://localhost:8090/locations` in a browser. It should have a new
+location named "Paris".
 
 The same way, you can send `PUT` and `DELETE` requests:
 
 ```bash
-vagrant@licphp:~ $ curl -XPUT "http://localhost:8090/locations/1" -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
+$ curl -XPUT http://localhost:8090/locations/1 -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
+```
 
-vagrant@licphp:~ $ curl -XDELETE "http://localhost:8090/locations/1" -H "Accept: application/json"
+```bash
+$ curl -XDELETE http://localhost:8090/locations/1 -H "Accept: application/json"
 ```
 
 ## Going Further
