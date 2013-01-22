@@ -238,6 +238,16 @@ Create a `Locations` class in `src/Model`. This class **must** implement
 
 You can reuse the set of data used in practical #1.
 
+### Complete uFramework kernel
+
+The kernel is defined in `src/App.php` and has been altered. Complete the
+`registerRoute()` method. Try to list your locations by refreshing
+`http://localhost:8090/locations`.
+
+Complete `put()`, `post()`, and `delete()` methods as well.
+
+Check everything is ok by **running the test suite**.
+
 ### Complete GET Routes
 
 Complete the `GET` routes predefined in `app/app.php` file and create the
@@ -246,18 +256,44 @@ corresponding templates.
 You should be able to:
 
 * list locations under `GET /locations`;
-* display a location with `id` under `GET /locations/id`;
+* display a location using its `id` under `GET /locations/(\d+)`;
 
-When loading `http://localhost:8090/` an error may appear, or maybe you will get
-a blank page. Let's fix this by implementing uFramework missing parts.
+Why `/locations(\d+)`? The following methods `get()`, `post()`, `put()`, and
+`delete()` take a regular expression as first argument. It defines the pattern
+for each URI you want to implement.
 
-### Complete uFramework kernel
+Basically, when you declare a route:
 
-The kernel is defined in `src/App.php` and has been altered. Complete the
-`registerRoute()` method. Try to list your locations by refreshing
-`http://localhost:8090/locations`.
+``` php
+$app->get('/locations/(\d+)', function ($id) use ($app) {
+});
+```
 
-Complete `put()`, `post()`, and `delete()` methods as well.
+It will match all URIs starting with `/locations/` and finishing with a number
+(`/locations/0`, `/locations/1`, `/locations/123`, etc.).
+
+You can declare more parameters:
+
+``` php
+$app->get('/locations/(\d+)/comments/(\d+)', function ($locationId, $commentId) use ($app) {
+});
+```
+
+`(\d+)` is a regular expression that matches numbers only, but you can match
+whatever you want. Note that using numbers as identifiers is a good idea.
+
+This number (`0`, `1` or `123` in the examples) will be injected as argument of
+the closure, that's why we declare a `$id` parameter. Use this parameter to
+retrieve the corresponding location.
+
+If you can't find a location for a given id, then you should throw a
+`HttpException` with status code set to `404` which stands for `Not Found`.
+Look at the `HttpException` class, the first argument is the status code, and
+the second one is a message.
+
+Check everything works. You should write two templates, one for the list view,
+another one for the detail view.
+
 
 ### Add a basic Model Persistence
 
@@ -268,6 +304,6 @@ To manipulate JSON, SPL defines both `json_encode()` and `json_decode()`. Use
 the [PHP manual](http://php.net) to know how to use these methods in order to
 create a persistent model layer.
 
-> _Hint:_ one method returns an array from a JSON string, the one is able to
+> **Hint:** one method returns an array from a JSON string, the one is able to
 transform an array into a JSON string. You saw a few methods last week that can
 be used to read/write files.
