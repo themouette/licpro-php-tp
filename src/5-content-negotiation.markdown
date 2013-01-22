@@ -298,7 +298,9 @@ You should see the "New-York" location details as described in _Requirements_.
 ## Decode Parameters Based On the Content Type
 
 When a request has a body, it should provide a `Content-Type`.
-This content type header is available in ` $_SERVER['HTTP_CONTENT_TYPE']`.
+This content type header is available in either `$_SERVER['HTTP_CONTENT_TYPE']`
+**or** `$_SERVER['CONTENT_TYPE']`. So you have to check both variables, and
+order matters.
 
 Modify the `createFromGlobals()` method to convert a JSON content
 (`application/json`) into parameters, and use them as _request_ parameters.
@@ -317,13 +319,13 @@ Use `var_dump()` to print the `$request` variable in your "post" controller,
 and run the following command:
 
 ```bash
-vagrant@licphp:~ $ curl -XPOST "http://localhost:8090/locations" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
+vagrant@licphp:~ $ curl -XPOST "http://localhost:8090/locations" -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
 ```
 
 The same way, you can send `PUT` and `DELETE` requests:
 
 ```bash
-vagrant@licphp:~ $ curl -XPUT "http://localhost:8090/locations/1" -H "Accept: application/json" -H 'content-type: application/json' -d '{"name":"Paris"}'
+vagrant@licphp:~ $ curl -XPUT "http://localhost:8090/locations/1" -H "Accept: application/json" -H 'Content-Type: application/json' -d '{"name":"Paris"}'
 
 vagrant@licphp:~ $ curl -XDELETE "http://localhost:8090/locations/1" -H "Accept: application/json"
 ```
