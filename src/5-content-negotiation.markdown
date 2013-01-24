@@ -182,7 +182,13 @@ Now, run:
 vagrant@vm-licpro:/var/www/uframework $ composer install
 ```
 
-It will install two libraries in the `vendor/` folder.
+It will install two libraries in the `vendor/` folder. If you get an error like
+`git not found`, then install it by running the following command, and re-run
+the previous command:
+
+``` bash
+vagrant@vm-licpro:/var/www/uframework $ sudo apt-get install git-core
+```
 
 Run the test suite, does it fail?
 
@@ -238,7 +244,7 @@ class Response
     {
         $this->content    = $content;
         $this->statusCode = $statusCode;
-        $this->headers    = array_merge('Content-Type' => 'text/html'), $headers);
+        $this->headers    = array_merge(array('Content-Type' => 'text/html'), $headers);
     }
 
     public function getStatusCode()

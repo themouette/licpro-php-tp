@@ -245,7 +245,7 @@ method, and use a hidden field named `_method` with the real HTTP verb:
 
 ``` html
 <form action="..." method="POST">
-    <input type="hidden" name="_method" value="PUT" />
+    <input type="hidden" name="_method" value="PUT">
 </form>
 ```
 
@@ -283,9 +283,9 @@ added to the `app/templates/locations.php` template:
 ```
 <form action="/locations" method="POST">
     <label for="name">Name:</label>
-    <input type="text" name="name" />
+    <input type="text" name="name" id="name">
 
-    <input type="submit" value="Add New" />
+    <input type="submit" value="Add New">
 </form>
 ```
 
@@ -368,9 +368,9 @@ The following code could be added to the `app/templates/location.php` template:
 
 ```
 <form action="/locations/<?= $id ?>" method="POST">
-    <input type="hidden" name="_method" value="PUT" />
-    <input type="text" name="name" value="<?= $location ?>" />
-    <input type="submit" value="Update" />
+    <input type="hidden" name="_method" value="PUT">
+    <input type="text" name="name" value="<?= $location ?>">
+    <input type="submit" value="Update">
 </form>
 ```
 
@@ -418,8 +418,8 @@ The following could be added to the `app/templates/location.php` template:
 
 ```
 <form action="/locations/<?= $id ?>" method="POST">
-    <input type="hidden" name="_method" value="DELETE" />
-    <input type="submit" value="Delete" />
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete">
 </form>
 ```
 
