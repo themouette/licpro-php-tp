@@ -185,14 +185,14 @@ comments**.
 SSH into the Virtual Machine, then open a MySQL session:
 
 ``` bash
-mysql -uuframework -puframework123 uframework
+vagrant@vm-licpro:/var/www$ mysql -uuframework -puframework123 uframework
 ```
 
 Now, insert a few comments for a given location:
 
 ``` sql
-INSERT INTO comments (username, body, location_id) VALUES('William', 'Good job guys!', 1);
-INSERT INTO comments (username, body, location_id) VALUES('Julien', 'Good job guys!', 1);
+mysql> INSERT INTO comments (username, body, location_id) VALUES('William', 'Good job guys!', 1);
+mysql> INSERT INTO comments (username, body, location_id) VALUES('Julien', 'Good job guys!', 1);
 ```
 
 Add a new route `GET /locations/(\d+)/comments` that returns the comments for a
