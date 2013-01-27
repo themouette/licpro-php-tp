@@ -140,6 +140,18 @@ ou alors installer la clé :
     ~/vagrant/licpro $ vagrant up
 
 
+### Problèmes Rencontrés
+
+Vous obtenez l'erreur **No input file specified**, c'est probablement un problème
+de permissions sur vos fichiers. Pour corriger, placez vous dans le dossier de
+votre projet sur la machine virtuelle et exécutez les deux commandes suivantes :
+
+```
+$ find * -type f -exec chmod 644 "{}" ";"
+$ find * -type d -exec chmod 755 "{}" ";"
+```
+
+
 Guide de survie avec Git
 ------------------------
 
