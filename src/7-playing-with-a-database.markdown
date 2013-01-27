@@ -30,8 +30,8 @@ You can access this database with the user `uframework` and the password
 
 ## Your First Database Layer
 
-Write a SQL script named `schema.sql` to create a `locations` table with the
-following rules:
+Write a SQL script named `app/config/schema.sql` to create a `locations`
+table with the following rules:
 
 * This table contains three columns: `id`, `name` and `created_at`;
 * The `id` column contains `integer` values;
@@ -49,8 +49,6 @@ like:
 ``` sql
 CREATE TABLE IF NOT EXISTS tbl_name
 ```
-
-This file has to be created in `/var/www/uframework/app/config`.
 
 Now, create your database:
 
