@@ -19,6 +19,8 @@ If something went wrong, **email us** as soon as possible!
 
 <br />
 
+## Introduction
+
 This update adds a [MySQL](http://www.mysql.fr/) database server, its client,
 and it also creates a database named `uframework`.
 
@@ -68,14 +70,14 @@ In order to do that, you HAVE TO:
   described in the last course;
 * ignore the `created_at` column by now.
 
+The `Connection` should be created in `app/app.php` and passed to the
+`Locations` instance(s). That way, the configuration part is located in only
+one place (into the `app/app.php` file).
+
 The `find*()` methods won't use the `executeQuery()` method, you will have to
 write your own logic to return the data (hint: `FETCH_ASSOC` will be your friend).
 
 You MAY need to update the templates and/or the JSON data.
-
-The `Connection` should be created in `app/app.php` and passed to the
-`Locations` instance(s). That way, the configuration part is located in only
-one place (into the `app/app.php` file).
 
 Now, check everything still works.
 
