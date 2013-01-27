@@ -56,7 +56,7 @@ Now, create your database:
 vagrant@vm-licpro:/var/www/uframework$ mysql uframework -uuframework -puframework123 < app/config/schema.sql
 ```
 
-Now that you have a database, and a table, update your model layer (aka the
+Now that you have a database, and a table, update your Model Layer (aka the
 `Locations` class) to manipulate a database instead of a file.
 
 In order to do that, you HAVE TO:
@@ -91,23 +91,35 @@ here). This class should contain getters/setters for the following attributes:
 * `name`;
 * `createdAt`.
 
-The constructor of this class takes the same parameters. Removing the setter for
-the `id` attribute sounds like a good idea.
+The constructor of this class takes the same parameters as arguments, the last
+argument is _nullable_ (_optional_). Add a typehint to this argument too (it's a
+datetime, what is the PHP date class?)
 
-It's time to use this class. In method `findAll()` use `array_map()` to return a
-set of `Location` objects. Each object will be created on the fly.
+It's time to use this class in your `Locations` class:
 
-In method `findOneById()`, return an instance of `Location`, or `null` if not
+1. In method `findAll()` use `array_map()` in order to return a set of
+`Location` objects. Each object will be created on the fly.
+
+2. In method `findOneById()`, return an instance of `Location`, or `null` if not
 found.
 
-Update your templates to reflect these changes. Also, update the JSON part
-(either by using getters, or by using the Serializer component).
+In both cases, the `created_at` value can be `null`, so you have to check
+whether it's a datetime, or `null`. If it's a datetime, convert it to a PHP
+date before injecting it into the `Location` class.
+
+Update your templates to reflect these changes.
+
+Also, update the JSON part (either by using getters, or by using the Serializer
+component).
+
+> **Tip:** the Serializer component is really powerful, and simple to use. It's
+> worth using it.
 
 
 ## Introducing The Data Mapper
 
-So, you have a Model Layer with a **Data Access Layer** thanks to the
-`Connection` class.
+You have a Model Layer with a **Data Access Layer** thanks to the `Connection`
+class, and PDO.
 
 Implement a `LocationDataMapper` class. This class HAS TO implement the **Data
 Mapper** design pattern, and should leverage the `Connection` class. Write an
@@ -115,7 +127,17 @@ interface for such a design pattern, and use it in your `LocationDataMapper`
 class. This interface HAS TO be generic enough.
 
 Remove the `PersistenceInterface` from your project, and remove the code related
-to this interface in the `Locations` class.
+to this interface in the `Locations` class. Note that this code could be moved
+to the `LocationDataMapper` class.
+
+In the `LocationDataMapper` class, take care of the `created_at` attribute. The
+`DateTime` class contains a `format()` method:
+
+``` php
+$object->getCreatedAt()->format('Y-m-d H:i:s');
+```
+
+The `Y-m-d H:i:s` format is the one used by MySQL for its `DATETIME` type.
 
 Now, rename your `Locations` class into `LocationFinder` class.
 
@@ -127,8 +149,9 @@ You should have a cleaner Model Layer containing:
 
 Update your controllers to use these classes when it's needed.
 
-Creating a new `Location` should set the `createdAt` attribute to the current
-date, and the PHP type for such attribute is `DateTime`.
+Creating a new `Location` should set the `createdAt` argument to the current
+date, and the PHP type for such attribute is `DateTime`. Creating an instance of
+`DateTime` is enough to get the current date.
 
 
 ## Dealing With Relations
@@ -150,7 +173,9 @@ location.
 What do you need in both classes to create this relation? What would be the SQL
 code for such a relation?
 
-**Call for validation** once you have the answer.
+**Call for validation** once you have the answer. You have to explain how to
+deal with objects, and to provide the SQL statements used to create the table
+`comments`. This is not easy.
 
 Implement your solution.
 
@@ -158,6 +183,10 @@ Update the `LocationFinder` class to return the locations **and their
 comments**.
 
 Add a new route `GET /locations/(\d+)/comments` that returns the comments for a
-given location.
+given location. This action will return JSON data only.
+
+If you are using the Serializer component, then ask your teacher to fix a
+potential issue. To be more precise, you MAY serialize a **cycle** between
+locations and comments, and it will lead in memory issues.
 
 You're done with this practical.
