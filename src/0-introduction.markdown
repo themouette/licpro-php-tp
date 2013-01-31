@@ -123,7 +123,7 @@ TPs, mais nous ne ferons pas d'installation sur vos machines pendant vos TPs.
     $ mkdir ~/vagrant ; cd ~/vagrant
     ~/vagrant $ git clone git://github.com/willdurand/licpro-php-vm.git --recursive
 
-### Installer la clé SSH :
+### Installer la clé SSH
 
 Vous pouvez commenter la ligne #16 dans le Vagrantfile :
 
@@ -134,13 +134,106 @@ ou alors installer la clé :
     $ wget https://raw.github.com/mitchellh/vagrant/master/keys/vagrant -O ~/.ssh/insecure_private_key
     $ chmod 400 ~/.ssh/insecure_private_key
 
-### Premier démarrage :
+### Premier démarrage
 
     $ cd ~/vagrant/licpro
     ~/vagrant/licpro $ vagrant up
 
 
 ### Problèmes Rencontrés
+
+##### Unable To Connect To Github.com
+
+Vous obtenez le message suivant lors du `git clone` :
+
+    fatal: unable to connect to github.com:
+    github.com[0: 207.97.227.239]: errno=Connexion terminée par expiration du délai d'attente
+
+Vous avez probablement un proxy (Auversup?) qui empêche d'atteindre GitHub de
+manière classique. Remplacez `git://` par `https://` dans l'URL du dépôt et ne
+clonez pas avec l'option `--recursive` :
+
+    $ git clone https://github.com/willdurand/licpro-php-vm.git
+
+Allez dans le dossier créé :
+
+    $ cd licpro-php-vm
+
+Maintenant, ouvrez le fichier nommé `.gitmodules`, et remplacez toutes les
+occurences de `git://` par `https://`.
+
+Désormais, vous pouvez récupérer les _submodules_ :
+
+    $ git submodule update --init
+
+Le tour est joué.
+
+
+##### There was a problem with the configuration of Vagrant
+
+Vous obtenez le message suivant :
+
+    There was a problem with the configuration of Vagrant. The error message(s)
+    are printed below:
+
+    ssh:
+    * `private_key_path` file must exist: ~/.ssh/insecure_private_key
+
+Relisez le fichier README ou la procédure d'installation Vagrant, pour installer
+la clé privée.
+
+
+##### Erreur Puppet
+
+Vous obtenez le message suivant lors du _provisioning_ Puppet :
+
+    err: /Stage[main]/Bazinga::Apt/Apt::Key[ondrej-php5]/Exec[df83210b394e5618d854baf93e57a9aa52f580c5]/returns:
+    change from notrun to 0 failed: apt-key adv --keyserver 'keyserver.ubuntu.com'
+    --recv-keys 'E5267A6C' returned 2 instead of one of [0] at
+    /tmp/vagrant-puppet/modules-0/apt/manifests/key.pp:54
+
+Encore un problème lié à un proxy (Auversup?). Il faut lancer la VM :
+
+    $ vagrant up
+
+Puis se connecter en SSH :
+
+    $ vagrant ssh
+
+Maintenant, installez `add-apt-key` :
+
+    $ sudo apt-get install add-apt-key
+
+Lancez la commande suivante :
+
+    $ sudo add-apt-key -k hkp://keyserver.ubuntu.com:80 E5267A6C
+
+Puis celle-ci :
+
+    $ sudo apt-get update
+
+Déconnectez vous :
+
+    $ exit
+
+Relancez le _provisioning_ :
+
+    $ vagrant provision
+
+Il peut y avoir encore un problème :
+
+    WARNING: The following packages cannot be authenticated!
+    <package 1> <package 2> ...
+    E: There are problems and -y was used without --force-yes
+
+Reconnectez vous à la VM, et lancez un `apt-get install` sur l'un des paquets :
+
+    $ sudo apt-get install <package 1>
+
+Déconnectez vous et relancez le _provisioning_.
+
+
+##### No Input File Specified
 
 Vous obtenez l'erreur **No input file specified**, c'est probablement un problème
 de permissions sur vos fichiers. Pour corriger, placez vous dans le dossier de
