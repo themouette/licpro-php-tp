@@ -58,7 +58,7 @@ Ce projet permet de gérer trois types d'information :
   lieu ait un texte de présentation et un numéro de téléphone ;
 * Une **soirée** comporte au minimum un horaire et peut comporter un message
   personnalisé ;
-* Un **commentaire** comporte au minium un nom de la personne qui a écrit le
+* Un **commentaire** comporte au minimum un nom de la personne qui a écrit le
   commentaire et le message ;
 * Un **lieu** peut avoir plusieurs **commentaires** ;
 * Un **lieu** peut avoir plusieurs **soirées**.
