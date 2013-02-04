@@ -73,21 +73,23 @@ talk](https://dl.dropbox.com/u/3615626/slides/PHPUnit-Best-Practices-Fosdem-2013
 [Volker Dush](https://twitter.com/__edorian), a PHPUnit contributor, provides a
 good sample:
 
-    <?php
+``` php
+<?php
 
-    public function setValue($value)
-    {
-        $this->value = $value;
+public function setValue($value)
+{
+    $this->value = $value;
+}
+
+public function execute()
+{
+    if (!$this->value) {
+        throw new Exception('No Value, no good');
     }
 
-    public function execute()
-    {
-        if (!$this->value) {
-            throw new Exception('No Value, no good');
-        }
-
-        return $value * 10; // business logic
-    }
+    return $value * 10; // business logic
+}
+```
 
 In the code above, what should you test? The answer is:
 
@@ -122,18 +124,24 @@ This can be useful to ensure your `persist()` method distinguishes the state of
 the object. Note that `PDO` cannot be mocked out of the box. You have to extend
 it, and avoid to call its constructor:
 
-    !php
-    class MockConnection extends Connection
+``` php
+<?php
+
+class MockConnection extends Connection
+{
+    public function __construct()
     {
-        public function __construct()
-        {
-        }
     }
+}
+```
 
 Now, you can mock your `Connection`:
 
-    !php
-    $this->getMock('MockConnection');
+``` php
+<?php
+
+$this->getMock('MockConnection');
+```
 
 You now ensure that your _mappers_ execute valid SQL queries. However, you
 cannot ensure the well-execution of your methods. For instance, you are not sure
@@ -182,36 +190,38 @@ You can write your first functional tests by testing your _mappers_ using a
 configured `Connection` instance (leveraging the SQLite database), instead of
 using a mock.
 
-    !php
-    class LocationDataMapperTest extends \TestCase
+``` php
+<?php
+
+class LocationDataMapperTest extends \TestCase
+{
+    private $con;
+
+    public function setUp()
     {
-        private $con;
-
-        public function setUp()
-        {
-            $this->con = new \Model\Connection('sqlite::memory:');
-            $this->con->exec(<<<SQL
-    CREATE TABLE IF NOT EXISTS locations(
-        id INTEGER NOT NULL PRIMARY KEY,
-        name VARCHAR(250) NOT NULL,
-        created_at DATETIME
-    );
-    SQL
-            );
-        }
-
-        public function testPersist()
-        {
-            $mapper = new \Model\LocationDataMapper($this->con);
-
-            // ...
-
-            // Example on how to count rows in the table
-            // $rows = $this->con->query('SELECT COUNT(*) FROM locations')->fetch(\PDO::FETCH_NUM);
-            // $this->assertEquals(0, $rows[0]);
-        }
+        $this->con = new \Model\Connection('sqlite::memory:');
+        $this->con->exec(<<<SQL
+CREATE TABLE IF NOT EXISTS locations(
+    id INTEGER NOT NULL PRIMARY KEY,
+    name VARCHAR(250) NOT NULL,
+    created_at DATETIME
+);
+SQL
+        );
     }
 
+    public function testPersist()
+    {
+        $mapper = new \Model\LocationDataMapper($this->con);
+
+        // ...
+
+        // Example on how to count rows in the table
+        // $rows = $this->con->query('SELECT COUNT(*) FROM locations')->fetch(\PDO::FETCH_NUM);
+        // $this->assertEquals(0, $rows[0]);
+    }
+}
+```
 
 Test your Model layer using SQLite. As you may noticed, you have to adjust your
 SQL statements.
@@ -220,24 +230,26 @@ Another part you may want to test is the API. It's a pain to use `curl` to test
 each API method, and we don't do that in real life. Instead, prefer
 [Goutte](https://github.com/fabpot/Goutte), a simple PHP web scrapper:
 
-    !php
-    $client   = new Client();
-    $endpoint = 'http://localhost:8090';
+``` php
+<?php
 
-    // GET
-    $crawler  = $client->request('GET', sprintf('%s/locations', $endpoint));
-    $response = $client->getResponse();
+$client   = new Client();
+$endpoint = 'http://localhost:8090';
 
-    // POST
-    // See: https://github.com/symfony/BrowserKit/blob/master/Client.php#L242
-    $client->request('POST', sprintf('%s/locations', $endpoint), $request, [], $headers, $content);
+// GET
+$crawler  = $client->request('GET', sprintf('%s/locations', $endpoint));
+$response = $client->getResponse();
 
-    // Examples of assertions:
-    // $this->assertEquals(200, $response->getStatus());
-    // $this->assertEquals('text/html', $response->getHeader('Content-Type'));
-    //
-    // $data = json_decode($response->getContent(), true);
-    // $this->assertArrayHasKey('name', $data);
+// POST
+// See: https://github.com/symfony/BrowserKit/blob/master/Client.php#L242
+$client->request('POST', sprintf('%s/locations', $endpoint), $request, [], $headers, $content);
 
+// Examples of assertions:
+// $this->assertEquals(200, $response->getStatus());
+// $this->assertEquals('text/html', $response->getHeader('Content-Type'));
+//
+// $data = json_decode($response->getContent(), true);
+// $this->assertArrayHasKey('name', $data);
+```
 
 Test your API using this client. Your application has to run in order to test it.
