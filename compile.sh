@@ -8,4 +8,5 @@ pandoc $OPTIONS -o html/tp3/4-complete-the-application.html src/4-complete-the-a
 pandoc $OPTIONS -o html/tp3/5-content-negotiation.html src/5-content-negotiation.markdown
 pandoc $OPTIONS -o html/tp3/6-traits-examples.html src/6-traits-examples.markdown
 pandoc $OPTIONS -o html/tp4/7-playing-with-a-database.html src/7-playing-with-a-database.markdown
+pandoc $OPTIONS -o html/tp5/8-writing-tests.html src/8-writing-tests.markdown
 pandoc $OPTIONS -o html/projet.html src/projet.markdown
