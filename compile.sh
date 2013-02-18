@@ -11,3 +11,5 @@ pandoc $OPTIONS -o html/tp4/7-playing-with-a-database.html src/7-playing-with-a-
 pandoc $OPTIONS -o html/tp5/8-writing-tests.html src/8-writing-tests.markdown
 pandoc $OPTIONS -o html/tp6/9-the-end.html src/9-the-end.markdown
 pandoc $OPTIONS -o html/projet.html src/projet.markdown
+
+pandoc $OPTIONS -o html/sf2/1-getting-started.html src/sf2/1-getting-started.md
