@@ -6,6 +6,7 @@ Update the VM by running the following commands:
     $ cd $DOCROOT
     $ git stash
     $ git pull --rebase origin master
+    $ git fetch origin
     $ git checkout symfony2-1
     $ git stash apply
     $ vagrant reload
@@ -20,7 +21,7 @@ Now, checkout the `0.0.1` tag which contains the code for this practical:
     $ cd $DOCROOT/projects/sf2
     $ git checkout 0.0.1
 
-SSH into tour Virtual Machine, and setup the project:
+SSH into your Virtual Machine, and setup the project:
 
     $ cd /var/www/sf2/
     $ composer install --dev
@@ -49,7 +50,7 @@ The **persistence layer** will use a `YAML` file. Put your file in the `cache`
 directory. You can get its path with:
 
 ``` php
-$path = $this->getContainer()->getParameter('kernel.cache_dir');
+$path = $this->container->getParameter('kernel.cache_dir');
 ```
 
 You won't use any templating engine. Either write your own template engine (like
