@@ -94,6 +94,7 @@ The command takes only one argument: the location's name.
 
     $ php app/console licweb:location:add Paris
 
-The command provides an option to append the location into the `data_file`:
+The command provides an option to clear all locations before inserting  the
+new location into the `data_file`:
 
-    $ php app/console licweb:location:add Paris --append
+    $ php app/console licweb:location:add Paris --clear
