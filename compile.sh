@@ -13,3 +13,4 @@ pandoc $OPTIONS -o html/tp6/9-the-end.html src/9-the-end.markdown
 pandoc $OPTIONS -o html/projet.html src/projet.markdown
 
 pandoc $OPTIONS -o html/sf2/1-getting-started.html src/sf2/1-getting-started.md
+pandoc $OPTIONS -o html/sf2/2-practical-2.html src/sf2/2-practical-2.md
