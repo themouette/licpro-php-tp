@@ -92,8 +92,8 @@ this command is to add new locations in th `data_file` file seen above.
 
 The command takes only one argument: the location's name.
 
-    $ php app:console licweb:location:add Paris
+    $ php app/console licweb:location:add Paris
 
 The command provides an option to append the location into the `data_file`:
 
-    $ php app:console licweb:location:add Paris --append
+    $ php app/console licweb:location:add Paris --append
